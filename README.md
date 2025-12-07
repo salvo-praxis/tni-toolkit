@@ -20,7 +20,7 @@
 
 ---
 
-## 🛠️ Tools
+## 🛠️ Tools (**[Toolkit Dashboard Here](https://salvo-praxis.github.io/tni-toolkit/index.html)**)
 
 Standalone HTML files — download and open in any browser. Works offline. All tool-relevant data embedded therein.
 
