@@ -393,7 +393,7 @@
       "cpu": 1,
       "memory": 2,
       "storage": 2,
-      "sata_slots": 2,
+      "sata_slots": 1,
       "traversals_per_tick": 6,
       "cpu_cycle": "1 tick / 2.0s",
       "power_w": 19,
