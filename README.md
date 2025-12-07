@@ -28,7 +28,7 @@ Standalone HTML files — download and open in any browser. Works offline. All t
 
 Select a server, check off programs, and instantly see if CPU/Memory/Storage requirements fit. Automatically factors in SATA expansion.
 
-**[Use: Server Calculator](https://salvo-praxis.github.io/tni-toolkit/tools/server-calculator.html) or [Download: `tools/server-calculator.html`](tools/server-calculator.html)**
+**[Use Server Calculator](https://salvo-praxis.github.io/tni-toolkit/tools/server-calculator.html) or [Download: `tools/server-calculator.html`](tools/server-calculator.html)**
 
 ![Server Calculator Screenshot](docs/screenshots/server-calculator.png)
 
@@ -44,7 +44,7 @@ Search a database of 3,794 verified seeds by selecting up to 3 starting proposal
 > |------|-------------|------------|
 > | `JNLRY` | Scanning Exploit + Second Monitor + Undervoltage | 3900 |
 
-**[Use: Seed Finder](https://salvo-praxis.github.io/tni-toolkit/tools/seed-finder.html) or [Download: `tools/seed-finder.html`](tools/seed-finder.html)**
+**[Use Seed Finder](https://salvo-praxis.github.io/tni-toolkit/tools/seed-finder.html) or [Download: `tools/seed-finder.html`](tools/seed-finder.html)**
 
 ![Seed Finder Screenshot](docs/screenshots/seed-finder.png)
 
