@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TNI Toolkit - Community Tools for Tower Networking Inc.</title>
+    <meta name="description" content="Community-built data files and planning tools for Tower Networking Inc. by Pocosia Studios">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
+            background: linear-gradient(135deg, #0a0e14 0%, #1a1f2e 50%, #0d1117 100%);
+            color: #c9d1d9;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 0 30px;
+            border-bottom: 1px solid #30363d;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        
+        .logo .tni { color: #00ff88; text-shadow: 0 0 30px rgba(0, 255, 136, 0.4); }
+        .logo .toolkit { color: #58a6ff; }
+        
+        .tagline {
+            color: #8b949e;
+            font-size: 13px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .tagline a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+        .tagline a:hover { text-decoration: underline; }
+        
+        /* Section styling */
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #30363d;
+        }
+        
+        .section-header h2 {
+            color: #58a6ff;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        
+        .section-icon {
+            font-size: 16px;
+        }
+        
+        /* Tool cards */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        
+        .tool-card {
+            background: rgba(22, 27, 34, 0.8);
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tool-card:hover {
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .tool-card h3 {
+            color: #00ff88;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tool-card p {
+            color: #8b949e;
+            font-size: 12px;
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+        
+        .tool-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-family: inherit;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+        
+        .btn-primary {
+            background: rgba(0, 255, 136, 0.15);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+        }
+        .btn-primary:hover {
+            background: rgba(0, 255, 136, 0.25);
+        }
+        
+        .btn-secondary {
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid #30363d;
+            color: #8b949e;
+        }
+        .btn-secondary:hover {
+            border-color: #58a6ff;
+            color: #58a6ff;
+        }
+        
+        /* Unicorn callout */
+        .callout {
+            background: rgba(240, 136, 62, 0.08);
+            border: 1px solid #f0883e;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+        
+        .callout-header {
+            color: #f0883e;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .callout p {
+            color: #8b949e;
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+        
+        .callout code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #00ff88;
+            font-size: 12px;
+        }
+        
+        /* Data files table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        
+        .data-table th {
+            text-align: left;
+            color: #58a6ff;
+            font-weight: 600;
+            padding: 10px 12px;
+            border-bottom: 1px solid #30363d;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+            vertical-align: top;
+        }
+        
+        .data-table tr:hover td {
+            background: rgba(88, 166, 255, 0.05);
+        }
+        
+        .data-table a {
+            color: #00ff88;
+            text-decoration: none;
+        }
+        .data-table a:hover { text-decoration: underline; }
+        
+        .data-table .desc {
+            color: #8b949e;
+        }
+        
+        /* Roadmap */
+        .roadmap-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 8px;
+        }
+        
+        .roadmap-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: rgba(22, 27, 34, 0.6);
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .roadmap-item.done {
+            color: #00ff88;
+        }
+        
+        .roadmap-item.done .check {
+            color: #00ff88;
+        }
+        
+        .roadmap-item.pending {
+            color: #8b949e;
+        }
+        
+        .roadmap-item.pending .check {
+            color: #30363d;
+        }
+        
+        /* Info panels */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .info-panel {
+            background: rgba(22, 27, 34, 0.6);
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 20px;
+        }
+        
+        .info-panel h3 {
+            color: #c9d1d9;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .info-panel p, .info-panel li {
+            color: #8b949e;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .info-panel ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .info-panel li {
+            padding-left: 16px;
+            position: relative;
+        }
+        
+        .info-panel li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #58a6ff;
+        }
+        
+        .info-panel a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+        .info-panel a:hover { text-decoration: underline; }
+        
+        /* Footer */
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #30363d;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links a {
+            color: #8b949e;
+            text-decoration: none;
+            font-size: 12px;
+            transition: color 0.15s;
+        }
+        .footer-links a:hover { color: #58a6ff; }
+        
+        .footer-sep {
+            color: #30363d;
+        }
+        
+        .footer-note {
+            color: #7d8590;
+            font-size: 11px;
+            max-width: 600px;
+            margin: 0 auto 16px;
+        }
+        
+        .footer-note a {
+            color: #8b949e;
+            text-decoration: none;
+        }
+        .footer-note a:hover { color: #58a6ff; }
+        
+        .footer-shoutout {
+            color: #f0883e;
+            font-size: 11px;
+            margin-top: 16px;
+        }
+        
+        .license-badge {
+            display: inline-block;
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid #30363d;
+            color: #8b949e;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            margin-top: 12px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container { padding: 16px; }
+            .logo { font-size: 22px; }
+            .tools-grid { grid-template-columns: 1fr; }
+            .roadmap-list { grid-template-columns: 1fr; }
+            .info-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="tni">TNI</span> <span class="toolkit">TOOLKIT</span>
+            </div>
+            <p class="tagline">
+                Community-built data files and planning tools for 
+                <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">Tower Networking Inc.</a> 
+                by <a href="https://pocosia.com/games/tower-networking-inc/" target="_blank">Pocosia Studios</a>
+            </p>
+        </header>
+        
+        <!-- Tools Section -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🛠️</span>
+                <h2>Tools</h2>
+            </div>
+            <p style="color: #8b949e; font-size: 12px; margin-bottom: 20px;">
+                Standalone HTML files — open in any browser. Works offline. All data embedded.
+            </p>
+            
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3>📊 Server/Program Calculator</h3>
+                    <p>Select a server, check off programs, and instantly see if CPU/Memory/Storage requirements fit. Automatically factors in SATA expansion.</p>
+                    <div class="tool-links">
+                        <a href="tools/server-calculator.html" class="btn btn-primary">▶ Launch Tool</a>
+                        <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/tools/server-calculator.html" class="btn btn-secondary" target="_blank">📄 Source</a>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>🎯 Seed Finder</h3>
+                    <p>Search 3,794 verified seeds by selecting up to 3 starting proposals. Find the perfect seed for your playstyle — 455 possible combinations.</p>
+                    <div class="tool-links">
+                        <a href="tools/seed-finder.html" class="btn btn-primary">▶ Launch Tool</a>
+                        <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/tools/seed-finder.html" class="btn btn-secondary" target="_blank">📄 Source</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="callout">
+                <div class="callout-header">🦄 Unicorn Seed</div>
+                <p>This combination exists exactly once in our database:</p>
+                <p><code>JNLRY</code> — Scanning Exploit + Second Monitor + Undervoltage Directive — Total Cost: 3900</p>
+            </div>
+        </section>
+        
+        <!-- Data Files Section -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">📊</span>
+                <h2>Data Files</h2>
+            </div>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>File</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="data/tni-store.json" target="_blank">tni-store.json</a></td>
+                        <td class="desc">Complete catalog of purchasable items (servers, switches, routers, cables, racks, etc.)</td>
+                    </tr>
+                    <tr>
+                        <td><a href="data/tni-programs.json" target="_blank">tni-programs.json</a></td>
+                        <td class="desc">All installable programs with resource requirements, inputs/outputs, and dependencies</td>
+                    </tr>
+                    <tr>
+                        <td><a href="data/tni-cli-commands.json" target="_blank">tni-cli-commands.json</a></td>
+                        <td class="desc">Terminal command reference with syntax and examples</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="color: #7d8590; font-size: 11px; margin-top: 12px; font-style: italic;">
+                Note: Some warranty values may be inaccurate (recorded during a LAB session). Corrections welcome via PR.
+            </p>
+        </section>
+        
+        <!-- Roadmap Section -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🗺️</span>
+                <h2>Roadmap</h2>
+            </div>
+            
+            <div class="roadmap-list">
+                <div class="roadmap-item done"><span class="check">✓</span> Server/Program Calculator</div>
+                <div class="roadmap-item done"><span class="check">✓</span> Starting Proposal Seed Finder</div>
+                <div class="roadmap-item pending"><span class="check">○</span> Store Browser / Cart Calculator</div>
+                <div class="roadmap-item pending"><span class="check">○</span> Power Budget Calculator</div>
+                <div class="roadmap-item pending"><span class="check">○</span> Producer/Converter Planner</div>
+                <div class="roadmap-item pending"><span class="check">○</span> Network Throughput Calculator</div>
+                <div class="roadmap-item pending"><span class="check">○</span> Switch/Router Comparison Tool</div>
+                <div class="roadmap-item pending"><span class="check">○</span> CLI Command Builder</div>
+                <div class="roadmap-item pending"><span class="check">○</span> Decentro Network Planner</div>
+                <div class="roadmap-item pending"><span class="check">○</span> Equipment ROI Calculator</div>
+            </div>
+        </section>
+        
+        <!-- Contributing & Credits -->
+        <section class="section">
+            <div class="info-grid">
+                <div class="info-panel">
+                    <h3>🤝 Contributing</h3>
+                    <p>Found an error? Have data to add? PRs and issues welcome on GitHub.</p>
+                    <ul>
+                        <li>Maintain existing JSON structure</li>
+                        <li>Update <code style="background: rgba(0,0,0,0.3); padding: 2px 5px; border-radius: 3px; font-size: 11px;">_meta.last_updated</code></li>
+                        <li>Bump version: patch for fixes, minor for additions</li>
+                    </ul>
+                </div>
+                
+                <div class="info-panel">
+                    <h3>📜 Credits</h3>
+                    <ul>
+                        <li><strong>Project Lead:</strong> Salvo Praxis</li>
+                        <li><strong>Dev Assist:</strong> Claude (Anthropic)</li>
+                        <li><strong>Game:</strong> <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">TNI</a> by <a href="https://pocosia.com/" target="_blank">Pocosia Studios</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub Repository</a>
+                <span class="footer-sep">|</span>
+                <a href="https://github.com/salvo-praxis/tni-seed-harvester" target="_blank">Seed Harvester Project</a>
+                <span class="footer-sep">|</span>
+                <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">TNI on Steam</a>
+                <span class="footer-sep">|</span>
+                <a href="https://pocosia.com/" target="_blank">Pocosia Studios</a>
+            </div>
+            
+            <p class="footer-note">
+                Fan project. <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">Tower Networking Inc.</a> 
+                is developed by <a href="https://pocosia.com/" target="_blank">Pocosia Studios</a> — a 2-person team making co-op economic sims.
+            </p>
+            
+            <p class="footer-shoutout">
+                🏆 Keep up the awesome work Pocosia — yours is the only game like it!
+            </p>
+            
+            <span class="license-badge">MIT License</span>
+        </footer>
+    </div>
+</body>
+</html>
