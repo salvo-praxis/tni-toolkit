@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TNI Server Compatibility Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0e14 0%, #1a1f2e 50%, #0d1117 100%);
+            color: #c9d1d9;
+            font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
+            padding: 24px;
+        }
+        
+        .header {
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+            color: #00ff88;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .header h1 span {
+            color: #58a6ff;
+        }
+        
+        .header p {
+            margin: 8px 0 0;
+            font-size: 12px;
+            color: #8b949e;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        
+        @media (max-width: 800px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #58a6ff;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .list-container {
+            background: rgba(22,27,34,0.8);
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            max-height: 280px;
+            overflow-y: auto;
+        }
+        
+        .list-container.programs {
+            max-height: 320px;
+        }
+        
+        .list-item {
+            padding: 10px 12px;
+            border-bottom: 1px solid #21262d;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        
+        .list-item:hover {
+            background: rgba(88,166,255,0.08);
+        }
+        
+        .list-item.selected {
+            background: rgba(88,166,255,0.15);
+        }
+        
+        .list-item.program-selected {
+            background: rgba(0,255,136,0.1);
+        }
+        
+        .list-item.program-selected:hover {
+            background: rgba(0,255,136,0.15);
+        }
+        
+        .list-item:not(.program-selected):hover {
+            background: rgba(0,255,136,0.05);
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .item-name {
+            font-weight: 500;
+            font-size: 12px;
+            color: #c9d1d9;
+        }
+        
+        .item-name.active {
+            color: #58a6ff;
+        }
+        
+        .item-name.program-active {
+            color: #00ff88;
+        }
+        
+        .item-price {
+            color: #f0883e;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .item-stats {
+            font-size: 10px;
+            color: #8b949e;
+            margin-top: 4px;
+            display: flex;
+            gap: 12px;
+        }
+        
+        .program-meta {
+            font-size: 10px;
+            color: #8b949e;
+        }
+        
+        .type-badge {
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-right: 8px;
+        }
+        
+        .type-producer { background: rgba(88,166,255,0.2); }
+        .type-converter { background: rgba(240,136,62,0.2); }
+        .type-storage { background: rgba(139,148,158,0.2); }
+        
+        .item-output {
+            font-size: 10px;
+            color: #7d8590;
+            margin-top: 4px;
+        }
+        
+        .item-requires {
+            color: #f0883e;
+        }
+        
+        .sata-toggle {
+            margin-top: 12px;
+            padding: 10px 12px;
+            background: rgba(22,27,34,0.8);
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+        }
+        
+        .sata-toggle input {
+            accent-color: #58a6ff;
+        }
+        
+        .sata-info {
+            color: #8b949e;
+        }
+        
+        /* Results Panel */
+        .results {
+            margin-top: 24px;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .results.valid {
+            background: linear-gradient(135deg, rgba(0,255,136,0.05) 0%, rgba(22,27,34,0.9) 100%);
+            border: 1px solid #238636;
+        }
+        
+        .results.invalid {
+            background: linear-gradient(135deg, rgba(255,68,68,0.05) 0%, rgba(22,27,34,0.9) 100%);
+            border: 1px solid #f85149;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .results-title {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .results-title.valid { color: #00ff88; }
+        .results-title.invalid { color: #ff4444; }
+        
+        .total-cost {
+            font-size: 14px;
+            font-weight: 700;
+        }
+        
+        .cost-value { color: #f0883e; }
+        .cost-sata { font-size: 11px; color: #8b949e; }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        
+        @media (max-width: 600px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .metric-box {
+            border-radius: 6px;
+            padding: 12px;
+        }
+        
+        .metric-box.fits {
+            background: rgba(0,255,136,0.1);
+            border: 1px solid rgba(0,255,136,0.2);
+        }
+        
+        .metric-box.over {
+            background: rgba(255,68,68,0.1);
+            border: 1px solid rgba(255,68,68,0.2);
+        }
+        
+        .metric-label {
+            font-size: 11px;
+            color: #8b949e;
+            margin-bottom: 4px;
+        }
+        
+        .metric-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .metric-value.fits { color: #00ff88; }
+        .metric-value.over { color: #ff4444; }
+        
+        .metric-remaining {
+            font-size: 10px;
+            color: #8b949e;
+            margin-top: 4px;
+        }
+        
+        .metric-bar {
+            margin-top: 8px;
+            height: 4px;
+            background: #21262d;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .metric-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+        
+        .metric-bar-fill.fits { background: #00ff88; }
+        .metric-bar-fill.over { background: #ff4444; }
+        
+        .programs-summary {
+            margin-top: 16px;
+            font-size: 11px;
+            color: #8b949e;
+        }
+        
+        .programs-summary strong {
+            color: #c9d1d9;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 24px;
+            padding: 12px;
+            background: rgba(22,27,34,0.5);
+            border: 1px solid #21262d;
+            border-radius: 6px;
+            font-size: 10px;
+            color: #8b949e;
+        }
+        
+        .footer strong {
+            color: #58a6ff;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .site-footer {
+            margin-top: 40px;
+            padding-top: 16px;
+            border-top: 1px solid #30363d;
+            text-align: center;
+            font-size: 11px;
+            color: #7d8590;
+        }
+        
+        .site-footer a {
+            color: #8b949e;
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        
+        .site-footer a:hover {
+            color: #58a6ff;
+        }
+        
+        .site-footer .sep {
+            margin: 0 8px;
+            color: #30363d;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1><span>TNI</span> Server Compatibility Calculator</h1>
+        <p>Tower Networking Inc. • Server-Program Resource Planning Tool</p>
+    </div>
+
+    <div class="grid">
+        <!-- Server Selection -->
+        <div>
+            <h2 class="section-title">▸ Select Server</h2>
+            <div class="list-container" id="server-list"></div>
+            <div class="sata-toggle hidden" id="sata-toggle">
+                <input type="checkbox" id="sata-checkbox" checked>
+                <span>Auto-add SATA drives as needed</span>
+                <span class="sata-info" id="sata-info"></span>
+            </div>
+        </div>
+
+        <!-- Program Selection -->
+        <div>
+            <h2 class="section-title">▸ Select Programs</h2>
+            <div class="list-container programs" id="program-list"></div>
+        </div>
+    </div>
+
+    <!-- Results Panel -->
+    <div class="results hidden" id="results">
+        <div class="results-header">
+            <h2 class="results-title" id="results-title"></h2>
+            <div class="total-cost" id="total-cost"></div>
+        </div>
+        <div class="metrics-grid" id="metrics-grid"></div>
+        <div class="programs-summary hidden" id="programs-summary"></div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <strong>Quick Reference:</strong>
+        SATA Drive = +4 Storage @ $75 each •
+        Converters need input resources from other programs
+    </div>
+
+    <script>
+        // TNI Data
+        const servers = [
+            { model: "MacroHard Boulder SRV", cpu: 4, memory: 4, storage: 6, sata_slots: 0, price: 540, power_w: 72, ports: 2 },
+            { model: "MacroHard Boulder+ SRV", cpu: 6, memory: 8, storage: 8, sata_slots: 0, price: 1020, power_w: 161, ports: 2 },
+            { model: "MacroHard Boulder+ SRV (Refurb)", cpu: 6, memory: 8, storage: 8, sata_slots: 0, price: 255, power_w: 161, ports: 2 },
+            { model: "MacroHard Boulder++ SRV", cpu: 6, memory: 10, storage: 10, sata_slots: 0, price: 1750, power_w: 312, ports: 3 },
+            { model: "MacroHard Monolith SRV", cpu: 16, memory: 10, storage: 4, sata_slots: 2, price: 2100, power_w: 429, ports: 2 },
+            { model: "MacroHard Ledge Two SRV", cpu: 24, memory: 14, storage: 4, sata_slots: 2, price: 2625, power_w: 973, ports: 3 },
+            { model: "MacroHard Ledge Three SRV", cpu: 24, memory: 16, storage: 4, sata_slots: 2, price: 4000, power_w: 1125, ports: 4 },
+            { model: "MacroHard Megalith SRV", cpu: 32, memory: 16, storage: 4, sata_slots: 6, price: 4750, power_w: 1223, ports: 5 },
+            { model: "Savannah Meerkat", cpu: 4, memory: 4, storage: 4, sata_slots: 0, price: 950, power_w: 62, ports: 2 },
+            { model: "Savannah Gazelle", cpu: 6, memory: 6, storage: 6, sata_slots: 0, price: 2200, power_w: 108, ports: 2 },
+            { model: "Savannah Aardvark", cpu: 10, memory: 10, storage: 5, sata_slots: 2, price: 4500, power_w: 293, ports: 3 },
+            { model: "Savannah Wildebeest", cpu: 16, memory: 16, storage: 8, sata_slots: 2, price: 6800, power_w: 423, ports: 3 },
+            { model: "MacroHard NLB2", cpu: 2, memory: 1, storage: 1, sata_slots: 0, price: 437, power_w: 83, ports: 3 },
+            { model: "ICC1", cpu: 1, memory: 2, storage: 2, sata_slots: 2, price: 160, power_w: 19, ports: 1 },
+            { model: "Golonys-Cinco", cpu: 1, memory: 1, storage: 1, sata_slots: 5, price: 400, power_w: 13, ports: 1 },
+        ];
+
+        const programs = [
+            { name: "dns-lite", type: "Producer", cpu: 1, memory: 1, storage: 2, output: "3 reply-dns-queries", requires: null },
+            { name: "dns-server", type: "Converter", cpu: 4, memory: 3, storage: 3, output: "20 reply-dns-queries", requires: "1 store-text" },
+            { name: "sun-dns", type: "Converter", cpu: 10, memory: 6, storage: 9, output: "40 reply-dns-queries", requires: "3 store-text" },
+            { name: "padu_v1", type: "Producer", cpu: 1, memory: 2, storage: 4, output: "1 store-text, store-image", requires: null },
+            { name: "padu_v2", type: "Producer", cpu: 2, memory: 4, storage: 8, output: "2 store-text/image/audio", requires: null },
+            { name: "padu_v3", type: "Producer", cpu: 4, memory: 6, storage: 12, output: "4 store-text/image/audio/video", requires: null },
+            { name: "poems-db", type: "Producer", cpu: 4, memory: 4, storage: 6, output: "4 store-text", requires: null },
+            { name: "dnsmasq", type: "Producer", cpu: 1, memory: 1, storage: 2, output: "3 reply-dhcp-request", requires: null },
+            { name: "kea", type: "Converter", cpu: 6, memory: 5, storage: 7, output: "15 reply-dhcp-request", requires: "1 store-text" },
+            { name: "voip-server", type: "Producer", cpu: 5, memory: 2, storage: 5, output: "10 accept-voip-connection", requires: null },
+            { name: "gitcoffee", type: "Converter", cpu: 4, memory: 2, storage: 4, output: "16 read-text, update-software", requires: "2 store-text" },
+            { name: "mailer", type: "Converter", cpu: 5, memory: 6, storage: 3, output: "15 read/post-text, verify-user", requires: "3 store-text+image" },
+            { name: "rtsp-diva-r", type: "Producer", cpu: 6, memory: 4, storage: 10, output: "13 accept-cctv-connection", requires: null },
+            { name: "decentro-node", type: "Producer", cpu: 24, memory: 12, storage: 6, output: "10 facilitate-p2p-transaction", requires: null },
+            { name: "decentro-wallet", type: "Storage", cpu: 1, memory: 2, storage: 2, output: "Stores p2p currency", requires: null },
+            { name: "decentro-collector", type: "Converter", cpu: 1, memory: 1, storage: 1, output: "1 access-p2p-currency", requires: "1 access-p2p-currency" },
+            { name: "ubbt", type: "Converter", cpu: 4, memory: 4, storage: 6, output: "4 support-bots", requires: "4 inspect-user-packets" },
+        ];
+
+        const SATA_DRIVE_COST = 75;
+        const SATA_DRIVE_STORAGE = 4;
+
+        // State
+        let selectedServer = null;
+        let selectedPrograms = [];
+        let useSataExpansion = true;
+
+        // DOM Elements
+        const serverListEl = document.getElementById('server-list');
+        const programListEl = document.getElementById('program-list');
+        const sataToggleEl = document.getElementById('sata-toggle');
+        const sataCheckboxEl = document.getElementById('sata-checkbox');
+        const sataInfoEl = document.getElementById('sata-info');
+        const resultsEl = document.getElementById('results');
+        const resultsTitleEl = document.getElementById('results-title');
+        const totalCostEl = document.getElementById('total-cost');
+        const metricsGridEl = document.getElementById('metrics-grid');
+        const programsSummaryEl = document.getElementById('programs-summary');
+
+        // Render servers
+        function renderServers() {
+            serverListEl.innerHTML = servers.map((server, idx) => `
+                <div class="list-item ${selectedServer?.model === server.model ? 'selected' : ''}" 
+                     data-server-idx="${idx}">
+                    <div class="item-header">
+                        <span class="item-name ${selectedServer?.model === server.model ? 'active' : ''}">
+                            ${server.model}
+                        </span>
+                        <span class="item-price">$${server.price}</span>
+                    </div>
+                    <div class="item-stats">
+                        <span>C:${server.cpu}</span>
+                        <span>M:${server.memory}</span>
+                        <span>S:${server.storage}${server.sata_slots > 0 ? `+${server.sata_slots}SATA` : ''}</span>
+                        <span>${server.power_w}W</span>
+                    </div>
+                </div>
+            `).join('');
+
+            // Add click handlers
+            serverListEl.querySelectorAll('.list-item').forEach(el => {
+                el.addEventListener('click', () => {
+                    const idx = parseInt(el.dataset.serverIdx);
+                    selectedServer = servers[idx];
+                    renderServers();
+                    updateSataToggle();
+                    calculate();
+                });
+            });
+        }
+
+        // Render programs
+        function renderPrograms() {
+            programListEl.innerHTML = programs.map((program, idx) => {
+                const isSelected = selectedPrograms.some(p => p.name === program.name);
+                const typeClass = `type-${program.type.toLowerCase()}`;
+                return `
+                    <div class="list-item ${isSelected ? 'program-selected' : ''}" 
+                         data-program-idx="${idx}">
+                        <div class="item-header">
+                            <span class="item-name ${isSelected ? 'program-active' : ''}">
+                                ${isSelected ? '✓ ' : ''}${program.name}
+                            </span>
+                            <div class="program-meta">
+                                <span class="type-badge ${typeClass}">${program.type}</span>
+                                C:${program.cpu} M:${program.memory} S:${program.storage}
+                            </div>
+                        </div>
+                        <div class="item-output">
+                            → ${program.output}
+                            ${program.requires ? `<span class="item-requires"> • needs: ${program.requires}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Add click handlers
+            programListEl.querySelectorAll('.list-item').forEach(el => {
+                el.addEventListener('click', () => {
+                    const idx = parseInt(el.dataset.programIdx);
+                    const program = programs[idx];
+                    const existsIdx = selectedPrograms.findIndex(p => p.name === program.name);
+                    
+                    if (existsIdx >= 0) {
+                        selectedPrograms.splice(existsIdx, 1);
+                    } else {
+                        selectedPrograms.push(program);
+                    }
+                    
+                    renderPrograms();
+                    calculate();
+                });
+            });
+        }
+
+        // Update SATA toggle visibility
+        function updateSataToggle() {
+            if (selectedServer && selectedServer.sata_slots > 0) {
+                sataToggleEl.classList.remove('hidden');
+                sataInfoEl.textContent = `(${selectedServer.sata_slots} slots @ $${SATA_DRIVE_COST}/+${SATA_DRIVE_STORAGE} storage each)`;
+            } else {
+                sataToggleEl.classList.add('hidden');
+            }
+        }
+
+        // Calculate and render results
+        function calculate() {
+            if (!selectedServer) {
+                resultsEl.classList.add('hidden');
+                return;
+            }
+
+            const totalCpu = selectedPrograms.reduce((sum, p) => sum + p.cpu, 0);
+            const totalMemory = selectedPrograms.reduce((sum, p) => sum + p.memory, 0);
+            const totalStorage = selectedPrograms.reduce((sum, p) => sum + p.storage, 0);
+
+            const maxStorage = selectedServer.storage + (selectedServer.sata_slots * SATA_DRIVE_STORAGE);
+            const baseStorageDeficit = totalStorage - selectedServer.storage;
+
+            let sataNeeded = 0;
+            let sataStorageProvided = 0;
+            if (useSataExpansion && baseStorageDeficit > 0 && selectedServer.sata_slots > 0) {
+                sataNeeded = Math.min(
+                    Math.ceil(baseStorageDeficit / SATA_DRIVE_STORAGE),
+                    selectedServer.sata_slots
+                );
+                sataStorageProvided = sataNeeded * SATA_DRIVE_STORAGE;
+            }
+
+            const effectiveStorage = selectedServer.storage + sataStorageProvided;
+            const sataCost = sataNeeded * SATA_DRIVE_COST;
+            const totalCost = selectedServer.price + sataCost;
+
+            const cpuFits = totalCpu <= selectedServer.cpu;
+            const memoryFits = totalMemory <= selectedServer.memory;
+            const storageFits = totalStorage <= effectiveStorage;
+            const allFit = cpuFits && memoryFits && storageFits;
+
+            const cpuRemaining = selectedServer.cpu - totalCpu;
+            const memoryRemaining = selectedServer.memory - totalMemory;
+            const storageRemaining = effectiveStorage - totalStorage;
+
+            // Update results panel
+            resultsEl.classList.remove('hidden', 'valid', 'invalid');
+            resultsEl.classList.add(allFit ? 'valid' : 'invalid');
+
+            resultsTitleEl.className = `results-title ${allFit ? 'valid' : 'invalid'}`;
+            resultsTitleEl.textContent = allFit ? '✓ CONFIGURATION VALID' : '✗ INSUFFICIENT RESOURCES';
+
+            totalCostEl.innerHTML = `Total Cost: <span class="cost-value">$${totalCost}</span>` +
+                (sataCost > 0 ? ` <span class="cost-sata">(incl. $${sataCost} SATA)</span>` : '');
+
+            // Render metrics
+            metricsGridEl.innerHTML = `
+                ${renderMetric('CPU LOAD', totalCpu, selectedServer.cpu, cpuFits, cpuRemaining, '')}
+                ${renderMetric('MEMORY', totalMemory, selectedServer.memory, memoryFits, memoryRemaining, '')}
+                ${renderMetric(
+                    'STORAGE' + (sataNeeded > 0 ? ` (+${sataNeeded} SATA)` : ''),
+                    totalStorage,
+                    effectiveStorage,
+                    storageFits,
+                    storageRemaining,
+                    !storageFits ? ` (max: ${maxStorage})` : ''
+                )}
+            `;
+
+            // Programs summary
+            if (selectedPrograms.length > 0) {
+                programsSummaryEl.classList.remove('hidden');
+                programsSummaryEl.innerHTML = `<strong>Programs:</strong> ${selectedPrograms.map(p => p.name).join(' + ')}`;
+            } else {
+                programsSummaryEl.classList.add('hidden');
+            }
+        }
+
+        function renderMetric(label, used, total, fits, remaining, extra) {
+            const pct = Math.min(100, (used / total) * 100);
+            const statusClass = fits ? 'fits' : 'over';
+            const remainingText = fits
+                ? `${remaining} remaining`
+                : `${Math.abs(remaining)} over capacity${extra}`;
+
+            return `
+                <div class="metric-box ${statusClass}">
+                    <div class="metric-label">${label}</div>
+                    <div class="metric-value ${statusClass}">${used} / ${total}</div>
+                    <div class="metric-remaining">${remainingText}</div>
+                    <div class="metric-bar">
+                        <div class="metric-bar-fill ${statusClass}" style="width: ${pct}%"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // SATA checkbox handler
+        sataCheckboxEl.addEventListener('change', (e) => {
+            useSataExpansion = e.target.checked;
+            calculate();
+        });
+
+        // Initialize
+        renderServers();
+        renderPrograms();
+    </script>
+    
+    <div class="site-footer">
+        <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">TNI Toolkit</a>
+        <span class="sep">|</span>
+        <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">Tower Networking Inc. on Steam</a>
+    </div>
+</body>
+</html>
