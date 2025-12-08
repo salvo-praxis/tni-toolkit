@@ -2,10 +2,34 @@
   "_meta": {
     "game": "Tower Networking Inc.",
     "dataset": "store",
-    "version": "1.0.0",
-    "last_updated": "2025-12-06",
+    "version": "1.0.1",
+    "last_updated": "2025-12-07",
     "description": "Nearly complete catalog of purchasable items from D-Market2, Barracks and Sons, and other in-game vendors.",
-    "notes": "Some warranty values may be inaccurate (recorded during LAB session). Other apps still need documentation. Corrections welcome."
+    "notes": "Some warranty values may be inaccurate (recorded during LAB session). Other apps still need documentation. Corrections welcome.",
+    "sources": [
+      {
+        "name": "In-game observation",
+        "notes": "Data collected directly from D-Market2 and Barracks and Sons interfaces"
+      },
+      {
+        "name": "Discord Community",
+        "notes": "Data additions, corrections, and suggestions made by members of the discord community"
+      }
+    ],
+    "contributors": [
+      "Salvo Praxis",
+      "Claude (Anthropic)",
+      "Chaotic Crumb",
+      "Singing Pot Beast"
+    ],
+    "corrections": [
+      {
+        "version": "1.0.1",
+        "correction": "ICC sata_slots corrected from 2 to 1",
+        "reported_by": "Singing Pot Beast",
+        "corrected_by": "Chaotic Crumb"
+      }
+    ]
   },
 
   "network_switches": [
