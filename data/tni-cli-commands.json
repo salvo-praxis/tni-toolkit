@@ -17,7 +17,6 @@
       "Claude (Anthropic)"
     ]
   },
-
   "shell_shortcuts": {
     "up_arrow": "Cycle previous executed command",
     "tab": "Try auto complete word",
@@ -29,7 +28,6 @@
     "ctrl_v": "Paste from clipboard",
     "tilde": "Toggle terminal"
   },
-
   "commands": {
     "program": {
       "description": "Program management - install, start, stop, and manage programs on servers.",
@@ -56,7 +54,6 @@
         "program uninstall * on 123 using 456"
       ]
     },
-
     "dns": {
       "description": "DNS management - lookup, map, and unmap domain names.",
       "subcommands": {
@@ -72,7 +69,6 @@
         "dns unmap readnews.com using 456"
       ]
     },
-
     "dhcp": {
       "description": "DHCP management - configure DHCP server options.",
       "subcommands": {
@@ -91,7 +87,6 @@
         "dhcp option unbind 1234 on @dhcp using 456"
       ]
     },
-
     "firewall": {
       "description": "Manage rules on firewalls - allow/deny traffic by type, source, destination.",
       "subcommands": {
@@ -119,7 +114,6 @@
         "firewall clear on 123 using 456"
       ]
     },
-
     "route": {
       "description": "Manage routes on routers - add, remove, and configure routing rules.",
       "subcommands": {
@@ -148,7 +142,6 @@
         "route drop broadcast on 123 using 456"
       ]
     },
-
     "rip": {
       "description": "Configure auto route discovery on routers (RIP protocol).",
       "subcommands": {
@@ -168,7 +161,6 @@
         "rip ignore on 123 using 456"
       ]
     },
-
     "vlan": {
       "description": "Manage virtual local area networks on managed switches.",
       "subcommands": {
@@ -188,7 +180,6 @@
         "vlan clear on @mysw using @mydebug"
       ]
     },
-
     "net": {
       "description": "Manage network configuration on devices/users.",
       "subcommands": {
@@ -219,7 +210,6 @@
         "net dhcp request on 456"
       ]
     },
-
     "trace": {
       "description": "Trace network traversal from one device to another.",
       "syntax": "trace <dest_addr> [from <src_addr>] [with <traffic_type>] using <debugger_addr>",
@@ -229,7 +219,6 @@
         "trace 123 from 456 with udp/53 using 789"
       ]
     },
-
     "scan": {
       "description": "Scan and list devices accessible through a debugger.",
       "device_types": {
@@ -253,7 +242,6 @@
         "scan routers using 123"
       ]
     },
-
     "dstat": {
       "description": "View device status through a remote debugger.",
       "subcommands": {
@@ -266,7 +254,6 @@
         "dstat clear 123 using 456"
       ]
     },
-
     "watch": {
       "description": "Watch device information/programs through a debugger.",
       "syntax": "watch [address] using <debugger_addr>",
@@ -275,7 +262,6 @@
         "watch 123 using 456"
       ]
     },
-
     "pcap": {
       "description": "Start traffic capture on a network tap.",
       "syntax": "pcap [exclude] [=<traffic_type>...] on <tap_addr> using <debugger_addr>",
@@ -285,7 +271,6 @@
         "pcap exclude =tcp/23 =udp/23 on 123 using 456"
       ]
     },
-
     "vmconf": {
       "description": "Manage virtual machines on servers.",
       "subcommands": {
@@ -299,7 +284,6 @@
         "vmconf create 2 1 1 netaddr @myvm on @mysrv using @mydebug"
       ]
     },
-
     "botconf": {
       "description": "Manage bots on devices.",
       "subcommands": {
@@ -312,7 +296,6 @@
         "botconf create visitor to 789 on 123 using 456"
       ]
     },
-
     "haconf": {
       "description": "Manage high-availability setup on devices.",
       "syntax": "haconf show on <device_addr> using <debugger_addr>",
@@ -320,7 +303,6 @@
         "haconf show on @mydevice using @mydebug"
       ]
     },
-
     "sftp": {
       "description": "Remote tool for file backup/migration.",
       "subcommands": {
@@ -336,7 +318,6 @@
         "sftp rm myfile on 1337 using 456"
       ]
     },
-
     "power": {
       "description": "Remote device power management.",
       "subcommands": {
@@ -350,7 +331,6 @@
         "power wake broadcast using 456"
       ]
     },
-
     "alias": {
       "description": "Create command aliases for convenience.",
       "subcommands": {
@@ -368,7 +348,6 @@
         "alias tr trace ${1} from @dbg; tr 123"
       ]
     },
-
     "always": {
       "description": "Shell quality-of-life enhancements - set default debugger/device.",
       "subcommands": {
@@ -385,7 +364,6 @@
         "always on 456"
       ]
     },
-
     "cron": {
       "description": "Schedule commands to run automatically.",
       "subcommands": {
@@ -406,7 +384,6 @@
         "cron clear all"
       ]
     },
-
     "try": {
       "description": "Try a command, run another if it succeeds or fails.",
       "syntax": "try <cmd1> [then <cmd2>] [else <cmd3>]",
@@ -415,36 +392,30 @@
         "try ping 1234 then notify up else notify down"
       ]
     },
-
     "lstdbg": {
       "description": "List debuggers for remote access.",
       "notes": "Only lists debuggers that are RUNNING - make sure to power them up",
       "syntax": "lstdbg",
       "examples": ["lstdbg"]
     },
-
     "notify": {
       "description": "Send an on-screen notification.",
       "syntax": "notify <message>",
       "examples": ["notify Server is down!"]
     },
-
     "man": {
       "description": "Usage manual/help routine.",
       "syntax": "man [command]",
       "examples": ["man", "man firewall", "man route"]
     },
-
     "clear": {
       "description": "Clear the terminal screen.",
       "syntax": "clear"
     },
-
     "echo": {
       "description": "Print text to terminal.",
       "syntax": "echo <message>"
     },
-
     "quit": {
       "description": "Exit netsh terminal.",
       "syntax": "quit"
