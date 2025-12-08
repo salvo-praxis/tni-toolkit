@@ -2,12 +2,48 @@
   "_meta": {
     "game": "Tower Networking Inc.",
     "dataset": "programs",
-    "version": "1.0.0",
-    "last_updated": "2025-12-06",
+    "version": "1.1.0",
+    "last_updated": "2025-12-07",
     "description": "Complete catalog of installable server programs with resource requirements, outputs, and dependencies.",
-    "notes": "Program types: producer (generates uses), converter (transforms inputs to outputs), data storage (persists data). does not include most programs/firmware that comes pre-installed on some hardware"
+    "notes": "Program types: producer (generates uses), converter (transforms inputs to outputs), data storage (persists data), firmware (device operating systems).",
+    "sources": [
+      {
+        "name": "In-game observation",
+        "notes": "Data collected from program list and describe commands"
+      },
+      {
+        "name": "Discord Community",
+        "notes": "Data additions, corrections, and suggestions made by members of the discord community"
+      }
+    ],
+    "contributors": [
+      "Salvo Praxis",
+      "Claude (Anthropic)",
+      "Chaotic Crumb",
+      "gamers2000",
+      "Crona"
+    ],
+    "corrections": [
+      {
+        "version": "1.1.0",
+        "correction": "Added 8 firmware programs (rtkernel, hakernel, bladeos, vlanfirm, firewatcher, wirerat, netpeeker, dnsspam) and 4 new program_categories (router, switch, firewall, debugging)",
+        "suggested_by": "gamers2000",
+        "added_by": "Chaotic Crumb"
+      }
+    ],
+    "future_additions": [
+      {
+        "suggestion": "voip_provider category with vonet_edge",
+        "details": "1/1/1 cpu/mem/storage, doesn't run on player devices currently",
+        "suggested_by": "Crona"
+      },
+      {
+        "suggestion": "provider_firmware category",
+        "details": "For CCTV stuff and possibly printer (mod API has enums for printer)",
+        "suggested_by": "Crona"
+      }
+    ]
   },
-
   "programs": [
     {
       "name": "dns-lite",
@@ -391,7 +427,6 @@
       "description": "DNS blasting firmware that rapidly sends out udp/53 requests."
     }
   ],
-
   "program_categories": {
     "dns": ["dns-lite", "dns-server", "sun-dns"],
     "dhcp": ["dnsmasq", "kea"],
@@ -402,9 +437,8 @@
     "router": ["rtkernel", "hakernel"],
     "switch": ["bladeos", "vlanfirm"],
     "firewall": ["firewatcher"],
-    "debugging": ["wirerat", "netpeeker", "dnsspam"],
+    "debugging": ["wirerat", "netpeeker", "dnsspam"]
   },
-
   "use_types": {
     "storage": ["store-text", "store-image", "store-audio", "store-video"],
     "dns": ["reply-dns-queries"],
