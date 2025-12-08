@@ -304,6 +304,91 @@
       "requires": "Network tap with user traffic",
       "stack_limit": 4,
       "description": "Analyzes user traffic behavior from a network tap to support botnet operations."
+    },
+    {
+      "name": "rtkernel",
+      "type": "firmware",
+      "cpu": 4,
+      "memory": 1,
+      "storage": 2,      
+      "requires": "/etc/routes.conf",
+      "stack_limit": null,
+      "description": "Normal capacity router firmware."
+    },
+    {
+      "name": "hakernel",
+      "type": "firmware",
+      "cpu": 8,
+      "memory": 2,
+      "storage": 4,      
+      "requires": "/etc/routes.conf",
+      "stack_limit": null,
+      "description": "High capacity router firmware."
+    },
+    {
+      "name": "bladeos",
+      "type": "firmware",
+      "cpu": 2,
+      "memory": 1,
+      "storage": 1,      
+      "requires": null,
+      "stack_limit": null,
+      "description": "Normal capacity switch firmware."
+    },
+    {
+      "name": "vlanfirm",
+      "type": "firmware",
+      "cpu": 2,
+      "memory": 2,
+      "storage": 2,      
+      "requires": "/etc/vlan.tags",
+      "stack_limit": null,
+      "description": "High capacity switch firmware that supports VLAN port tagging."
+    },
+    {
+      "name": "firewatcher",
+      "type": "firmware",
+      "cpu": 4,
+      "memory": 1,
+      "storage": 2,      
+      "requires": "/etc/nftables.conf",
+      "stack_limit": null,
+      "description": "Basic Firewall firmware."
+    },
+    {
+      "name": "wirerat",
+      "type": "firmware",
+      "cpu": 2,
+      "memory": 2,
+      "storage": 1,
+      "output": {
+        "uses": ["inspect-user-packets"],
+        "amount": 4,
+        "rate": "per tick"
+      },
+      "requires": null,
+      "stack_limit": 12,
+      "description": "Network tap firmware that produces inspect-user-packets use stack."
+    },
+    {
+      "name": "netpeeker",
+      "type": "firmware",
+      "cpu": 1,
+      "memory": 1,
+      "storage": 1,
+      "requires": null,
+      "stack_limit": null,
+      "description": "Basic Debugger firmware."
+    },
+    {
+      "name": "dnsspam",
+      "type": "firmware",
+      "cpu": 1,
+      "memory": 1,
+      "storage": 1,
+      "requires": null,
+      "stack_limit": null,
+      "description": "DNS blasting firmware that rapidly sends out udp/53 requests."
     }
   ],
 
@@ -313,7 +398,11 @@
     "storage": ["padu_v1", "padu_v2", "padu_v3", "poems-db"],
     "services": ["gitcoffee", "mailer", "voip-server", "rtsp-diva-r"],
     "decentro": ["decentro-node", "decentro-wallet", "decentro-collector"],
-    "botnet": ["ubbt"]
+    "botnet": ["ubbt"],
+    "router": ["rtkernel", "hakernel"],
+    "switch": ["bladeos", "vlanfirm"],
+    "firewall": ["firewatcher"],
+    "debugging": ["wirerat", "netpeeker", "dnsspam"],
   },
 
   "use_types": {
