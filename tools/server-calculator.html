@@ -152,6 +152,17 @@
         .type-producer { background: rgba(88,166,255,0.2); }
         .type-converter { background: rgba(240,136,62,0.2); }
         .type-storage { background: rgba(139,148,158,0.2); }
+        .type-firmware { background: rgba(0,255,136,0.2); color: #00ff88; }
+        
+        .category-divider {
+            padding: 6px 12px;
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid #30363d;
+            font-size: 10px;
+            color: #7d8590;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
         
         .item-output {
             font-size: 10px;
@@ -161,6 +172,11 @@
         
         .item-requires {
             color: #f0883e;
+        }
+        
+        .install-method {
+            color: #00ff88;
+            font-style: italic;
         }
         
         .sata-toggle {
@@ -403,7 +419,7 @@
             { model: "Savannah Aardvark", cpu: 10, memory: 10, storage: 5, sata_slots: 2, price: 4500, power_w: 293, ports: 3 },
             { model: "Savannah Wildebeest", cpu: 16, memory: 16, storage: 8, sata_slots: 2, price: 6800, power_w: 423, ports: 3 },
             { model: "MacroHard NLB2", cpu: 2, memory: 1, storage: 1, sata_slots: 0, price: 437, power_w: 83, ports: 3 },
-            { model: "ICC1", cpu: 1, memory: 2, storage: 2, sata_slots: 2, price: 160, power_w: 19, ports: 1 },
+            { model: "ICC1", cpu: 1, memory: 2, storage: 2, sata_slots: 1, price: 160, power_w: 19, ports: 1 },
             { model: "Golonys-Cinco", cpu: 1, memory: 1, storage: 1, sata_slots: 5, price: 400, power_w: 13, ports: 1 },
         ];
 
@@ -425,6 +441,15 @@
             { name: "decentro-wallet", type: "Storage", cpu: 1, memory: 2, storage: 2, output: "Stores p2p currency", requires: null },
             { name: "decentro-collector", type: "Converter", cpu: 1, memory: 1, storage: 1, output: "1 access-p2p-currency", requires: "1 access-p2p-currency" },
             { name: "ubbt", type: "Converter", cpu: 4, memory: 4, storage: 6, output: "4 support-bots", requires: "4 inspect-user-packets" },
+            // Firmware (SFTP install)
+            { name: "rtkernel", type: "Firmware", cpu: 4, memory: 1, storage: 2, output: "Router firmware", requires: "/etc/routes.conf" },
+            { name: "hakernel", type: "Firmware", cpu: 8, memory: 2, storage: 4, output: "High-cap router firmware", requires: "/etc/routes.conf" },
+            { name: "bladeos", type: "Firmware", cpu: 2, memory: 1, storage: 1, output: "Switch firmware", requires: null },
+            { name: "vlanfirm", type: "Firmware", cpu: 2, memory: 2, storage: 2, output: "VLAN switch firmware", requires: "/etc/vlan.tags" },
+            { name: "firewatcher", type: "Firmware", cpu: 4, memory: 1, storage: 2, output: "Firewall firmware", requires: "/etc/nftables.conf" },
+            { name: "wirerat", type: "Firmware", cpu: 2, memory: 2, storage: 1, output: "4 inspect-user-packets", requires: null },
+            { name: "netpeeker", type: "Firmware", cpu: 1, memory: 1, storage: 1, output: "Debugger firmware", requires: null },
+            { name: "dnsspam", type: "Firmware", cpu: 1, memory: 1, storage: 1, output: "DNS blaster firmware", requires: null },
         ];
 
         const SATA_DRIVE_COST = 75;
@@ -481,10 +506,19 @@
 
         // Render programs
         function renderPrograms() {
-            programListEl.innerHTML = programs.map((program, idx) => {
+            let html = '<div class="category-divider">Programs (program install)</div>';
+            let firmwareDividerAdded = false;
+            
+            programs.forEach((program, idx) => {
+                // Add divider before first firmware
+                if (program.type === 'Firmware' && !firmwareDividerAdded) {
+                    html += `<div class="category-divider">Firmware (SFTP install)</div>`;
+                    firmwareDividerAdded = true;
+                }
+                
                 const isSelected = selectedPrograms.some(p => p.name === program.name);
                 const typeClass = `type-${program.type.toLowerCase()}`;
-                return `
+                html += `
                     <div class="list-item ${isSelected ? 'program-selected' : ''}" 
                          data-program-idx="${idx}">
                         <div class="item-header">
@@ -502,7 +536,9 @@
                         </div>
                     </div>
                 `;
-            }).join('');
+            });
+            
+            programListEl.innerHTML = html;
 
             // Add click handlers
             programListEl.querySelectorAll('.list-item').forEach(el => {
@@ -596,8 +632,20 @@
 
             // Programs summary
             if (selectedPrograms.length > 0) {
+                const regularPrograms = selectedPrograms.filter(p => p.type !== 'Firmware');
+                const firmware = selectedPrograms.filter(p => p.type === 'Firmware');
+                
+                let summaryHtml = '';
+                if (regularPrograms.length > 0) {
+                    summaryHtml += `<strong>Programs:</strong> ${regularPrograms.map(p => p.name).join(' + ')}`;
+                }
+                if (firmware.length > 0) {
+                    if (summaryHtml) summaryHtml += '<br>';
+                    summaryHtml += `<strong>Firmware:</strong> <span class="install-method">${firmware.map(p => p.name).join(' + ')}</span>`;
+                }
+                
                 programsSummaryEl.classList.remove('hidden');
-                programsSummaryEl.innerHTML = `<strong>Programs:</strong> ${selectedPrograms.map(p => p.name).join(' + ')}`;
+                programsSummaryEl.innerHTML = summaryHtml;
             } else {
                 programsSummaryEl.classList.add('hidden');
             }
