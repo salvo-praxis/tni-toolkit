@@ -404,7 +404,58 @@
         .hidden {
             display: none;
         }
-        
+
+        .sharecode-section {
+            margin-top: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .sharecode-section label {
+            font-size: 11px;
+            color: #8b949e;
+        }
+
+        .sharecode-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 6px 10px;
+            background: rgba(22,27,34,0.8);
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #c9d1d9;
+            font-family: inherit;
+            font-size: 11px;
+        }
+
+        .sharecode-input:hover {
+            border-color: #58a6ff;
+        }
+
+        .sharecode-input:focus {
+            outline: none;
+            border-color: #58a6ff;
+        }
+
+        .sharecode-section button {
+            padding: 6px 12px;
+            background: rgba(22,27,34,0.8);
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #c9d1d9;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+        }
+
+        .sharecode-section button:hover {
+            border-color: #58a6ff;
+            background: rgba(88,166,255,0.1);
+        }
+
         .site-footer {
             margin-top: 40px;
             padding-top: 16px;
@@ -476,6 +527,14 @@
         </div>
         <div class="metrics-grid" id="metrics-grid"></div>
         <div class="programs-summary hidden" id="programs-summary"></div>
+    </div>
+
+    <!-- Sharecode -->
+    <div class="sharecode-section">
+        <label>Sharecode:</label>
+        <input type="text" id="sharecode" class="sharecode-input" placeholder="Paste sharecode to load...">
+        <button id="copy-sharecode">Copy</button>
+        <button id="copy-url">Copy URL</button>
     </div>
 
     <!-- Footer -->
@@ -608,6 +667,67 @@
         const totalCostEl = document.getElementById('total-cost');
         const metricsGridEl = document.getElementById('metrics-grid');
         const programsSummaryEl = document.getElementById('programs-summary');
+        const sharecodeEl = document.getElementById('sharecode');
+        const copySharecodeBtn = document.getElementById('copy-sharecode');
+        const copyUrlBtn = document.getElementById('copy-url');
+
+        // Sharecode functions
+        function generateSharecode() {
+            const data = {
+                d: selectedDevice ? selectedDevice.model : null,
+                p: selectedPrograms.map(p => p.name),
+                s: useSataExpansion
+            };
+            return btoa(JSON.stringify(data));
+        }
+
+        function loadSharecode(code) {
+            try {
+                const data = JSON.parse(atob(code));
+
+                // Find device by model
+                if (data.d) {
+                    for (const [category, deviceList] of Object.entries(devices)) {
+                        const device = deviceList.find(d => d.model === data.d);
+                        if (device) {
+                            selectedDevice = { ...device, _category: category };
+                            selectedDeviceCategory = category;
+                            break;
+                        }
+                    }
+                } else {
+                    selectedDevice = null;
+                    selectedDeviceCategory = null;
+                }
+
+                // Find programs by name
+                selectedPrograms = [];
+                if (data.p && Array.isArray(data.p)) {
+                    data.p.forEach(name => {
+                        const program = programs.find(p => p.name === name);
+                        if (program) selectedPrograms.push(program);
+                    });
+                }
+
+                // Set SATA expansion
+                useSataExpansion = data.s !== false;
+                sataCheckboxEl.checked = useSataExpansion;
+
+                // Update UI
+                renderDevices();
+                renderPrograms();
+                updateToggles();
+                calculate();
+            } catch (e) {
+                // Invalid sharecode, ignore
+            }
+        }
+
+        function updateSharecode() {
+            const code = generateSharecode();
+            sharecodeEl.value = code;
+            history.replaceState(null, '', '#' + code);
+        }
 
         // Get filtered devices
         function getFilteredDevices() {
@@ -844,6 +964,9 @@
             } else {
                 programsSummaryEl.classList.add('hidden');
             }
+
+            // Update sharecode
+            updateSharecode();
         }
 
         function renderMetric(label, used, total, fits, remaining, extra) {
@@ -896,11 +1019,39 @@
             renderPrograms();
         });
 
+        // Sharecode input handler
+        sharecodeEl.addEventListener('input', (e) => {
+            const code = e.target.value.trim();
+            if (code) loadSharecode(code);
+        });
+
+        // Copy sharecode button
+        copySharecodeBtn.addEventListener('click', () => {
+            sharecodeEl.select();
+            navigator.clipboard.writeText(sharecodeEl.value);
+        });
+
+        // Copy URL button
+        copyUrlBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(window.location.href);
+        });
+
+        // Handle URL hash changes (browser back/forward)
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.slice(1);
+            if (hash) loadSharecode(hash);
+        });
+
         // Initialize
         renderDevices();
         renderPrograms();
+
+        // Load from URL hash if present
+        if (window.location.hash) {
+            loadSharecode(window.location.hash.slice(1));
+        }
     </script>
-    
+
     <div class="site-footer">
         <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">TNI Toolkit</a>
         <span class="sep">|</span>
