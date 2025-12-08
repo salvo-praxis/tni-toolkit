@@ -3,9 +3,19 @@
     "game": "Tower Networking Inc.",
     "dataset": "cli-commands",
     "version": "1.1.0",
-    "last_updated": "2025-12-06",
+    "last_updated": "2025-12-07",
     "description": "Complete reference for in-game terminal (netsh) commands, syntax, and examples.",
-    "notes": "Commands require a debugger device connected to the network. Use 'man <command>' in-game for help."
+    "notes": "Commands require a debugger device connected to the network. Use 'man <command>' in-game for help.",
+    "sources": [
+      {
+        "name": "In-game man pages",
+        "notes": "Data collected from 'man <command>' output and in-game testing"
+      }
+    ],
+    "contributors": [
+      "Salvo Praxis",
+      "Claude (Anthropic)"
+    ]
   },
 
   "shell_shortcuts": {
