@@ -20,7 +20,7 @@
 
 ---
 
-## 🛠️ Tools (**[Toolkit Dashboard Here](https://salvo-praxis.github.io/tni-toolkit/index.html)**)
+## 🛠️ Tools
 
 Standalone HTML files — download and open in any browser. Works offline. All tool-relevant data embedded therein.
 
@@ -28,7 +28,7 @@ Standalone HTML files — download and open in any browser. Works offline. All t
 
 Select a server, check off programs, and instantly see if CPU/Memory/Storage requirements fit. Automatically factors in SATA expansion.
 
-**[Use Server Calculator](https://salvo-praxis.github.io/tni-toolkit/tools/server-calculator.html) or [Download: `tools/server-calculator.html`](tools/server-calculator.html)**
+**[Use: Server Calculator](https://salvo-praxis.github.io/tni-toolkit/tools/server-calculator.html) or [Download: `tools/server-calculator.html`](tools/server-calculator.html)**
 
 ![Server Calculator Screenshot](docs/screenshots/server-calculator.png)
 
@@ -44,7 +44,7 @@ Search a database of 3,794 verified seeds by selecting up to 3 starting proposal
 > |------|-------------|------------|
 > | `JNLRY` | Scanning Exploit + Second Monitor + Undervoltage | 3900 |
 
-**[Use Seed Finder](https://salvo-praxis.github.io/tni-toolkit/tools/seed-finder.html) or [Download: `tools/seed-finder.html`](tools/seed-finder.html)**
+**[Use: Seed Finder](https://salvo-praxis.github.io/tni-toolkit/tools/seed-finder.html) or [Download: `tools/seed-finder.html`](tools/seed-finder.html)**
 
 ![Seed Finder Screenshot](docs/screenshots/seed-finder.png)
 
@@ -56,12 +56,12 @@ Search a database of 3,794 verified seeds by selecting up to 3 starting proposal
 
 - [x] Server/Program Compatibility Calculator
 - [x] Starting Proposal Seed Finder
+- [ ] **CLI Command Builder** *(in progress)*
 - [ ] Store Browser / Cart Calculator
 - [ ] Power Budget Calculator  
 - [ ] Producer/Converter Dependency Planner
 - [ ] Network Throughput Calculator
 - [ ] Switch/Router Comparison Tool
-- [ ] CLI Command Builder
 - [ ] Decentro Network Planner
 - [ ] Equipment ROI Calculator
 
@@ -76,6 +76,7 @@ Search a database of 3,794 verified seeds by selecting up to 3 starting proposal
 | [`data/tni-store.json`](https://salvo-praxis.github.io/tni-toolkit/data/tni-store.json) | Complete catalog of purchasable items (servers, switches, routers, cables, racks, etc.) |
 | [`data/tni-programs.json`](https://salvo-praxis.github.io/tni-toolkit/data/tni-programs.json) | All installable programs with resource requirements, inputs/outputs, and dependencies |
 | [`data/tni-cli-commands.json`](https://salvo-praxis.github.io/tni-toolkit/data/tni-cli-commands.json) | Terminal command reference with syntax and examples |
+| [`data/tni-traffic-types.json`](https://salvo-praxis.github.io/tni-toolkit/data/tni-traffic-types.json) | Network traffic types for firewall rules and router configuration |
 
 > **Note:** Some warranty values may be inaccurate (recorded during a LAB session). Corrections welcome via PR or issue.
 
@@ -89,14 +90,21 @@ Search a database of 3,794 verified seeds by selecting up to 3 starting proposal
 tni-toolkit/
 ├── README.md
 ├── LICENSE
+├── CLAUDE.md                   # Claude Code project context
+├── CONTRIBUTING.md             # Contribution guidelines (markdown)
+├── index.html                  # Landing page (GitHub Pages)
+├── contributing.html           # Contribution guide (styled)
+├── credits.html                # Credits, sources, greetz
 ├── data/
 │   ├── tni-store.json          # Equipment & store catalog
 │   ├── tni-programs.json       # Server programs
-│   └── tni-cli-commands.json   # Terminal command reference
+│   ├── tni-cli-commands.json   # Terminal command reference
+│   └── tni-traffic-types.json  # Network traffic types
 ├── tools/
 │   ├── server-calculator.html  # Server/program compatibility tool
 │   └── seed-finder.html        # Starting proposal seed finder
 └── docs/
+    ├── STYLE_GUIDE.md          # Complete CSS reference
     └── screenshots/
 ```
 
@@ -106,17 +114,28 @@ tni-toolkit/
 
 ## 📐 JSON Structure
 
-All data files share a consistent header format:
+All data files share a consistent header format with attribution:
 
 ```json
 {
   "_meta": {
     "game": "Tower Networking Inc.",
-    "dataset": "store | programs | cli-commands",
+    "dataset": "store | programs | cli-commands | traffic-types",
     "version": "1.0.0",
-    "last_updated": "2025-12-06",
+    "last_updated": "2025-12-07",
     "description": "...",
-    "notes": "..."
+    "notes": "...",
+    "sources": [
+      { "name": "In-game observation", "notes": "..." },
+      { "name": "Discord Community", "notes": "..." }
+    ],
+    "contributors": [ "Salvo Praxis", "Claude (Anthropic)", "..." ],
+    "corrections": [
+      { "version": "1.0.1", "correction": "...", "reported_by": "...", "corrected_by": "..." }
+    ],
+    "future_additions": [
+      { "suggestion": "...", "details": "...", "suggested_by": "..." }
+    ]
   }
 }
 ```
@@ -200,10 +219,13 @@ Terminal commands with subcommands, syntax, and examples:
 
 Found an error? Have data to add? PRs and issues welcome.
 
+**[📖 Full Contributing Guide](https://salvo-praxis.github.io/tni-toolkit/contributing.html)** | **[CONTRIBUTING.md](CONTRIBUTING.md)**
+
 When editing JSON files, please:
 - Maintain the existing structure and formatting
-- Update the `_meta.last_updated` field
-- Bump the `_meta.version` patch number for corrections, minor for additions
+- Update `_meta.last_updated` and add yourself to `contributors`
+- Bump `_meta.version` — patch for fixes, minor for additions
+- Add structured `corrections` entries with attribution
 
 [⬆️ Back to top](#tni-toolkit)
 
@@ -213,12 +235,19 @@ When editing JSON files, please:
 
 - **Project Lead & Data Collection**: Salvo Praxis
 - **Development Assistance**: Claude (Anthropic) — AI pair programming partner
+- **Community Contributors**: Chaotic Crumb, Singing Pot Beast, gamers2000, Crona, Thorinbur
+- **Data Sources**: [HackMD @tower-network](https://hackmd.io/@tower-network), [TNI Discord Community](https://discord.com/invite/nNKRMjDhf2)
 - **Game**: [Tower Networking Inc.](https://store.steampowered.com/app/2939600/Tower_Networking_Inc/) by [Pocosia Studios](https://pocosia.com/)
+
+**[View full credits & sources →](https://salvo-praxis.github.io/tni-toolkit/credits.html)**
 
 ---
 
 ## 🔗 Links
 
+- [TNI Toolkit Site](https://salvo-praxis.github.io/tni-toolkit/) — Live tools and data
+- [TNI Discord Community](https://discord.com/invite/nNKRMjDhf2) — Join the community
+- [HackMD @tower-network](https://hackmd.io/@tower-network) — Community wiki
 - [Tower Networking Inc. on Steam](https://store.steampowered.com/app/2939600/Tower_Networking_Inc/)
 - [Pocosia Studios](https://pocosia.com/games/tower-networking-inc/)
 - [TNI Seed Harvester](https://github.com/salvo-praxis/tni-seed-harvester) — Automated seed collection project
