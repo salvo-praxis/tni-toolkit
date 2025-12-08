@@ -72,9 +72,9 @@
             max-height: 280px;
             overflow-y: auto;
         }
-        
+
         .list-container.programs {
-            max-height: 320px;
+            max-height: 325px;
         }
         
         .list-item {
@@ -173,12 +173,31 @@
         .item-requires {
             color: #f0883e;
         }
-        
-        .install-method {
-            color: #00ff88;
-            font-style: italic;
+
+        .file-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
         }
-        
+        .file-table th {
+            text-align: left;
+            color: #8b949e;
+            font-weight: normal;
+            padding: 2px 8px 2px 0;
+            border-bottom: 1px solid #30363d;
+        }
+        .file-table th:not(:first-child) {
+            text-align: center;
+            width: 30px;
+        }
+        .file-table td {
+            padding: 3px 8px 3px 0;
+        }
+        .file-table td:not(:first-child) {
+            text-align: center;
+            color: #8b949e;
+        }
+
         .sata-toggle {
             margin-top: 12px;
             padding: 10px 12px;
@@ -198,7 +217,58 @@
         .sata-info {
             color: #8b949e;
         }
-        
+
+        .device-filter {
+            margin-bottom: 12px;
+        }
+
+        .device-filter select {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(22,27,34,0.8);
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #c9d1d9;
+            font-family: inherit;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .device-filter select:hover {
+            border-color: #58a6ff;
+        }
+
+        .device-filter select:focus {
+            outline: none;
+            border-color: #58a6ff;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(22,27,34,0.8);
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #c9d1d9;
+            font-family: inherit;
+            font-size: 12px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+        }
+
+        .search-input:hover {
+            border-color: #58a6ff;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #58a6ff;
+        }
+
+        .search-input::placeholder {
+            color: #8b949e;
+        }
+
         /* Results Panel */
         .results {
             margin-top: 24px;
@@ -368,10 +438,21 @@
     </div>
 
     <div class="grid">
-        <!-- Server Selection -->
+        <!-- Device Selection -->
         <div>
-            <h2 class="section-title">▸ Select Server</h2>
-            <div class="list-container" id="server-list"></div>
+            <h2 class="section-title">▸ Select Device</h2>
+            <input type="text" class="search-input" id="device-search" placeholder="Search devices...">
+            <div class="device-filter">
+                <select id="device-type-filter">
+                    <option value="all">All Devices</option>
+                    <option value="servers">Servers</option>
+                    <option value="network_switches">Switches</option>
+                    <option value="routers">Routers</option>
+                    <option value="firewalls_and_taps">Firewalls & TAPs</option>
+                    <option value="debuggers_and_test_devices">Debuggers</option>
+                </select>
+            </div>
+            <div class="list-container" id="device-list"></div>
             <div class="sata-toggle hidden" id="sata-toggle">
                 <input type="checkbox" id="sata-checkbox" checked>
                 <span>Auto-add SATA drives as needed</span>
@@ -382,6 +463,7 @@
         <!-- Program Selection -->
         <div>
             <h2 class="section-title">▸ Select Programs</h2>
+            <input type="text" class="search-input" id="program-search" placeholder="Search programs...">
             <div class="list-container programs" id="program-list"></div>
         </div>
     </div>
@@ -404,24 +486,72 @@
     </div>
 
     <script>
-        // TNI Data
-        const servers = [
-            { model: "MacroHard Boulder SRV", cpu: 4, memory: 4, storage: 6, sata_slots: 0, price: 540, power_w: 72, ports: 2 },
-            { model: "MacroHard Boulder+ SRV", cpu: 6, memory: 8, storage: 8, sata_slots: 0, price: 1020, power_w: 161, ports: 2 },
-            { model: "MacroHard Boulder+ SRV (Refurb)", cpu: 6, memory: 8, storage: 8, sata_slots: 0, price: 255, power_w: 161, ports: 2 },
-            { model: "MacroHard Boulder++ SRV", cpu: 6, memory: 10, storage: 10, sata_slots: 0, price: 1750, power_w: 312, ports: 3 },
-            { model: "MacroHard Monolith SRV", cpu: 16, memory: 10, storage: 4, sata_slots: 2, price: 2100, power_w: 429, ports: 2 },
-            { model: "MacroHard Ledge Two SRV", cpu: 24, memory: 14, storage: 4, sata_slots: 2, price: 2625, power_w: 973, ports: 3 },
-            { model: "MacroHard Ledge Three SRV", cpu: 24, memory: 16, storage: 4, sata_slots: 2, price: 4000, power_w: 1125, ports: 4 },
-            { model: "MacroHard Megalith SRV", cpu: 32, memory: 16, storage: 4, sata_slots: 6, price: 4750, power_w: 1223, ports: 5 },
-            { model: "Savannah Meerkat", cpu: 4, memory: 4, storage: 4, sata_slots: 0, price: 950, power_w: 62, ports: 2 },
-            { model: "Savannah Gazelle", cpu: 6, memory: 6, storage: 6, sata_slots: 0, price: 2200, power_w: 108, ports: 2 },
-            { model: "Savannah Aardvark", cpu: 10, memory: 10, storage: 5, sata_slots: 2, price: 4500, power_w: 293, ports: 3 },
-            { model: "Savannah Wildebeest", cpu: 16, memory: 16, storage: 8, sata_slots: 2, price: 6800, power_w: 423, ports: 3 },
-            { model: "MacroHard NLB2", cpu: 2, memory: 1, storage: 1, sata_slots: 0, price: 437, power_w: 83, ports: 3 },
-            { model: "ICC1", cpu: 1, memory: 2, storage: 2, sata_slots: 1, price: 160, power_w: 19, ports: 1 },
-            { model: "Golonys-Cinco", cpu: 1, memory: 1, storage: 1, sata_slots: 5, price: 400, power_w: 13, ports: 1 },
-        ];
+        // TNI Data - Device categories
+        const devices = {
+            servers: [
+                { model: "MacroHard Boulder SRV", cpu: 4, memory: 4, storage: 6, sata_slots: 0, price: 540, power_w: 72, ports: 2 },
+                { model: "MacroHard Boulder+ SRV", cpu: 6, memory: 8, storage: 8, sata_slots: 0, price: 1020, power_w: 161, ports: 2 },
+                { model: "MacroHard Boulder+ SRV (Refurb)", cpu: 6, memory: 8, storage: 8, sata_slots: 0, price: 255, power_w: 161, ports: 2 },
+                { model: "MacroHard Boulder++ SRV", cpu: 6, memory: 10, storage: 10, sata_slots: 0, price: 1750, power_w: 312, ports: 3 },
+                { model: "MacroHard Monolith SRV", cpu: 16, memory: 10, storage: 4, sata_slots: 2, price: 2100, power_w: 429, ports: 2 },
+                { model: "MacroHard Ledge Two SRV", cpu: 24, memory: 14, storage: 4, sata_slots: 2, price: 2625, power_w: 973, ports: 3 },
+                { model: "MacroHard Ledge Three SRV", cpu: 24, memory: 16, storage: 4, sata_slots: 2, price: 4000, power_w: 1125, ports: 4 },
+                { model: "MacroHard Megalith SRV", cpu: 32, memory: 16, storage: 4, sata_slots: 6, price: 4750, power_w: 1223, ports: 5 },
+                { model: "Savannah Meerkat", cpu: 4, memory: 4, storage: 4, sata_slots: 0, price: 950, power_w: 62, ports: 2 },
+                { model: "Savannah Gazelle", cpu: 6, memory: 6, storage: 6, sata_slots: 0, price: 2200, power_w: 108, ports: 2 },
+                { model: "Savannah Aardvark", cpu: 10, memory: 10, storage: 5, sata_slots: 2, price: 4500, power_w: 293, ports: 3 },
+                { model: "Savannah Wildebeest", cpu: 16, memory: 16, storage: 8, sata_slots: 2, price: 6800, power_w: 423, ports: 3 },
+                { model: "MacroHard NLB2", cpu: 2, memory: 1, storage: 1, sata_slots: 0, price: 437, power_w: 83, ports: 3 },
+                { model: "ICC1", cpu: 1, memory: 2, storage: 2, sata_slots: 1, price: 160, power_w: 19, ports: 1 },
+                { model: "Golonys-Cinco", cpu: 1, memory: 1, storage: 1, sata_slots: 5, price: 400, power_w: 13, ports: 1 },
+            ],
+            network_switches: [
+                { model: "Blade5", cpu: 2, memory: 1, storage: 1, firmware: "bladeos", price: 100, power_w: 22, ports: 5 },
+                { model: "Blade10", cpu: 2, memory: 1, storage: 1, firmware: "bladeos", price: 450, power_w: 41, ports: 10 },
+                { model: "Blade4", cpu: 2, memory: 1, storage: 1, firmware: "bladeos", price: 100, power_w: 30, ports: 4 },
+                { model: "Blade12", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 1000, power_w: 84, ports: 12 },
+                { model: "Blade66", cpu: 2, memory: 1, storage: 1, firmware: "bladeos", price: 950, power_w: 66, ports: 12 },
+                { model: "Blade15", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 900, power_w: 88, ports: 15 },
+                { model: "Blade88", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 1600, power_w: 87, ports: 16 },
+                { model: "Blade88 (Refurb)", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 480, power_w: 87, ports: 16 },
+                { model: "Blade30", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 1650, power_w: 183, ports: 30 },
+                { model: "Blade1515", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 1850, power_w: 208, ports: 30 },
+            ],
+            routers: [
+                { model: "Disco Nano", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 264, power_w: 21, ports: 5 },
+                { model: "Disco Nano 2G", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 180, power_w: 23, ports: 4 },
+                { model: "Disco Nano 3H", cpu: 8, memory: 2, storage: 4, firmware: "hakernel", price: 450, power_w: 26, ports: 4 },
+                { model: "Disco Milli", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 325, power_w: 27, ports: 8 },
+                { model: "Disco Milli 2G", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 500, power_w: 30, ports: 8 },
+                { model: "Disco Milli 3G", cpu: 8, memory: 2, storage: 4, firmware: "hakernel", price: 800, power_w: 41, ports: 8 },
+                { model: "Disco Milli 4G", cpu: 8, memory: 2, storage: 4, firmware: "hakernel", price: 1150, power_w: 60, ports: 8 },
+                { model: "Disco Micro", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 600, power_w: 41, ports: 10 },
+                { model: "Disco Micro 2G", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 950, power_w: 47, ports: 10 },
+                { model: "Disco Micro 2G (Refurb)", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 285, power_w: 47, ports: 10 },
+                { model: "Disco Micro 3G", cpu: 8, memory: 2, storage: 4, firmware: "hakernel", price: 1300, power_w: 50, ports: 10 },
+                { model: "Zodianet Spine Router", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 1200, power_w: 78, ports: 3 },
+                { model: "Zodianet Beam Router", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 3700, power_w: 138, ports: 4 },
+            ],
+            firewalls_and_taps: [
+                { model: "FireWatch ES4A", cpu: 4, memory: 1, storage: 2, firmware: "firewatcher", price: 550, power_w: 55, ports: 3 },
+                { model: "FireWatch CP4E", cpu: 4, memory: 1, storage: 2, firmware: "firewatcher", price: 1500, power_w: 163, ports: 4 },
+                { model: "EthTapper", cpu: 2, memory: 2, storage: 1, firmware: "wirerat", price: 300, power_w: 12, ports: 3 },
+                { model: "Bastion 5E", cpu: 4, memory: 1, storage: 2, firmware: "firewatcher", price: 4000, power_w: 387, ports: 4 },
+            ],
+            debuggers_and_test_devices: [
+                { model: "Debugger Alice", cpu: 1, memory: 1, storage: 1, firmware: "netpeeker", price: 1200, power_w: 72, ports: 2 },
+                { model: "DNS Load Test Box", cpu: 1, memory: 1, storage: 1, firmware: "dnsspam", price: 0, power_w: 112, ports: 1 },
+                { model: "DNS UDP/53 Load Tester", cpu: 1, memory: 1, storage: 1, firmware: "dnsspam", price: 1200, power_w: 202, ports: 1 },
+            ],
+        };
+
+        const categoryLabels = {
+            servers: "Servers",
+            network_switches: "Switches",
+            routers: "Routers",
+            firewalls_and_taps: "Firewalls & TAPs",
+            debuggers_and_test_devices: "Debuggers"
+        };
 
         const programs = [
             { name: "dns-lite", type: "Producer", cpu: 1, memory: 1, storage: 2, output: "3 reply-dns-queries", requires: null },
@@ -456,13 +586,20 @@
         const SATA_DRIVE_STORAGE = 4;
 
         // State
-        let selectedServer = null;
+        let selectedDevice = null;
+        let selectedDeviceCategory = null;
         let selectedPrograms = [];
         let useSataExpansion = true;
+        let currentFilter = 'all';
+        let deviceSearch = '';
+        let programSearch = '';
 
         // DOM Elements
-        const serverListEl = document.getElementById('server-list');
+        const deviceListEl = document.getElementById('device-list');
+        const deviceFilterEl = document.getElementById('device-type-filter');
+        const deviceSearchEl = document.getElementById('device-search');
         const programListEl = document.getElementById('program-list');
+        const programSearchEl = document.getElementById('program-search');
         const sataToggleEl = document.getElementById('sata-toggle');
         const sataCheckboxEl = document.getElementById('sata-checkbox');
         const sataInfoEl = document.getElementById('sata-info');
@@ -472,54 +609,100 @@
         const metricsGridEl = document.getElementById('metrics-grid');
         const programsSummaryEl = document.getElementById('programs-summary');
 
-        // Render servers
-        function renderServers() {
-            serverListEl.innerHTML = servers.map((server, idx) => `
-                <div class="list-item ${selectedServer?.model === server.model ? 'selected' : ''}" 
-                     data-server-idx="${idx}">
-                    <div class="item-header">
-                        <span class="item-name ${selectedServer?.model === server.model ? 'active' : ''}">
-                            ${server.model}
-                        </span>
-                        <span class="item-price">$${server.price}</span>
+        // Get filtered devices
+        function getFilteredDevices() {
+            let result = [];
+            if (currentFilter === 'all') {
+                for (const [category, deviceList] of Object.entries(devices)) {
+                    deviceList.forEach(device => {
+                        result.push({ ...device, _category: category });
+                    });
+                }
+            } else {
+                result = devices[currentFilter].map(d => ({ ...d, _category: currentFilter }));
+            }
+            // Apply search filter
+            if (deviceSearch) {
+                const search = deviceSearch.toLowerCase();
+                result = result.filter(d => d.model.toLowerCase().includes(search));
+            }
+            return result;
+        }
+
+        // Render devices
+        function renderDevices() {
+            const filteredDevices = getFilteredDevices();
+
+            deviceListEl.innerHTML = filteredDevices.map((device, idx) => {
+                const isSelected = selectedDevice && selectedDevice.model === device.model && selectedDeviceCategory === device._category;
+                const sataInfo = device.sata_slots > 0 ? ` +${device.sata_slots}SATA` : '';
+                const firmwareInfo = device.firmware ? `FW:${device.firmware}` : '';
+
+                return `
+                    <div class="list-item ${isSelected ? 'selected' : ''}"
+                         data-device-idx="${idx}">
+                        <div class="item-header">
+                            <span class="item-name ${isSelected ? 'active' : ''}">
+                                ${device.model}
+                            </span>
+                            <span class="item-price">$${device.price}</span>
+                        </div>
+                        <div class="item-stats">
+                            <span>C:${device.cpu}</span>
+                            <span>M:${device.memory}</span>
+                            <span>S:${device.storage}${sataInfo}</span>
+                            <span>${device.power_w}W</span>
+                            ${firmwareInfo ? `<span>${firmwareInfo}</span>` : ''}
+                        </div>
                     </div>
-                    <div class="item-stats">
-                        <span>C:${server.cpu}</span>
-                        <span>M:${server.memory}</span>
-                        <span>S:${server.storage}${server.sata_slots > 0 ? `+${server.sata_slots}SATA` : ''}</span>
-                        <span>${server.power_w}W</span>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
             // Add click handlers
-            serverListEl.querySelectorAll('.list-item').forEach(el => {
+            deviceListEl.querySelectorAll('.list-item').forEach(el => {
                 el.addEventListener('click', () => {
-                    const idx = parseInt(el.dataset.serverIdx);
-                    selectedServer = servers[idx];
-                    renderServers();
-                    updateSataToggle();
+                    const idx = parseInt(el.dataset.deviceIdx);
+                    const device = filteredDevices[idx];
+                    selectedDevice = device;
+                    selectedDeviceCategory = device._category;
+                    renderDevices();
+                    updateToggles();
                     calculate();
                 });
             });
         }
 
+        // Get filtered programs
+        function getFilteredPrograms() {
+            if (!programSearch) return programs;
+            const search = programSearch.toLowerCase();
+            return programs.filter(p => p.name.toLowerCase().includes(search) || p.output.toLowerCase().includes(search));
+        }
+
         // Render programs
         function renderPrograms() {
-            let html = '<div class="category-divider">Programs (program install)</div>';
+            const filteredPrograms = getFilteredPrograms();
+            let html = '';
+            let programsDividerAdded = false;
             let firmwareDividerAdded = false;
-            
-            programs.forEach((program, idx) => {
-                // Add divider before first firmware
+
+            filteredPrograms.forEach((program) => {
+                const idx = programs.indexOf(program); // Get original index
+
+                // Add dividers
+                if (program.type !== 'Firmware' && !programsDividerAdded) {
+                    html += '<div class="category-divider">Programs (program install)</div>';
+                    programsDividerAdded = true;
+                }
                 if (program.type === 'Firmware' && !firmwareDividerAdded) {
                     html += `<div class="category-divider">Firmware (SFTP install)</div>`;
                     firmwareDividerAdded = true;
                 }
-                
+
                 const isSelected = selectedPrograms.some(p => p.name === program.name);
                 const typeClass = `type-${program.type.toLowerCase()}`;
                 html += `
-                    <div class="list-item ${isSelected ? 'program-selected' : ''}" 
+                    <div class="list-item ${isSelected ? 'program-selected' : ''}"
                          data-program-idx="${idx}">
                         <div class="item-header">
                             <span class="item-name ${isSelected ? 'program-active' : ''}">
@@ -537,7 +720,7 @@
                     </div>
                 `;
             });
-            
+
             programListEl.innerHTML = html;
 
             // Add click handlers
@@ -546,13 +729,13 @@
                     const idx = parseInt(el.dataset.programIdx);
                     const program = programs[idx];
                     const existsIdx = selectedPrograms.findIndex(p => p.name === program.name);
-                    
+
                     if (existsIdx >= 0) {
                         selectedPrograms.splice(existsIdx, 1);
                     } else {
                         selectedPrograms.push(program);
                     }
-                    
+
                     renderPrograms();
                     calculate();
                 });
@@ -560,10 +743,10 @@
         }
 
         // Update SATA toggle visibility
-        function updateSataToggle() {
-            if (selectedServer && selectedServer.sata_slots > 0) {
+        function updateToggles() {
+            if (selectedDevice && selectedDevice.sata_slots > 0) {
                 sataToggleEl.classList.remove('hidden');
-                sataInfoEl.textContent = `(${selectedServer.sata_slots} slots @ $${SATA_DRIVE_COST}/+${SATA_DRIVE_STORAGE} storage each)`;
+                sataInfoEl.textContent = `(${selectedDevice.sata_slots} slots @ $${SATA_DRIVE_COST}/+${SATA_DRIVE_STORAGE} storage each)`;
             } else {
                 sataToggleEl.classList.add('hidden');
             }
@@ -571,7 +754,7 @@
 
         // Calculate and render results
         function calculate() {
-            if (!selectedServer) {
+            if (!selectedDevice) {
                 resultsEl.classList.add('hidden');
                 return;
             }
@@ -580,30 +763,31 @@
             const totalMemory = selectedPrograms.reduce((sum, p) => sum + p.memory, 0);
             const totalStorage = selectedPrograms.reduce((sum, p) => sum + p.storage, 0);
 
-            const maxStorage = selectedServer.storage + (selectedServer.sata_slots * SATA_DRIVE_STORAGE);
-            const baseStorageDeficit = totalStorage - selectedServer.storage;
+            const sataSlots = selectedDevice.sata_slots || 0;
+            const maxStorage = selectedDevice.storage + (sataSlots * SATA_DRIVE_STORAGE);
+            const baseStorageDeficit = totalStorage - selectedDevice.storage;
 
             let sataNeeded = 0;
             let sataStorageProvided = 0;
-            if (useSataExpansion && baseStorageDeficit > 0 && selectedServer.sata_slots > 0) {
+            if (useSataExpansion && baseStorageDeficit > 0 && sataSlots > 0) {
                 sataNeeded = Math.min(
                     Math.ceil(baseStorageDeficit / SATA_DRIVE_STORAGE),
-                    selectedServer.sata_slots
+                    sataSlots
                 );
                 sataStorageProvided = sataNeeded * SATA_DRIVE_STORAGE;
             }
 
-            const effectiveStorage = selectedServer.storage + sataStorageProvided;
+            const effectiveStorage = selectedDevice.storage + sataStorageProvided;
             const sataCost = sataNeeded * SATA_DRIVE_COST;
-            const totalCost = selectedServer.price + sataCost;
+            const totalCost = selectedDevice.price + sataCost;
 
-            const cpuFits = totalCpu <= selectedServer.cpu;
-            const memoryFits = totalMemory <= selectedServer.memory;
+            const cpuFits = totalCpu <= selectedDevice.cpu;
+            const memoryFits = totalMemory <= selectedDevice.memory;
             const storageFits = totalStorage <= effectiveStorage;
             const allFit = cpuFits && memoryFits && storageFits;
 
-            const cpuRemaining = selectedServer.cpu - totalCpu;
-            const memoryRemaining = selectedServer.memory - totalMemory;
+            const cpuRemaining = selectedDevice.cpu - totalCpu;
+            const memoryRemaining = selectedDevice.memory - totalMemory;
             const storageRemaining = effectiveStorage - totalStorage;
 
             // Update results panel
@@ -618,8 +802,8 @@
 
             // Render metrics
             metricsGridEl.innerHTML = `
-                ${renderMetric('CPU LOAD', totalCpu, selectedServer.cpu, cpuFits, cpuRemaining, '')}
-                ${renderMetric('MEMORY', totalMemory, selectedServer.memory, memoryFits, memoryRemaining, '')}
+                ${renderMetric('CPU LOAD', totalCpu, selectedDevice.cpu, cpuFits, cpuRemaining, '')}
+                ${renderMetric('MEMORY', totalMemory, selectedDevice.memory, memoryFits, memoryRemaining, '')}
                 ${renderMetric(
                     'STORAGE' + (sataNeeded > 0 ? ` (+${sataNeeded} SATA)` : ''),
                     totalStorage,
@@ -630,22 +814,33 @@
                 )}
             `;
 
-            // Programs summary
+            // Programs summary with file table
             if (selectedPrograms.length > 0) {
-                const regularPrograms = selectedPrograms.filter(p => p.type !== 'Firmware');
-                const firmware = selectedPrograms.filter(p => p.type === 'Firmware');
-                
-                let summaryHtml = '';
-                if (regularPrograms.length > 0) {
-                    summaryHtml += `<strong>Programs:</strong> ${regularPrograms.map(p => p.name).join(' + ')}`;
-                }
-                if (firmware.length > 0) {
-                    if (summaryHtml) summaryHtml += '<br>';
-                    summaryHtml += `<strong>Firmware:</strong> <span class="install-method">${firmware.map(p => p.name).join(' + ')}</span>`;
-                }
-                
+                // Build file list
+                const files = [];
+                selectedPrograms.forEach(p => {
+                    const hasConfig = p.requires && p.requires.startsWith('/etc/');
+                    // Config storage is included in program's storage requirement
+                    const binStorage = hasConfig ? p.storage - 1 : p.storage;
+                    files.push({ path: `/bin/${p.name}`, cpu: p.cpu, mem: p.memory, storage: binStorage });
+                    if (hasConfig) {
+                        files.push({ path: p.requires, cpu: '-', mem: '-', storage: 1 });
+                    }
+                });
+                // Sort alphabetically by path
+                files.sort((a, b) => a.path.localeCompare(b.path));
+
+                const rows = files.map(f =>
+                    `<tr><td>${f.path}</td><td>${f.cpu}</td><td>${f.mem}</td><td>${f.storage}</td></tr>`
+                ).join('');
+
                 programsSummaryEl.classList.remove('hidden');
-                programsSummaryEl.innerHTML = summaryHtml;
+                programsSummaryEl.innerHTML = `
+                    <strong>Programs:</strong> ${selectedPrograms.map(p => p.name).join(' + ')}
+                    <table class="file-table">
+                        <thead><tr><th>File</th><th>C</th><th>M</th><th>S</th></tr></thead>
+                        <tbody>${rows}</tbody>
+                    </table>`;
             } else {
                 programsSummaryEl.classList.add('hidden');
             }
@@ -670,14 +865,39 @@
             `;
         }
 
+        // Filter change handler
+        deviceFilterEl.addEventListener('change', (e) => {
+            currentFilter = e.target.value;
+            // Clear selection if device not in new filter
+            if (selectedDevice && currentFilter !== 'all' && selectedDeviceCategory !== currentFilter) {
+                selectedDevice = null;
+                selectedDeviceCategory = null;
+                updateToggles();
+            }
+            renderDevices();
+            calculate();
+        });
+
         // SATA checkbox handler
         sataCheckboxEl.addEventListener('change', (e) => {
             useSataExpansion = e.target.checked;
             calculate();
         });
 
+        // Device search handler
+        deviceSearchEl.addEventListener('input', (e) => {
+            deviceSearch = e.target.value;
+            renderDevices();
+        });
+
+        // Program search handler
+        programSearchEl.addEventListener('input', (e) => {
+            programSearch = e.target.value;
+            renderPrograms();
+        });
+
         // Initialize
-        renderServers();
+        renderDevices();
         renderPrograms();
     </script>
     
