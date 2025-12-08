@@ -346,7 +346,7 @@
       "type": "firmware",
       "cpu": 4,
       "memory": 1,
-      "storage": 2,      
+      "storage": 2,
       "requires": "/etc/routes.conf",
       "stack_limit": null,
       "description": "Normal capacity router firmware."
@@ -356,7 +356,7 @@
       "type": "firmware",
       "cpu": 8,
       "memory": 2,
-      "storage": 4,      
+      "storage": 4,
       "requires": "/etc/routes.conf",
       "stack_limit": null,
       "description": "High capacity router firmware."
@@ -366,7 +366,7 @@
       "type": "firmware",
       "cpu": 2,
       "memory": 1,
-      "storage": 1,      
+      "storage": 1,
       "requires": null,
       "stack_limit": null,
       "description": "Normal capacity switch firmware."
@@ -376,7 +376,7 @@
       "type": "firmware",
       "cpu": 2,
       "memory": 2,
-      "storage": 2,      
+      "storage": 2,
       "requires": "/etc/vlan.tags",
       "stack_limit": null,
       "description": "High capacity switch firmware that supports VLAN port tagging."
@@ -386,7 +386,7 @@
       "type": "firmware",
       "cpu": 4,
       "memory": 1,
-      "storage": 2,      
+      "storage": 2,
       "requires": "/etc/nftables.conf",
       "stack_limit": null,
       "description": "Basic Firewall firmware."
