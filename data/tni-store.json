@@ -31,7 +31,6 @@
       }
     ]
   },
-
   "network_switches": [
     {
       "model": "Blade5",
@@ -184,7 +183,6 @@
       "notes": "Enterprise grade mixed-media"
     }
   ],
-
   "servers": [
     {
       "model": "MacroHard Boulder SRV",
@@ -443,7 +441,6 @@
       "notes": "1-port network storage device. Comes with 5 SATA 3.5\" expansion slots."
     }
   ],
-
   "routers": [
     {
       "model": "Disco Nano",
@@ -615,7 +612,6 @@
       "notes": "High-bandwidth core router"
     }
   ],
-
   "firewalls_and_taps": [
     {
       "model": "FireWatch ES4A",
@@ -674,7 +670,6 @@
       "notes": "Top-tier enterprise firewall"
     }
   ],
-
   "media_converters_and_repeaters": [
     {
       "model": "Duplex 1C",
@@ -873,7 +868,6 @@
       "requires_app": "D-Market2"
     }
   ],
-
   "decentro_rigs": [
     {
       "model": "Dvergar",
@@ -890,7 +884,6 @@
       "notes": "Decentro mining rig. Provides Decentro transaction verification to the p2p currency network."
     }
   ],
-
   "peripherals": [
     {
       "model": "Data Wiper",
@@ -916,7 +909,6 @@
       "notes": "A box for cable/peripheral organization."
     }
   ],
-
   "ups_and_surge_protection": [
     {
       "model": "Tenabolt UPS2",
@@ -964,7 +956,6 @@
       "notes": "Mountable UPS base unit"
     }
   ],
-
   "power_expanders": [
     {
       "model": "Tenabolt Expander 1-2",
@@ -1023,7 +1014,6 @@
       "notes": "Mountable power distribution strip"
     }
   ],
-
   "power_cables": [
     {
       "model": "Power UK-B 500",
@@ -1066,7 +1056,6 @@
       "requires_app": "D-Market2"
     }
   ],
-
   "network_cables": {
     "ethernet_rj45_cat5": [
       { "length_px": 200, "price": 5 },
@@ -1092,7 +1081,6 @@
       "Grey"
     ]
   },
-
   "cabling_tools": [
     {
       "model": "Cable-O-Matic RJ45 20kPx",
@@ -1115,7 +1103,6 @@
       "notes": "Cabling toolkit for Fiber optic (SC) terminations. Stores up to 20000 length."
     }
   ],
-
   "racks_and_shelving": [
     {
       "model": "Trolley 2C",
@@ -1209,7 +1196,6 @@
       "requires_app": "Barracks and Sons"
     }
   ],
-
   "tower_link_sockets": [
     {
       "model": "RJ45 Copper Socket",
@@ -1224,7 +1210,6 @@
       "requires_app": "Socketeer"
     }
   ],
-
   "debuggers_and_test_devices": [
     {
       "model": "Debugger Alice",
@@ -1272,7 +1257,6 @@
       "notes": "1-port ethernet load tester. Blasts UDP/53 DNS query traffic."
     }
   ],
-
   "monitoring_displays": [
     {
       "model": "Top Issue Monitor",
