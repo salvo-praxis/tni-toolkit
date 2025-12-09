@@ -1,0 +1,781 @@
+<!--
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  TNI Toolkit - Style Guide                                                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Version: 1.0.0                                                              ║
+║  Updated: 2025-12-09                                                         ║
+║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Description:                                                                ║
+║    Styled HTML version of STYLE_GUIDE.md. Complete styling reference for     ║
+║    building TNI Toolkit tools with the NOC terminal aesthetic.               ║
+║                                                                              ║
+║  Note:                                                                       ║
+║    This file is generated from docs/STYLE_GUIDE.md. Keep both in sync.       ║
+║                                                                              ║
+║  Contributors:                                                               ║
+║    - Salvo Praxis (original author)                                          ║
+║    - Claude (Anthropic)                                                      ║
+║                                                                              ║
+║  Changelog:                                                                  ║
+║    1.0.0 - Initial HTML version of style guide                               ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TNI Toolkit - Style Guide</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        /* Custom Scrollbars */
+        * { scrollbar-width: thin; scrollbar-color: #30363d #0d1117; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0d1117; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; border: 1px solid #0d1117; }
+        ::-webkit-scrollbar-thumb:hover { background: #58a6ff; }
+        ::-webkit-scrollbar-corner { background: #0d1117; }
+        
+        body {
+            font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
+            background: linear-gradient(135deg, #0a0e14 0%, #1a1f2e 50%, #0d1117 100%);
+            color: #c9d1d9;
+            min-height: 100vh;
+            padding: 24px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 0 30px;
+            border-bottom: 1px solid #30363d;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            margin: 0 0 8px 0;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        h1 span { color: #58a6ff; }
+        
+        .tagline {
+            color: #8b949e;
+            font-size: 12px;
+        }
+        
+        .header-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        
+        .header-btn {
+            display: inline-block;
+            color: #58a6ff;
+            text-decoration: none;
+            font-size: 11px;
+            padding: 6px 12px;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            transition: all 0.15s;
+        }
+        
+        .header-btn:hover {
+            border-color: #58a6ff;
+            background: rgba(88, 166, 255, 0.1);
+        }
+        
+        .header-btn.secondary {
+            color: #8b949e;
+        }
+        
+        .header-btn.secondary:hover {
+            color: #c9d1d9;
+            border-color: #8b949e;
+            background: rgba(139, 148, 158, 0.1);
+        }
+        
+        /* Navigation */
+        .nav-section {
+            background: rgba(22, 27, 34, 0.8);
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .nav-title {
+            color: #58a6ff;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+        }
+        
+        .nav-link {
+            color: #8b949e;
+            text-decoration: none;
+            font-size: 12px;
+            padding: 6px 10px;
+            border-radius: 4px;
+            transition: all 0.15s;
+        }
+        
+        .nav-link:hover {
+            color: #00ff88;
+            background: rgba(0, 255, 136, 0.08);
+        }
+        
+        /* Sections */
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #30363d;
+        }
+        
+        .section-header h2 {
+            color: #58a6ff;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        
+        .subsection {
+            margin-bottom: 24px;
+        }
+        
+        .subsection h3 {
+            color: #00ff88;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .subsection p {
+            color: #8b949e;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+        
+        /* Code Blocks */
+        .code-block {
+            background: rgba(13, 17, 23, 0.8);
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+        }
+        
+        .code-block code {
+            font-size: 11px;
+            color: #c9d1d9;
+            white-space: pre;
+            display: block;
+        }
+        
+        .code-block .comment { color: #8b949e; }
+        .code-block .property { color: #79c0ff; }
+        .code-block .value { color: #a5d6ff; }
+        .code-block .string { color: #a5d6ff; }
+        .code-block .number { color: #f0883e; }
+        .code-block .selector { color: #7ee787; }
+        
+        /* Inline Code */
+        code.inline {
+            background: rgba(88, 166, 255, 0.1);
+            color: #58a6ff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+        
+        /* Color Swatches */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .color-swatch {
+            background: rgba(22, 27, 34, 0.8);
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .color-preview {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            border: 1px solid #30363d;
+        }
+        
+        .color-info {
+            flex: 1;
+        }
+        
+        .color-name {
+            color: #c9d1d9;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .color-value {
+            color: #8b949e;
+            font-size: 10px;
+        }
+        
+        /* Info Box */
+        .info-box {
+            background: rgba(22, 27, 34, 0.8);
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+        }
+        
+        .info-box.tip {
+            border-left: 3px solid #00ff88;
+        }
+        
+        .info-box.warning {
+            border-left: 3px solid #f0883e;
+        }
+        
+        .info-box p {
+            color: #c9d1d9;
+            font-size: 12px;
+            margin: 0;
+        }
+        
+        /* Lists */
+        .styled-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .styled-list li {
+            color: #c9d1d9;
+            font-size: 12px;
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .styled-list li::before {
+            content: "✓";
+            color: #00ff88;
+            position: absolute;
+            left: 0;
+        }
+        
+        .styled-list.dont li::before {
+            content: "✗";
+            color: #f85149;
+        }
+        
+        /* Tables */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            background: rgba(22, 27, 34, 0.8);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        
+        .styled-table th {
+            background: rgba(48, 54, 61, 0.5);
+            color: #58a6ff;
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 16px;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .styled-table td {
+            padding: 12px 16px;
+            border-top: 1px solid #30363d;
+            color: #c9d1d9;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #30363d;
+            margin-top: 30px;
+        }
+        
+        .footer-links {
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+        
+        .footer-links a {
+            color: #8b949e;
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        
+        .footer-links a:hover {
+            color: #58a6ff;
+        }
+        
+        .footer-sep {
+            color: #30363d;
+            margin: 0 8px;
+        }
+        
+        .footer-tagline {
+            color: #6e7681;
+            font-size: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .footer-badges {
+            margin-top: 12px;
+        }
+        
+        .version-badge, .license-badge {
+            display: inline-block;
+            font-size: 10px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid #30363d;
+        }
+        
+        .version-badge {
+            background: rgba(0, 255, 136, 0.1);
+            color: #8b949e;
+            margin-right: 8px;
+        }
+        
+        .license-badge {
+            background: rgba(88, 166, 255, 0.1);
+            color: #8b949e;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+        
+        .license-badge:hover {
+            border-color: #58a6ff;
+            color: #58a6ff;
+        }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+            body { padding: 16px; }
+            .header { padding: 30px 0 20px; }
+            h1 { font-size: 16px; }
+            .header-buttons { flex-direction: column; align-items: center; }
+            .nav-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><span>TNI</span> STYLE GUIDE</h1>
+            <p class="tagline">NOC Terminal Aesthetic • Dark Theme • Monospace Typography</p>
+            <div class="header-buttons">
+                <a href="../index.html" class="header-btn">← Back to Toolkit</a>
+                <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/docs/STYLE_GUIDE.md" target="_blank" class="header-btn secondary">📄 View on GitHub</a>
+            </div>
+        </header>
+        
+        <!-- Table of Contents -->
+        <nav class="nav-section">
+            <div class="nav-title">📑 Table of Contents</div>
+            <div class="nav-grid">
+                <a href="#design-tokens" class="nav-link">🎨 Design Tokens</a>
+                <a href="#typography" class="nav-link">🔤 Typography</a>
+                <a href="#layout" class="nav-link">📐 Layout Components</a>
+                <a href="#ui-components" class="nav-link">🧩 UI Components</a>
+                <a href="#page-patterns" class="nav-link">📄 Page Layout Patterns</a>
+                <a href="#best-practices" class="nav-link">✨ Best Practices</a>
+            </div>
+        </nav>
+        
+        <!-- Design Tokens -->
+        <section id="design-tokens" class="section">
+            <div class="section-header">
+                <span>🎨</span>
+                <h2>Design Tokens</h2>
+            </div>
+            
+            <div class="subsection">
+                <h3>Colors</h3>
+                <div class="color-grid">
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: #00ff88;"></div>
+                        <div class="color-info">
+                            <div class="color-name">Accent Green</div>
+                            <div class="color-value">#00ff88 — Primary, success, selected</div>
+                        </div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: #58a6ff;"></div>
+                        <div class="color-info">
+                            <div class="color-name">Accent Blue</div>
+                            <div class="color-value">#58a6ff — Info, links, hover</div>
+                        </div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: #f0883e;"></div>
+                        <div class="color-info">
+                            <div class="color-name">Accent Orange</div>
+                            <div class="color-value">#f0883e — Warnings, costs</div>
+                        </div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: #f85149;"></div>
+                        <div class="color-info">
+                            <div class="color-name">Accent Red</div>
+                            <div class="color-value">#f85149 — Errors, destructive</div>
+                        </div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: #c9d1d9;"></div>
+                        <div class="color-info">
+                            <div class="color-name">Text Primary</div>
+                            <div class="color-value">#c9d1d9 — Body text</div>
+                        </div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: #8b949e;"></div>
+                        <div class="color-info">
+                            <div class="color-name">Text Secondary</div>
+                            <div class="color-value">#8b949e — Muted text</div>
+                        </div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: #30363d;"></div>
+                        <div class="color-info">
+                            <div class="color-name">Border</div>
+                            <div class="color-value">#30363d — Borders, dividers</div>
+                        </div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: linear-gradient(135deg, #0a0e14 0%, #1a1f2e 50%, #0d1117 100%);"></div>
+                        <div class="color-info">
+                            <div class="color-name">Background Gradient</div>
+                            <div class="color-value">#0a0e14 → #1a1f2e → #0d1117</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <code><span class="comment">/* Background */</span>
+<span class="property">--bg-gradient:</span> <span class="value">linear-gradient(135deg, #0a0e14 0%, #1a1f2e 50%, #0d1117 100%)</span>;
+<span class="property">--surface:</span> <span class="value">rgba(22, 27, 34, 0.8)</span>;
+
+<span class="comment">/* Borders */</span>
+<span class="property">--border:</span> <span class="value">#30363d</span>;
+
+<span class="comment">/* Accent Colors */</span>
+<span class="property">--accent-green:</span> <span class="value">#00ff88</span>;
+<span class="property">--accent-blue:</span> <span class="value">#58a6ff</span>;
+<span class="property">--accent-orange:</span> <span class="value">#f0883e</span>;
+<span class="property">--accent-red:</span> <span class="value">#f85149</span>;</code>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Typography -->
+        <section id="typography" class="section">
+            <div class="section-header">
+                <span>🔤</span>
+                <h2>Typography</h2>
+            </div>
+            
+            <div class="subsection">
+                <h3>Font Stack</h3>
+                <div class="code-block">
+                    <code><span class="property">font-family:</span> <span class="string">"JetBrains Mono"</span>, <span class="string">"Fira Code"</span>, <span class="string">"SF Mono"</span>, <span class="string">Consolas</span>, <span class="string">monospace</span>;</code>
+                </div>
+                
+                <h3>Scale</h3>
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Token</th>
+                            <th>Size</th>
+                            <th>Usage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code class="inline">--text-xs</code></td>
+                            <td>10px</td>
+                            <td>Fine print, metadata</td>
+                        </tr>
+                        <tr>
+                            <td><code class="inline">--text-sm</code></td>
+                            <td>11px</td>
+                            <td>Small labels, stats</td>
+                        </tr>
+                        <tr>
+                            <td><code class="inline">--text-base</code></td>
+                            <td>12px</td>
+                            <td>Body text</td>
+                        </tr>
+                        <tr>
+                            <td><code class="inline">--text-md</code></td>
+                            <td>13px</td>
+                            <td>Panel headers</td>
+                        </tr>
+                        <tr>
+                            <td><code class="inline">--text-lg</code></td>
+                            <td>14px</td>
+                            <td>Card titles, section headers</td>
+                        </tr>
+                        <tr>
+                            <td><code class="inline">--text-xl</code></td>
+                            <td>20px</td>
+                            <td>Page title</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Layout -->
+        <section id="layout" class="section">
+            <div class="section-header">
+                <span>📐</span>
+                <h2>Layout Components</h2>
+            </div>
+            
+            <div class="subsection">
+                <h3>Container</h3>
+                <p>Main content container with max-width and centered.</p>
+                <div class="code-block">
+                    <code><span class="selector">.container</span> {
+    <span class="property">max-width:</span> <span class="number">1200px</span>;
+    <span class="property">margin:</span> <span class="number">0</span> <span class="value">auto</span>;
+    <span class="property">padding:</span> <span class="number">24px</span>;
+}</code>
+                </div>
+                
+                <h3>Spacing</h3>
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Token</th>
+                            <th>Value</th>
+                            <th>Usage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code class="inline">--space-xs</code></td><td>4px</td><td>Tight gaps</td></tr>
+                        <tr><td><code class="inline">--space-sm</code></td><td>8px</td><td>Small gaps</td></tr>
+                        <tr><td><code class="inline">--space-md</code></td><td>12px</td><td>Default gaps</td></tr>
+                        <tr><td><code class="inline">--space-lg</code></td><td>16px</td><td>Section spacing</td></tr>
+                        <tr><td><code class="inline">--space-xl</code></td><td>24px</td><td>Page padding</td></tr>
+                        <tr><td><code class="inline">--space-2xl</code></td><td>32px</td><td>Major sections</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- UI Components -->
+        <section id="ui-components" class="section">
+            <div class="section-header">
+                <span>🧩</span>
+                <h2>UI Components</h2>
+            </div>
+            
+            <div class="subsection">
+                <h3>Panel (Container Card)</h3>
+                <div class="code-block">
+                    <code><span class="selector">.panel</span> {
+    <span class="property">background:</span> <span class="value">rgba(22, 27, 34, 0.8)</span>;
+    <span class="property">border:</span> <span class="number">1px</span> <span class="value">solid #30363d</span>;
+    <span class="property">border-radius:</span> <span class="number">8px</span>;
+    <span class="property">padding:</span> <span class="number">20px</span>;
+}</code>
+                </div>
+                
+                <h3>Buttons</h3>
+                <div class="code-block">
+                    <code><span class="selector">.btn</span> {
+    <span class="property">display:</span> <span class="value">inline-flex</span>;
+    <span class="property">align-items:</span> <span class="value">center</span>;
+    <span class="property">gap:</span> <span class="number">6px</span>;
+    <span class="property">padding:</span> <span class="number">8px 14px</span>;
+    <span class="property">border-radius:</span> <span class="number">4px</span>;
+    <span class="property">font-size:</span> <span class="number">11px</span>;
+    <span class="property">font-family:</span> <span class="value">inherit</span>;
+    <span class="property">cursor:</span> <span class="value">pointer</span>;
+    <span class="property">transition:</span> <span class="value">all 0.15s</span>;
+}
+
+<span class="selector">.btn-primary</span> {
+    <span class="property">background:</span> <span class="value">rgba(0, 255, 136, 0.15)</span>;
+    <span class="property">border:</span> <span class="number">1px</span> <span class="value">solid #00ff88</span>;
+    <span class="property">color:</span> <span class="value">#00ff88</span>;
+}
+
+<span class="selector">.btn-secondary</span> {
+    <span class="property">background:</span> <span class="value">rgba(88, 166, 255, 0.1)</span>;
+    <span class="property">border:</span> <span class="number">1px</span> <span class="value">solid #30363d</span>;
+    <span class="property">color:</span> <span class="value">#8b949e</span>;
+}</code>
+                </div>
+                
+                <h3>Custom Scrollbars</h3>
+                <div class="code-block">
+                    <code><span class="comment">/* Firefox */</span>
+<span class="selector">*</span> {
+    <span class="property">scrollbar-width:</span> <span class="value">thin</span>;
+    <span class="property">scrollbar-color:</span> <span class="value">#30363d #0d1117</span>;
+}
+
+<span class="comment">/* WebKit */</span>
+<span class="selector">::-webkit-scrollbar</span> { <span class="property">width:</span> <span class="number">8px</span>; <span class="property">height:</span> <span class="number">8px</span>; }
+<span class="selector">::-webkit-scrollbar-track</span> { <span class="property">background:</span> <span class="value">#0d1117</span>; }
+<span class="selector">::-webkit-scrollbar-thumb</span> { <span class="property">background:</span> <span class="value">#30363d</span>; <span class="property">border-radius:</span> <span class="number">4px</span>; }
+<span class="selector">::-webkit-scrollbar-thumb:hover</span> { <span class="property">background:</span> <span class="value">#58a6ff</span>; }</code>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Page Layout Patterns -->
+        <section id="page-patterns" class="section">
+            <div class="section-header">
+                <span>📄</span>
+                <h2>Page Layout Patterns</h2>
+            </div>
+            
+            <div class="subsection">
+                <h3>Standardized Header</h3>
+                <p>All pages use consistent header with colored title and optional back button.</p>
+                <div class="code-block">
+                    <code><span class="selector">.header</span> {
+    <span class="property">text-align:</span> <span class="value">center</span>;
+    <span class="property">padding:</span> <span class="number">40px 0 30px</span>;
+    <span class="property">border-bottom:</span> <span class="number">1px</span> <span class="value">solid #30363d</span>;
+    <span class="property">margin-bottom:</span> <span class="number">30px</span>;
+}
+
+<span class="selector">h1</span> {
+    <span class="property">color:</span> <span class="value">#00ff88</span>;
+    <span class="property">text-shadow:</span> <span class="number">0 0 20px</span> <span class="value">rgba(0, 255, 136, 0.3)</span>;
+    <span class="property">margin:</span> <span class="number">0 0 8px 0</span>;
+    <span class="property">font-size:</span> <span class="number">20px</span>;
+}
+
+<span class="selector">h1 span</span> { <span class="property">color:</span> <span class="value">#58a6ff</span>; }</code>
+                </div>
+                
+                <h3>Standardized Footer</h3>
+                <p>Three-row footer with links, tagline, and version/license badges.</p>
+                <div class="code-block">
+                    <code><span class="comment">/* Row 1: Links */</span>
+GitHub | Contributions Log | [page links] | TNI on Steam
+
+<span class="comment">/* Row 2: Tagline */</span>
+<span class="selector">.footer-tagline</span> { <span class="property">color:</span> <span class="value">#6e7681</span>; <span class="property">font-size:</span> <span class="number">10px</span>; }
+
+<span class="comment">/* Row 3: Badges */</span>
+<span class="selector">.version-badge</span> { <span class="property">background:</span> <span class="value">rgba(0, 255, 136, 0.1)</span>; }
+<span class="selector">.license-badge</span> { <span class="property">background:</span> <span class="value">rgba(88, 166, 255, 0.1)</span>; }</code>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Best Practices -->
+        <section id="best-practices" class="section">
+            <div class="section-header">
+                <span>✨</span>
+                <h2>Best Practices</h2>
+            </div>
+            
+            <div class="subsection">
+                <h3>DO ✓</h3>
+                <ul class="styled-list">
+                    <li>Use design tokens for colors/spacing (enables future theming)</li>
+                    <li>Follow the existing panel structure for consistency</li>
+                    <li>Add transitions to interactive elements</li>
+                    <li>Use semantic HTML and proper heading hierarchy</li>
+                    <li>Test at mobile breakpoints (&lt;600px)</li>
+                    <li>Include descriptive title attributes on interactive elements</li>
+                </ul>
+                
+                <h3>DON'T ✗</h3>
+                <ul class="styled-list dont">
+                    <li>Use inline styles — keep CSS in the style block</li>
+                    <li>Add external dependencies (CDNs, libraries)</li>
+                    <li>Use px for everything — relative units for spacing</li>
+                    <li>Forget the box-sizing reset</li>
+                    <li>Use bright white (#fff) — it's too harsh</li>
+                </ul>
+            </div>
+            
+            <div class="info-box tip">
+                <p><strong>💡 Tip:</strong> For the complete style guide with all components, patterns, and code examples, see the full <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/docs/STYLE_GUIDE.md" target="_blank" style="color: #58a6ff;">STYLE_GUIDE.md on GitHub</a>.</p>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub</a>
+                <span class="footer-sep">|</span>
+                <a href="../contributions.html">Contributions Log</a>
+                <span class="footer-sep">|</span>
+                <a href="../index.html">Home</a>
+                <span class="footer-sep">|</span>
+                <a href="../contributing.html">Contributing</a>
+                <span class="footer-sep">|</span>
+                <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">TNI on Steam</a>
+            </div>
+            <div class="footer-tagline">because even terminal UIs deserve love</div>
+            <div class="footer-badges">
+                <span class="version-badge">v1.2.0</span>
+                <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/LICENSE" target="_blank" class="license-badge">MIT License — Free to use, modify, and share</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

@@ -5,7 +5,7 @@
 Community-built data files and planning tools for **Tower Networking Inc.** by Pocosia Studios.
 
 **Repository:** https://github.com/salvo-praxis/tni-toolkit  
-**Live Site:** https://salvo-praxis.github.io/tni-toolkit/
+**Live Site:** https://tni-toolkit.salvo.host/
 
 ## Architecture
 
@@ -14,10 +14,11 @@ All tools are **standalone HTML files** with embedded CSS/JS. No build process, 
 ```
 tni-toolkit/
 ├── CLAUDE.md              # You are here
-├── CONTRIBUTING.md        # Contribution guidelines
-├── CONTRIBUTIONS.md       # Running contribution history
-├── index.html             # Landing page (GitHub Pages)
+├── CONTRIBUTING.md        # Contribution guidelines (MD for GitHub)
+├── CONTRIBUTIONS.md       # Running contribution history (MD for GitHub)
+├── index.html             # Landing page
 ├── contributing.html      # Contribution guide (styled)
+├── contributions.html     # Contribution history (styled, pairs with CONTRIBUTIONS.md)
 ├── credits.html           # Credits, sources, greetz
 ├── README.md              # GitHub readme
 ├── LICENSE                # MIT License
@@ -29,10 +30,11 @@ tni-toolkit/
 │   ├── tni-cli-commands.json
 │   └── tni-traffic-types.json
 ├── tools/                 # Standalone HTML tools
-│   ├── device-calculator.html  # Device compatibility calculator (v1.2.1)
-│   └── seed-finder.html        # Seed finder (v1.1.0)
+│   ├── device-calculator.html  # Device compatibility calculator
+│   └── seed-finder.html        # Starting proposal seed finder
 └── docs/
-    └── STYLE_GUIDE.md     # Detailed styling reference
+    ├── STYLE_GUIDE.md     # Detailed styling reference (MD for GitHub)
+    └── style-guide.html   # Style guide (styled, pairs with STYLE_GUIDE.md)
 ```
 
 ## When Building New Tools
@@ -52,7 +54,7 @@ tni-toolkit/
 Each tool card has three buttons:
 - **▶ Launch** — Opens tool in same tab (users can right-click or ctrl+click for new tab)
 - **📄 Source** — Links to GitHub file view (`target="_blank"`)
-- **💾 Download** — Uses fetch/blob workaround for forced download
+- **💾 Download** — Native `<a download>` on salvo.host; fetch/blob workaround on GitHub Pages
 
 Section header includes **🗂️ Download Toolkit** button linking to GitHub ZIP archive.
 
@@ -69,18 +71,20 @@ Tools include a "← Back to Toolkit" button that shows only when appropriate:
 ```javascript
 (function() {
     const backLink = document.getElementById('back-to-toolkit');
-    const isGitHubPages = window.location.hostname.includes('github.io');
+    const hostname = window.location.hostname;
+    const isSalvoHost = hostname.includes('salvo.host');
+    const isGitHubPages = hostname.includes('github.io');
     const fromToolkit = new URLSearchParams(window.location.search).get('from') === 'toolkit';
     const hasIndexReferrer = document.referrer.includes('index.html') || 
                              document.referrer.includes('tni-toolkit');
     const isHttp = window.location.protocol.startsWith('http');
     
-    if (isGitHubPages) {
-        backLink.classList.add('visible');
-        backLink.href = 'https://salvo-praxis.github.io/tni-toolkit/';
-    } else if (fromToolkit || hasIndexReferrer) {
+    if (isSalvoHost || fromToolkit || hasIndexReferrer) {
         backLink.classList.add('visible');
         backLink.href = '../index.html';
+    } else if (isGitHubPages) {
+        backLink.classList.add('visible');
+        backLink.href = 'https://salvo-praxis.github.io/tni-toolkit/';
     } else if (isHttp) {
         fetch('../index.html', { method: 'HEAD' })
             .then(response => {
@@ -98,7 +102,8 @@ Tools include a "← Back to Toolkit" button that shows only when appropriate:
 
 | Scenario | Back Link |
 |----------|-----------|
-| GitHub Pages (any access) | ✅ Shows (absolute URL) |
+| tni-toolkit.salvo.host (primary) | ✅ Shows (relative URL) |
+| GitHub Pages (vacation home) | ✅ Shows (absolute URL) |
 | Launched from index.html (local/hosted) | ✅ Shows (query param) |
 | Bookmarked on hosted site | ✅ Shows (fetch succeeds) |
 | Standalone downloaded file | ❌ Hidden (no param, fetch blocked) |
@@ -217,7 +222,7 @@ HTML placement (inside header, after subtitle):
 ```html
 <footer class="site-footer">
     <div class="footer-links">
-        <a href="https://salvo-praxis.github.io/tni-toolkit/" target="_blank">TNI Toolkit</a>
+        <a href="https://tni-toolkit.salvo.host/" target="_blank">TNI Toolkit</a>
         <span class="sep">|</span>
         <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub</a>
         <span class="sep">|</span>
@@ -599,6 +604,26 @@ When changing an HTML file, update these fields in the header comment:
    - Workflow/pipeline changes
    - Session notes (temporary, consolidate later)
 
+### Generated HTML Files (MD/HTML Pairs)
+
+Some documentation exists as both Markdown (for GitHub) and HTML (for the site):
+
+| Markdown Source | HTML Version | Notes |
+|-----------------|--------------|-------|
+| `CONTRIBUTIONS.md` | `contributions.html` | Keep in sync |
+| `docs/STYLE_GUIDE.md` | `docs/style-guide.html` | HTML is condensed version |
+
+**When updating these files:**
+1. Update the Markdown source first
+2. Update the HTML version to match
+3. HTML files include "📄 View on GitHub" button linking to MD source
+4. Site links point to HTML versions, not GitHub MD links
+
+**HTML file features:**
+- Header with "← Back to Toolkit" + "📄 View on GitHub" buttons
+- Styled to match toolkit NOC aesthetic
+- Footer with standard links and badges
+
 ### Pre-Commit Checklist
 
 ```
@@ -734,7 +759,7 @@ Don't forget to update the version badge in `index.html` footer.
 **Navigation:**
 - Launch buttons open in same tab (removed `target="_blank"`)
 - `?from=toolkit` param enables conditional back button
-- Download buttons use fetch/blob workaround for forced download
+- Download buttons: native on salvo.host, fetch/blob workaround on GitHub Pages
 
 **Tool updates:**
 - Seed Finder renamed to "Starting Proposal Seed Finder"

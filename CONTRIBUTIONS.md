@@ -12,11 +12,15 @@ Running log of all contributions to the TNI Toolkit. For guidelines on contribut
 - `device-calculator.html` v1.3.0 — Header/footer standardization, container max-width
 - `credits.html` v1.4.0 — Footer standardization, table column width fix
 - `contributing.html` v1.2.0 — Footer standardization with badges
+- `contributions.html` v1.0.0 — New HTML version of CONTRIBUTIONS.md
+- `docs/style-guide.html` v1.0.0 — New HTML version of STYLE_GUIDE.md
 - `STYLE_GUIDE.md` v1.1 — Added Page Layout Patterns (header, footer, back link CSS)
 - `build-zip.ps1` — New script for packaging toolkit ZIP
 - Conditional back button: moved inside header, query param detection
-- Navigation: launch opens same tab, download uses fetch/blob workaround
+- Navigation: launch opens same tab, download native on salvo.host (fetch/blob on GitHub Pages)
 - Custom scrollbars: NOC-themed scrollbars added to all HTML files
+- Primary domain: tni-toolkit.salvo.host (github.io as vacation home)
+- Site links updated to use HTML versions instead of GitHub MD links
 
 ---
 

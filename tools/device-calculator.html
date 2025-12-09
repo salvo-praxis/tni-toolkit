@@ -779,11 +779,11 @@
     
     <footer class="site-footer">
         <div class="footer-links">
-            <a href="https://salvo-praxis.github.io/tni-toolkit/" target="_blank">TNI Toolkit</a>
+            <a href="../index.html">TNI Toolkit</a>
             <span class="sep">|</span>
             <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub</a>
             <span class="sep">|</span>
-            <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/CONTRIBUTIONS.md" target="_blank">Contributions Log</a>
+            <a href="../contributions.html">Contributions Log</a>
             <span class="sep">|</span>
             <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">TNI on Steam</a>
         </div>
@@ -1334,20 +1334,22 @@
         // Show back link if toolkit index is accessible
         (function() {
             const backLink = document.getElementById('back-to-toolkit');
-            const isGitHubPages = window.location.hostname.includes('github.io');
+            const hostname = window.location.hostname;
+            const isSalvoHost = hostname.includes('salvo.host');
+            const isGitHubPages = hostname.includes('github.io');
             const fromToolkit = new URLSearchParams(window.location.search).get('from') === 'toolkit';
             const hasIndexReferrer = document.referrer.includes('index.html') || 
                                      document.referrer.includes('tni-toolkit');
             const isHttp = window.location.protocol.startsWith('http');
             
-            if (isGitHubPages) {
-                // GitHub Pages - toolkit guaranteed, use absolute URL
-                backLink.classList.add('visible');
-                backLink.href = 'https://salvo-praxis.github.io/tni-toolkit/';
-            } else if (fromToolkit || hasIndexReferrer) {
-                // Launched from index.html (query param or referrer)
+            if (isSalvoHost || fromToolkit || hasIndexReferrer) {
+                // Primary host or launched from index - use relative URL
                 backLink.classList.add('visible');
                 backLink.href = '../index.html';
+            } else if (isGitHubPages) {
+                // GitHub Pages vacation home - use absolute URL
+                backLink.classList.add('visible');
+                backLink.href = 'https://salvo-praxis.github.io/tni-toolkit/';
             } else if (isHttp) {
                 // HTTP/HTTPS but no referrer (bookmarked?) - try fetch
                 fetch('../index.html', { method: 'HEAD' })
