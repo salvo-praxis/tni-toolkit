@@ -1,9 +1,42 @@
+<!--
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  TNI Device Compatibility Calculator                                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Version: 1.2.0                                                              ║
+║  Updated: 2025-12-08                                                         ║
+║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Description:                                                                ║
+║    Device resource planning tool. Calculate CPU, memory, and storage         ║
+║    requirements for program configurations across all device types           ║
+║    including servers, switches, routers, firewalls, and debuggers.           ║
+║                                                                              ║
+║  Features:                                                                   ║
+║    - Device selection with category filtering and search                     ║
+║    - Program/firmware resource calculation                                   ║
+║    - SATA expansion support for applicable devices                           ║
+║    - Shareable configuration codes (URL hash support)                        ║
+║    - File-level resource breakdown table                                     ║
+║                                                                              ║
+║  Contributors:                                                               ║
+║    - Salvo Praxis (original author, style guide compliance)                  ║
+║    - Claude (Anthropic)                                                      ║
+║    - AlinaNova21 (device categories, search, sharecode, file table)          ║
+║                                                                              ║
+║  Changelog:                                                                  ║
+║    1.2.0 - Added all device types, category filter, search, sharecode,       ║
+║            file table display (AlinaNova21); renamed from server-calculator; ║
+║            style guide alignment                                             ║
+║    1.1.0 - Added firmware programs support, ICC1 sata_slots fix              ║
+║    1.0.0 - Initial release with server/program compatibility                 ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TNI Server Compatibility Calculator</title>
+    <title>TNI Device Compatibility Calculator</title>
     <style>
         * {
             margin: 0;
@@ -17,6 +50,7 @@
             color: #c9d1d9;
             font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
             padding: 24px;
+            line-height: 1.6;
         }
         
         .header {
@@ -32,6 +66,7 @@
             color: #00ff88;
             letter-spacing: 2px;
             text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
         }
         
         .header h1 span {
@@ -65,6 +100,120 @@
             letter-spacing: 1px;
         }
         
+        /* === FORM INPUTS (Style Guide Compliant) === */
+        .search-input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid #30363d;
+            background: rgba(22, 27, 34, 0.8);
+            color: #c9d1d9;
+            font-size: 12px;
+            font-family: inherit;
+            margin-bottom: 12px;
+            transition: border-color 0.15s;
+        }
+        
+        .search-input:hover {
+            border-color: #58a6ff;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #58a6ff;
+        }
+        
+        .search-input::placeholder {
+            color: #8b949e;
+        }
+        
+        /* === CUSTOM DROPDOWN (Style Guide Compliant) === */
+        .custom-select {
+            position: relative;
+            margin-bottom: 12px;
+        }
+        
+        .custom-select-trigger {
+            width: 100%;
+            padding: 10px 12px;
+            padding-right: 36px;
+            border-radius: 6px;
+            border: 1px solid #30363d;
+            background: rgba(22, 27, 34, 0.8);
+            color: #c9d1d9;
+            font-size: 12px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: border-color 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .custom-select-trigger:hover {
+            border-color: #58a6ff;
+        }
+        
+        .custom-select-trigger.open {
+            border-color: #58a6ff;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        
+        .custom-select-trigger::after {
+            content: '▼';
+            position: absolute;
+            right: 12px;
+            font-size: 10px;
+            color: #8b949e;
+            transition: transform 0.15s;
+        }
+        
+        .custom-select-trigger.open::after {
+            transform: rotate(180deg);
+        }
+        
+        .custom-select-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(22, 27, 34, 0.98);
+            border: 1px solid #58a6ff;
+            border-top: none;
+            border-radius: 0 0 6px 6px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+        }
+        
+        .custom-select-options.open {
+            display: block;
+        }
+        
+        .custom-select-option {
+            padding: 10px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.15s;
+            border-bottom: 1px solid #21262d;
+        }
+        
+        .custom-select-option:last-child {
+            border-bottom: none;
+        }
+        
+        .custom-select-option:hover {
+            background: rgba(88, 166, 255, 0.08);
+        }
+        
+        .custom-select-option.selected {
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+        }
+        
+        /* === LIST CONTAINER === */
         .list-container {
             background: rgba(22,27,34,0.8);
             border: 1px solid #30363d;
@@ -138,6 +287,10 @@
             gap: 12px;
         }
         
+        .item-stats .firmware-tag {
+            color: #00ff88;
+        }
+        
         .program-meta {
             font-size: 10px;
             color: #8b949e;
@@ -173,31 +326,12 @@
         .item-requires {
             color: #f0883e;
         }
-
-        .file-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 11px;
+        
+        .install-method {
+            color: #00ff88;
+            font-style: italic;
         }
-        .file-table th {
-            text-align: left;
-            color: #8b949e;
-            font-weight: normal;
-            padding: 2px 8px 2px 0;
-            border-bottom: 1px solid #30363d;
-        }
-        .file-table th:not(:first-child) {
-            text-align: center;
-            width: 30px;
-        }
-        .file-table td {
-            padding: 3px 8px 3px 0;
-        }
-        .file-table td:not(:first-child) {
-            text-align: center;
-            color: #8b949e;
-        }
-
+        
         .sata-toggle {
             margin-top: 12px;
             padding: 10px 12px;
@@ -217,59 +351,8 @@
         .sata-info {
             color: #8b949e;
         }
-
-        .device-filter {
-            margin-bottom: 12px;
-        }
-
-        .device-filter select {
-            width: 100%;
-            padding: 8px 12px;
-            background: rgba(22,27,34,0.8);
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            color: #c9d1d9;
-            font-family: inherit;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .device-filter select:hover {
-            border-color: #58a6ff;
-        }
-
-        .device-filter select:focus {
-            outline: none;
-            border-color: #58a6ff;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 8px 12px;
-            background: rgba(22,27,34,0.8);
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            color: #c9d1d9;
-            font-family: inherit;
-            font-size: 12px;
-            margin-bottom: 12px;
-            box-sizing: border-box;
-        }
-
-        .search-input:hover {
-            border-color: #58a6ff;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #58a6ff;
-        }
-
-        .search-input::placeholder {
-            color: #8b949e;
-        }
-
-        /* Results Panel */
+        
+        /* === RESULTS PANEL === */
         .results {
             margin-top: 24px;
             border-radius: 8px;
@@ -282,7 +365,7 @@
         }
         
         .results.invalid {
-            background: linear-gradient(135deg, rgba(255,68,68,0.05) 0%, rgba(22,27,34,0.9) 100%);
+            background: linear-gradient(135deg, rgba(248,81,73,0.05) 0%, rgba(22,27,34,0.9) 100%);
             border: 1px solid #f85149;
         }
         
@@ -302,7 +385,7 @@
         }
         
         .results-title.valid { color: #00ff88; }
-        .results-title.invalid { color: #ff4444; }
+        .results-title.invalid { color: #f85149; }
         
         .total-cost {
             font-size: 14px;
@@ -335,8 +418,8 @@
         }
         
         .metric-box.over {
-            background: rgba(255,68,68,0.1);
-            border: 1px solid rgba(255,68,68,0.2);
+            background: rgba(248,81,73,0.1);
+            border: 1px solid rgba(248,81,73,0.2);
         }
         
         .metric-label {
@@ -351,7 +434,7 @@
         }
         
         .metric-value.fits { color: #00ff88; }
-        .metric-value.over { color: #ff4444; }
+        .metric-value.over { color: #f85149; }
         
         .metric-remaining {
             font-size: 10px;
@@ -374,7 +457,7 @@
         }
         
         .metric-bar-fill.fits { background: #00ff88; }
-        .metric-bar-fill.over { background: #ff4444; }
+        .metric-bar-fill.over { background: #f85149; }
         
         .programs-summary {
             margin-top: 16px;
@@ -386,76 +469,127 @@
             color: #c9d1d9;
         }
         
-        /* Footer */
-        .footer {
-            margin-top: 24px;
-            padding: 12px;
-            background: rgba(22,27,34,0.5);
-            border: 1px solid #21262d;
-            border-radius: 6px;
+        /* === FILE TABLE (Style Guide Compliant) === */
+        .file-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            margin-top: 12px;
+        }
+        
+        .file-table th {
+            text-align: left;
+            color: #58a6ff;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-bottom: 1px solid #30363d;
             font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .file-table th:not(:first-child) {
+            text-align: center;
+            width: 40px;
+        }
+        
+        .file-table td {
+            padding: 6px 12px;
+            border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+            color: #c9d1d9;
+        }
+        
+        .file-table td:first-child {
+            color: #00ff88;
+        }
+        
+        .file-table td:not(:first-child) {
+            text-align: center;
             color: #8b949e;
         }
         
-        .footer strong {
-            color: #58a6ff;
+        .file-table tr:hover td {
+            background: rgba(88, 166, 255, 0.05);
         }
         
-        .hidden {
-            display: none;
-        }
-
-        .sharecode-section {
+        /* === SHARECODE PANEL (Style Guide Compliant) === */
+        .sharecode-panel {
             margin-top: 24px;
+            background: rgba(22, 27, 34, 0.8);
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px 20px;
+        }
+        
+        .sharecode-panel h3 {
+            font-size: 11px;
+            font-weight: 600;
+            color: #58a6ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        
+        .sharecode-row {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
         }
-
-        .sharecode-section label {
-            font-size: 11px;
-            color: #8b949e;
-        }
-
+        
         .sharecode-input {
             flex: 1;
             min-width: 200px;
-            padding: 6px 10px;
-            background: rgba(22,27,34,0.8);
+            padding: 10px 12px;
+            background: rgba(22, 27, 34, 0.8);
             border: 1px solid #30363d;
             border-radius: 6px;
-            color: #c9d1d9;
+            color: #00ff88;
             font-family: inherit;
             font-size: 11px;
+            transition: border-color 0.15s;
         }
-
+        
         .sharecode-input:hover {
             border-color: #58a6ff;
         }
-
+        
         .sharecode-input:focus {
             outline: none;
             border-color: #58a6ff;
         }
-
-        .sharecode-section button {
-            padding: 6px 12px;
-            background: rgba(22,27,34,0.8);
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            color: #c9d1d9;
-            font-family: inherit;
+        
+        .sharecode-input::placeholder {
+            color: #8b949e;
+        }
+        
+        /* === BUTTONS (Style Guide Compliant) === */
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 4px;
             font-size: 11px;
+            font-family: inherit;
+            font-weight: 500;
             cursor: pointer;
-            transition: border-color 0.15s, background 0.15s;
+            transition: all 0.15s;
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid #30363d;
+            color: #8b949e;
         }
-
-        .sharecode-section button:hover {
+        
+        .btn-secondary:hover {
             border-color: #58a6ff;
-            background: rgba(88,166,255,0.1);
+            color: #58a6ff;
         }
-
+        
+        .btn-secondary:active {
+            transform: translateY(1px);
+        }
+        
+        /* === FOOTER === */
         .site-footer {
             margin-top: 40px;
             padding-top: 16px;
@@ -479,13 +613,17 @@
             margin: 0 8px;
             color: #30363d;
         }
+        
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <!-- Header -->
     <div class="header">
-        <h1><span>TNI</span> Server Compatibility Calculator</h1>
-        <p>Tower Networking Inc. • Server-Program Resource Planning Tool</p>
+        <h1><span>TNI</span> Device Compatibility Calculator</h1>
+        <p>Tower Networking Inc. • Device Resource Planning Tool</p>
     </div>
 
     <div class="grid">
@@ -493,24 +631,27 @@
         <div>
             <h2 class="section-title">▸ Select Device</h2>
             <input type="text" class="search-input" id="device-search" placeholder="Search devices...">
-            <div class="device-filter">
-                <select id="device-type-filter">
-                    <option value="all">All Devices</option>
-                    <option value="servers">Servers</option>
-                    <option value="network_switches">Switches</option>
-                    <option value="routers">Routers</option>
-                    <option value="firewalls_and_taps">Firewalls & TAPs</option>
-                    <option value="debuggers_and_test_devices">Debuggers</option>
-                </select>
+            <div class="custom-select" id="device-type-select">
+                <div class="custom-select-trigger" id="device-type-trigger">All Devices</div>
+                <div class="custom-select-options" id="device-type-options">
+                    <div class="custom-select-option selected" data-value="all">All Devices</div>
+                    <div class="custom-select-option" data-value="servers">Servers</div>
+                    <div class="custom-select-option" data-value="network_switches">Switches</div>
+                    <div class="custom-select-option" data-value="routers">Routers</div>
+                    <div class="custom-select-option" data-value="firewalls_and_taps">Firewalls &amp; TAPs</div>
+                    <div class="custom-select-option" data-value="debuggers_and_test_devices">Debuggers</div>
+                </div>
             </div>
             <div class="list-container" id="device-list"></div>
+            
+            <!-- SATA Toggle -->
             <div class="sata-toggle hidden" id="sata-toggle">
                 <input type="checkbox" id="sata-checkbox" checked>
-                <span>Auto-add SATA drives as needed</span>
+                <label for="sata-checkbox">Use SATA Expansion</label>
                 <span class="sata-info" id="sata-info"></span>
             </div>
         </div>
-
+        
         <!-- Program Selection -->
         <div>
             <h2 class="section-title">▸ Select Programs</h2>
@@ -518,34 +659,35 @@
             <div class="list-container programs" id="program-list"></div>
         </div>
     </div>
-
-    <!-- Results Panel -->
+    
+    <!-- Results -->
     <div class="results hidden" id="results">
         <div class="results-header">
-            <h2 class="results-title" id="results-title"></h2>
+            <h3 class="results-title" id="results-title"></h3>
             <div class="total-cost" id="total-cost"></div>
         </div>
         <div class="metrics-grid" id="metrics-grid"></div>
         <div class="programs-summary hidden" id="programs-summary"></div>
     </div>
 
-    <!-- Sharecode -->
-    <div class="sharecode-section">
-        <label>Sharecode:</label>
-        <input type="text" id="sharecode" class="sharecode-input" placeholder="Paste sharecode to load...">
-        <button id="copy-sharecode">Copy</button>
-        <button id="copy-url">Copy URL</button>
+    <!-- Sharecode Panel -->
+    <div class="sharecode-panel">
+        <h3>📋 Share Configuration</h3>
+        <div class="sharecode-row">
+            <input type="text" id="sharecode" class="sharecode-input" placeholder="Paste sharecode to load configuration...">
+            <button class="btn-secondary" id="copy-sharecode">Copy Code</button>
+            <button class="btn-secondary" id="copy-url">Copy URL</button>
+        </div>
     </div>
-
-    <!-- Footer -->
-    <div class="footer">
-        <strong>Quick Reference:</strong>
-        SATA Drive = +4 Storage @ $75 each •
-        Converters need input resources from other programs
-    </div>
+    
+    <footer class="site-footer">
+        <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">TNI Toolkit</a>
+        <span class="sep">|</span>
+        <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">Tower Networking Inc. on Steam</a>
+    </footer>
 
     <script>
-        // TNI Data - Device categories
+        // === TNI DATA: DEVICES ===
         const devices = {
             servers: [
                 { model: "MacroHard Boulder SRV", cpu: 4, memory: 4, storage: 6, sata_slots: 0, price: 540, power_w: 72, ports: 2 },
@@ -612,37 +754,39 @@
             debuggers_and_test_devices: "Debuggers"
         };
 
+        // === TNI DATA: PROGRAMS ===
         const programs = [
-            { name: "dns-lite", type: "Producer", cpu: 1, memory: 1, storage: 2, output: "3 reply-dns-queries", requires: null },
-            { name: "dns-server", type: "Converter", cpu: 4, memory: 3, storage: 3, output: "20 reply-dns-queries", requires: "1 store-text" },
-            { name: "sun-dns", type: "Converter", cpu: 10, memory: 6, storage: 9, output: "40 reply-dns-queries", requires: "3 store-text" },
-            { name: "padu_v1", type: "Producer", cpu: 1, memory: 2, storage: 4, output: "1 store-text, store-image", requires: null },
-            { name: "padu_v2", type: "Producer", cpu: 2, memory: 4, storage: 8, output: "2 store-text/image/audio", requires: null },
-            { name: "padu_v3", type: "Producer", cpu: 4, memory: 6, storage: 12, output: "4 store-text/image/audio/video", requires: null },
-            { name: "poems-db", type: "Producer", cpu: 4, memory: 4, storage: 6, output: "4 store-text", requires: null },
-            { name: "dnsmasq", type: "Producer", cpu: 1, memory: 1, storage: 2, output: "3 reply-dhcp-request", requires: null },
-            { name: "kea", type: "Converter", cpu: 6, memory: 5, storage: 7, output: "15 reply-dhcp-request", requires: "1 store-text" },
-            { name: "voip-server", type: "Producer", cpu: 5, memory: 2, storage: 5, output: "10 accept-voip-connection", requires: null },
-            { name: "gitcoffee", type: "Converter", cpu: 4, memory: 2, storage: 4, output: "16 read-text, update-software", requires: "2 store-text" },
-            { name: "mailer", type: "Converter", cpu: 5, memory: 6, storage: 3, output: "15 read/post-text, verify-user", requires: "3 store-text+image" },
-            { name: "rtsp-diva-r", type: "Producer", cpu: 6, memory: 4, storage: 10, output: "13 accept-cctv-connection", requires: null },
-            { name: "decentro-node", type: "Producer", cpu: 24, memory: 12, storage: 6, output: "10 facilitate-p2p-transaction", requires: null },
-            { name: "decentro-wallet", type: "Storage", cpu: 1, memory: 2, storage: 2, output: "Stores p2p currency", requires: null },
-            { name: "decentro-collector", type: "Converter", cpu: 1, memory: 1, storage: 1, output: "1 access-p2p-currency", requires: "1 access-p2p-currency" },
-            { name: "ubbt", type: "Converter", cpu: 4, memory: 4, storage: 6, output: "4 support-bots", requires: "4 inspect-user-packets" },
-            // Firmware (SFTP install)
-            { name: "rtkernel", type: "Firmware", cpu: 4, memory: 1, storage: 2, output: "Router firmware", requires: "/etc/routes.conf" },
-            { name: "hakernel", type: "Firmware", cpu: 8, memory: 2, storage: 4, output: "High-cap router firmware", requires: "/etc/routes.conf" },
-            { name: "bladeos", type: "Firmware", cpu: 2, memory: 1, storage: 1, output: "Switch firmware", requires: null },
-            { name: "vlanfirm", type: "Firmware", cpu: 2, memory: 2, storage: 2, output: "VLAN switch firmware", requires: "/etc/vlan.tags" },
-            { name: "firewatcher", type: "Firmware", cpu: 4, memory: 1, storage: 2, output: "Firewall firmware", requires: "/etc/nftables.conf" },
-            { name: "wirerat", type: "Firmware", cpu: 2, memory: 2, storage: 1, output: "4 inspect-user-packets", requires: null },
-            { name: "netpeeker", type: "Firmware", cpu: 1, memory: 1, storage: 1, output: "Debugger firmware", requires: null },
-            { name: "dnsspam", type: "Firmware", cpu: 1, memory: 1, storage: 1, output: "DNS blaster firmware", requires: null },
+            { name: "dns-lite", type: "Producer", cpu: 1, memory: 1, storage: 2, output: "reply-dns-queries (3/tick)", requires: null },
+            { name: "dns-server", type: "Converter", cpu: 4, memory: 3, storage: 3, output: "reply-dns-queries (20/tick)", requires: "store-text" },
+            { name: "sun-dns", type: "Converter", cpu: 10, memory: 6, storage: 9, output: "reply-dns-queries (40/tick)", requires: "store-text" },
+            { name: "dnsmasq", type: "Producer", cpu: 1, memory: 1, storage: 2, output: "reply-dhcp-request (3/tick)", requires: null },
+            { name: "kea", type: "Converter", cpu: 6, memory: 5, storage: 7, output: "reply-dhcp-request (15/tick)", requires: "store-text" },
+            { name: "padu_v1", type: "Producer", cpu: 1, memory: 2, storage: 4, output: "store-text, store-image (1/tick)", requires: null },
+            { name: "padu_v2", type: "Producer", cpu: 2, memory: 4, storage: 8, output: "store-text/image/audio (2/tick)", requires: null },
+            { name: "padu_v3", type: "Producer", cpu: 4, memory: 6, storage: 12, output: "store-text/image/audio/video (4/tick)", requires: null },
+            { name: "poems-db", type: "Producer", cpu: 4, memory: 4, storage: 6, output: "store-text (4/tick)", requires: null },
+            { name: "gitcoffee", type: "Converter", cpu: 4, memory: 2, storage: 4, output: "read-text, update-software (16/tick)", requires: "store-text" },
+            { name: "mailer", type: "Converter", cpu: 5, memory: 6, storage: 3, output: "read-text, post-text, verify-user (15/tick)", requires: "store-text AND store-image" },
+            { name: "voip-server", type: "Producer", cpu: 5, memory: 2, storage: 5, output: "accept-voip-phone-connection (10/tick)", requires: null },
+            { name: "rtsp-diva-r", type: "Producer", cpu: 6, memory: 4, storage: 10, output: "accept-cctv connections (13/tick)", requires: null },
+            { name: "decentro-node", type: "Producer", cpu: 24, memory: 12, storage: 6, output: "facilitate-p2p-transaction (10/tick)", requires: null },
+            { name: "decentro-wallet", type: "Storage", cpu: 1, memory: 2, storage: 2, output: "access-p2p-currency (10/free storage)", requires: null },
+            { name: "decentro-collector", type: "Converter", cpu: 1, memory: 1, storage: 1, output: "access-p2p-currency (collects)", requires: null },
+            { name: "ubbt", type: "Converter", cpu: 4, memory: 4, storage: 6, output: "support-bots (4/tick)", requires: "inspect-user-packets" },
+            // Firmware
+            { name: "rtkernel", type: "Firmware", cpu: 4, memory: 1, storage: 2, output: "Router OS", requires: "/etc/routes.conf" },
+            { name: "hakernel", type: "Firmware", cpu: 8, memory: 2, storage: 4, output: "High-cap Router OS", requires: "/etc/routes.conf" },
+            { name: "bladeos", type: "Firmware", cpu: 2, memory: 1, storage: 1, output: "Switch OS", requires: null },
+            { name: "vlanfirm", type: "Firmware", cpu: 2, memory: 2, storage: 2, output: "VLAN Switch OS", requires: "/etc/vlan.tags" },
+            { name: "firewatcher", type: "Firmware", cpu: 4, memory: 1, storage: 2, output: "Firewall OS", requires: "/etc/nftables.conf" },
+            { name: "wirerat", type: "Firmware", cpu: 2, memory: 2, storage: 1, output: "inspect-user-packets (4/tick)", requires: null },
+            { name: "netpeeker", type: "Firmware", cpu: 1, memory: 1, storage: 1, output: "Debugger OS", requires: null },
+            { name: "dnsspam", type: "Firmware", cpu: 1, memory: 1, storage: 1, output: "DNS Load Test OS", requires: null },
         ];
 
+        // Constants
         const SATA_DRIVE_COST = 75;
-        const SATA_DRIVE_STORAGE = 4;
+        const SATA_DRIVE_STORAGE = 6;
 
         // State
         let selectedDevice = null;
@@ -655,8 +799,9 @@
 
         // DOM Elements
         const deviceListEl = document.getElementById('device-list');
-        const deviceFilterEl = document.getElementById('device-type-filter');
         const deviceSearchEl = document.getElementById('device-search');
+        const deviceTypeTrigger = document.getElementById('device-type-trigger');
+        const deviceTypeOptions = document.getElementById('device-type-options');
         const programListEl = document.getElementById('program-list');
         const programSearchEl = document.getElementById('program-search');
         const sataToggleEl = document.getElementById('sata-toggle');
@@ -671,7 +816,52 @@
         const copySharecodeBtn = document.getElementById('copy-sharecode');
         const copyUrlBtn = document.getElementById('copy-url');
 
-        // Sharecode functions
+        // === CUSTOM DROPDOWN LOGIC ===
+        deviceTypeTrigger.addEventListener('click', () => {
+            deviceTypeTrigger.classList.toggle('open');
+            deviceTypeOptions.classList.toggle('open');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#device-type-select')) {
+                deviceTypeTrigger.classList.remove('open');
+                deviceTypeOptions.classList.remove('open');
+            }
+        });
+
+        // Handle option selection
+        deviceTypeOptions.querySelectorAll('.custom-select-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.dataset.value;
+                const text = option.textContent;
+                
+                // Update trigger text
+                deviceTypeTrigger.textContent = text;
+                
+                // Update selected state
+                deviceTypeOptions.querySelectorAll('.custom-select-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                option.classList.add('selected');
+                
+                // Close dropdown
+                deviceTypeTrigger.classList.remove('open');
+                deviceTypeOptions.classList.remove('open');
+                
+                // Apply filter
+                currentFilter = value;
+                if (selectedDevice && currentFilter !== 'all' && selectedDeviceCategory !== currentFilter) {
+                    selectedDevice = null;
+                    selectedDeviceCategory = null;
+                    updateToggles();
+                }
+                renderDevices();
+                calculate();
+            });
+        });
+
+        // === SHARECODE FUNCTIONS ===
         function generateSharecode() {
             const data = {
                 d: selectedDevice ? selectedDevice.model : null,
@@ -729,7 +919,7 @@
             history.replaceState(null, '', '#' + code);
         }
 
-        // Get filtered devices
+        // === GET FILTERED DEVICES ===
         function getFilteredDevices() {
             let result = [];
             if (currentFilter === 'all') {
@@ -749,14 +939,14 @@
             return result;
         }
 
-        // Render devices
+        // === RENDER DEVICES ===
         function renderDevices() {
             const filteredDevices = getFilteredDevices();
 
             deviceListEl.innerHTML = filteredDevices.map((device, idx) => {
                 const isSelected = selectedDevice && selectedDevice.model === device.model && selectedDeviceCategory === device._category;
                 const sataInfo = device.sata_slots > 0 ? ` +${device.sata_slots}SATA` : '';
-                const firmwareInfo = device.firmware ? `FW:${device.firmware}` : '';
+                const firmwareInfo = device.firmware ? `<span class="firmware-tag">FW:${device.firmware}</span>` : '';
 
                 return `
                     <div class="list-item ${isSelected ? 'selected' : ''}"
@@ -772,7 +962,7 @@
                             <span>M:${device.memory}</span>
                             <span>S:${device.storage}${sataInfo}</span>
                             <span>${device.power_w}W</span>
-                            ${firmwareInfo ? `<span>${firmwareInfo}</span>` : ''}
+                            ${firmwareInfo}
                         </div>
                     </div>
                 `;
@@ -792,14 +982,14 @@
             });
         }
 
-        // Get filtered programs
+        // === GET FILTERED PROGRAMS ===
         function getFilteredPrograms() {
             if (!programSearch) return programs;
             const search = programSearch.toLowerCase();
             return programs.filter(p => p.name.toLowerCase().includes(search) || p.output.toLowerCase().includes(search));
         }
 
-        // Render programs
+        // === RENDER PROGRAMS ===
         function renderPrograms() {
             const filteredPrograms = getFilteredPrograms();
             let html = '';
@@ -807,7 +997,7 @@
             let firmwareDividerAdded = false;
 
             filteredPrograms.forEach((program) => {
-                const idx = programs.indexOf(program); // Get original index
+                const idx = programs.indexOf(program);
 
                 // Add dividers
                 if (program.type !== 'Firmware' && !programsDividerAdded) {
@@ -815,7 +1005,7 @@
                     programsDividerAdded = true;
                 }
                 if (program.type === 'Firmware' && !firmwareDividerAdded) {
-                    html += `<div class="category-divider">Firmware (SFTP install)</div>`;
+                    html += '<div class="category-divider">Firmware (format install)</div>';
                     firmwareDividerAdded = true;
                 }
 
@@ -862,7 +1052,7 @@
             });
         }
 
-        // Update SATA toggle visibility
+        // === UPDATE TOGGLES ===
         function updateToggles() {
             if (selectedDevice && selectedDevice.sata_slots > 0) {
                 sataToggleEl.classList.remove('hidden');
@@ -872,10 +1062,11 @@
             }
         }
 
-        // Calculate and render results
+        // === CALCULATE RESULTS ===
         function calculate() {
             if (!selectedDevice) {
                 resultsEl.classList.add('hidden');
+                updateSharecode();
                 return;
             }
 
@@ -940,7 +1131,6 @@
                 const files = [];
                 selectedPrograms.forEach(p => {
                     const hasConfig = p.requires && p.requires.startsWith('/etc/');
-                    // Config storage is included in program's storage requirement
                     const binStorage = hasConfig ? p.storage - 1 : p.storage;
                     files.push({ path: `/bin/${p.name}`, cpu: p.cpu, mem: p.memory, storage: binStorage });
                     if (hasConfig) {
@@ -956,7 +1146,7 @@
 
                 programsSummaryEl.classList.remove('hidden');
                 programsSummaryEl.innerHTML = `
-                    <strong>Programs:</strong> ${selectedPrograms.map(p => p.name).join(' + ')}
+                    <strong>Selected:</strong> ${selectedPrograms.map(p => p.name).join(' + ')}
                     <table class="file-table">
                         <thead><tr><th>File</th><th>C</th><th>M</th><th>S</th></tr></thead>
                         <tbody>${rows}</tbody>
@@ -988,61 +1178,42 @@
             `;
         }
 
-        // Filter change handler
-        deviceFilterEl.addEventListener('change', (e) => {
-            currentFilter = e.target.value;
-            // Clear selection if device not in new filter
-            if (selectedDevice && currentFilter !== 'all' && selectedDeviceCategory !== currentFilter) {
-                selectedDevice = null;
-                selectedDeviceCategory = null;
-                updateToggles();
-            }
-            renderDevices();
-            calculate();
-        });
-
-        // SATA checkbox handler
+        // === EVENT HANDLERS ===
         sataCheckboxEl.addEventListener('change', (e) => {
             useSataExpansion = e.target.checked;
             calculate();
         });
 
-        // Device search handler
         deviceSearchEl.addEventListener('input', (e) => {
             deviceSearch = e.target.value;
             renderDevices();
         });
 
-        // Program search handler
         programSearchEl.addEventListener('input', (e) => {
             programSearch = e.target.value;
             renderPrograms();
         });
 
-        // Sharecode input handler
         sharecodeEl.addEventListener('input', (e) => {
             const code = e.target.value.trim();
             if (code) loadSharecode(code);
         });
 
-        // Copy sharecode button
         copySharecodeBtn.addEventListener('click', () => {
             sharecodeEl.select();
             navigator.clipboard.writeText(sharecodeEl.value);
         });
 
-        // Copy URL button
         copyUrlBtn.addEventListener('click', () => {
             navigator.clipboard.writeText(window.location.href);
         });
 
-        // Handle URL hash changes (browser back/forward)
         window.addEventListener('hashchange', () => {
             const hash = window.location.hash.slice(1);
             if (hash) loadSharecode(hash);
         });
 
-        // Initialize
+        // === INITIALIZE ===
         renderDevices();
         renderPrograms();
 
@@ -1051,11 +1222,5 @@
             loadSharecode(window.location.hash.slice(1));
         }
     </script>
-
-    <div class="site-footer">
-        <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">TNI Toolkit</a>
-        <span class="sep">|</span>
-        <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">Tower Networking Inc. on Steam</a>
-    </div>
 </body>
 </html>

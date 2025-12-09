@@ -24,13 +24,13 @@
 
 Standalone HTML files — download and open in any browser. Works offline. All tool-relevant data embedded therein.
 
-### Server/Program Compatibility Calculator
+### Device Compatibility Calculator
 
-Select a server, check off programs, and instantly see if CPU/Memory/Storage requirements fit. Automatically factors in SATA expansion.
+Select any device (servers, switches, routers, firewalls, debuggers), check off programs/firmware, and instantly see if CPU/Memory/Storage requirements fit. Features category filtering, search, shareable configuration codes via URL, and file-level resource breakdown.
 
-**[Use: Server Calculator](https://salvo-praxis.github.io/tni-toolkit/tools/server-calculator.html) or [Download: `tools/server-calculator.html`](tools/server-calculator.html)**
+**[Use: Device Calculator](https://salvo-praxis.github.io/tni-toolkit/tools/device-calculator.html) or [Download: `tools/device-calculator.html`](tools/device-calculator.html)**
 
-![Server Calculator Screenshot](docs/screenshots/server-calculator.png)
+![Device Calculator Screenshot](docs/screenshots/device-calculator.png)
 
 ### Starting Proposal Seed Finder
 
@@ -54,7 +54,7 @@ Search a database of 3,794 verified seeds by selecting up to 3 starting proposal
 
 ## 🗺️ Roadmap
 
-- [x] Server/Program Compatibility Calculator
+- [x] Device Compatibility Calculator
 - [x] Starting Proposal Seed Finder
 - [ ] **CLI Command Builder** *(in progress)*
 - [ ] Store Browser / Cart Calculator
@@ -101,7 +101,7 @@ tni-toolkit/
 │   ├── tni-cli-commands.json   # Terminal command reference
 │   └── tni-traffic-types.json  # Network traffic types
 ├── tools/
-│   ├── server-calculator.html  # Server/program compatibility tool
+│   ├── device-calculator.html   # Device compatibility calculator
 │   └── seed-finder.html        # Starting proposal seed finder
 └── docs/
     ├── STYLE_GUIDE.md          # Complete CSS reference
@@ -233,13 +233,15 @@ When editing JSON files, please:
 
 ## 📜 Credits
 
-- **Project Lead & Data Collection**: Salvo Praxis
-- **Development Assistance**: Claude (Anthropic) — AI pair programming partner
-- **Community Contributors**: Chaotic Crumb, Singing Pot Beast, gamers2000, Crona, Thorinbur
-- **Data Sources**: [HackMD @tower-network](https://hackmd.io/@tower-network), [TNI Discord Community](https://discord.com/invite/nNKRMjDhf2)
-- **Game**: [Tower Networking Inc.](https://store.steampowered.com/app/2939600/Tower_Networking_Inc/) by [Pocosia Studios](https://pocosia.com/)
+**Created by:** Salvo Praxis and Claude (Anthropic)
 
-**[View full credits & sources →](https://salvo-praxis.github.io/tni-toolkit/credits.html)**
+**Community Contributors:** Chaotic Crumb, Singing Pot Beast, gamers2000, Crona, AlinaNova21, Блинчик
+
+**Data Sources:** [HackMD @tower-network](https://hackmd.io/@tower-network), [TNI Discord Community](https://discord.com/invite/nNKRMjDhf2)
+
+**Game:** [Tower Networking Inc.](https://store.steampowered.com/app/2939600/Tower_Networking_Inc/) by [Pocosia Studios](https://pocosia.com/)
+
+**[View full credits →](https://salvo-praxis.github.io/tni-toolkit/credits.html)** | **[Contribution history →](CONTRIBUTIONS.md)**
 
 ---
 

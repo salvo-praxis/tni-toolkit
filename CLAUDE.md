@@ -15,17 +15,18 @@ All tools are **standalone HTML files** with embedded CSS/JS. No build process, 
 tni-toolkit/
 ├── CLAUDE.md              # You are here
 ├── CONTRIBUTING.md        # Contribution guidelines
+├── CONTRIBUTIONS.md       # Running contribution history
 ├── index.html             # Landing page (GitHub Pages)
 ├── contributing.html      # Contribution guide (styled)
 ├── credits.html           # Credits, sources, greetz
 ├── README.md              # GitHub readme
 ├── data/                  # Source JSON datasets
-│   ├── tni-store.json     # Equipment catalog
-│   ├── tni-programs.json  # Server programs
+│   ├── tni-store.json     # Equipment catalog (v1.1.0)
+│   ├── tni-programs.json  # Server programs (v1.1.1)
 │   ├── tni-cli-commands.json
 │   └── tni-traffic-types.json
 ├── tools/                 # Standalone HTML tools
-│   ├── server-calculator.html
+│   ├── device-calculator.html  # Device compatibility calculator (v1.2.0)
 │   └── seed-finder.html
 └── docs/
     └── STYLE_GUIDE.md     # Detailed styling reference
@@ -35,9 +36,69 @@ tni-toolkit/
 
 1. **Read `docs/STYLE_GUIDE.md` first** — Contains complete CSS reference, component patterns, and copy-paste templates
 2. **Single HTML file** — All CSS in `<style>`, all JS in `<script>`, data embedded as JS objects
-3. **Match the NOC aesthetic** — Dark theme, monospace font, green/blue accents
-4. **Include standard footer** — Links to TNI Toolkit and Steam page
-5. **Test offline** — Tools must work without network access
+3. **Include HTML header comment** — Version, contributors, changelog (see format below)
+4. **Match the NOC aesthetic** — Dark theme, monospace font, green/blue accents
+5. **Include standard footer** — Links to TNI Toolkit and Steam page
+6. **Test offline** — Tools must work without network access
+
+## File Header Formats
+
+### HTML Files
+
+All HTML tools include a comment header **before** `<!DOCTYPE html>`:
+
+```html
+<!--
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  Tool Name                                                                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Version: X.Y.Z                                                              ║
+║  Updated: YYYY-MM-DD                                                         ║
+║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Description:                                                                ║
+║    Brief description of what this tool does.                                 ║
+║                                                                              ║
+║  Features:                                                                   ║
+║    - Feature 1                                                               ║
+║    - Feature 2                                                               ║
+║                                                                              ║
+║  Contributors:                                                               ║
+║    - Name (contribution type)                                                ║
+║                                                                              ║
+║  Changelog:                                                                  ║
+║    X.Y.Z - Description of changes                                            ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+-->
+```
+
+### JSON Data Files
+
+All JSON files include `_meta` object with attribution:
+
+```json
+{
+  "_meta": {
+    "game": "Tower Networking Inc.",
+    "dataset": "dataset-name",
+    "version": "1.0.0",
+    "last_updated": "YYYY-MM-DD",
+    "description": "What this dataset contains",
+    "sources": [
+      { "name": "In-game observation", "notes": "..." },
+      { "name": "Discord Community", "notes": "..." },
+      { "name": "External Source", "url": "https://...", "author": "@handle", "retrieved": "YYYY-MM-DD" }
+    ],
+    "contributors": ["Name or Handle"],
+    "corrections": [
+      { "version": "1.0.1", "correction": "Description", "reported_by": "Who", "corrected_by": "Who" }
+    ],
+    "future_additions": [
+      { "suggestion": "Brief description", "details": "Context", "suggested_by": "Who" }
+    ]
+  }
+}
+```
 
 ## Quick Reference
 
@@ -68,44 +129,41 @@ font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
 - Small text: 11px
 - Fine print: 10px
 
+### UI Components
+
+**Native `<select>` elements** don't style well on dark themes. Use the **Custom Dropdown** pattern from `STYLE_GUIDE.md` for category filters and styled dropdowns.
+
+**Input padding**: Always `10px 12px`
+
+**Table headers**: Color `#58a6ff`, font-weight `600`
+
+**Buttons**: Use `.btn-primary` (green) or `.btn-secondary` (blue outline) patterns
+
 ## Data Files
 
 Tools should embed data directly. Source files in `data/`:
 
-| File | Use For |
-|------|---------|
-| `tni-store.json` | Equipment specs, prices, power draw |
-| `tni-programs.json` | Program requirements, I/O, dependencies |
-| `tni-cli-commands.json` | Terminal commands, syntax, examples |
-| `tni-traffic-types.json` | Network traffic types for firewall/router rules |
+| File | Version | Use For |
+|------|---------|---------|
+| `tni-store.json` | 1.1.0 | Equipment specs, prices, power draw, firmware |
+| `tni-programs.json` | 1.1.1 | Program requirements, I/O, dependencies |
+| `tni-cli-commands.json` | 1.0.0 | Terminal commands, syntax, examples |
+| `tni-traffic-types.json` | 1.0.0 | Network traffic types for firewall/router rules |
 
-### Data Attribution Standard
+### Recent Data Updates
 
-All JSON files should include source attribution in `_meta`:
+**tni-store.json v1.1.0** (2025-12-08)
+- Added `cpu`, `memory`, `storage`, `firmware` fields to all network devices
+- Switches: bladeos/vlanfirm firmware
+- Routers: rtkernel/hakernel firmware  
+- Firewalls: firewatcher firmware
+- TAPs: wirerat firmware
+- Debuggers: netpeeker/dnsspam firmware
+- Contributor: AlinaNova21
 
-```json
-{
-  "_meta": {
-    "game": "Tower Networking Inc.",
-    "dataset": "dataset-name",
-    "version": "1.0.0",
-    "last_updated": "YYYY-MM-DD",
-    "description": "What this dataset contains",
-    "sources": [
-      { "name": "In-game observation", "notes": "..." },
-      { "name": "Discord Community", "notes": "..." },
-      { "name": "External Source", "url": "https://...", "author": "@handle", "retrieved": "YYYY-MM-DD" }
-    ],
-    "contributors": ["Name or Handle"],
-    "corrections": [
-      { "version": "1.0.1", "correction": "Description", "reported_by": "Who", "corrected_by": "Who" }
-    ],
-    "future_additions": [
-      { "suggestion": "Brief description", "details": "Context", "suggested_by": "Who" }
-    ]
-  }
-}
-```
+**tni-programs.json v1.1.1** (2025-12-08)
+- Whitespace cleanup
+- Contributor: AlinaNova21
 
 ---
 
@@ -231,13 +289,27 @@ This keeps complex tooling isolated while the toolkit remains a clean collection
 - [ ] Equipment ROI Calculator
 
 ### Completed
-- [x] Server/Program Compatibility Calculator
-- [x] Starting Proposal Seed Finder
+- [x] **Device Compatibility Calculator** (v1.2.0) — Servers, switches, routers, firewalls, debuggers with category filter, search, sharecode, file table
+- [x] **Starting Proposal Seed Finder** — 3,794 seeds, 455 combinations, 100% coverage
+
+## Contributors
+
+| Contributor | Contributions |
+|-------------|---------------|
+| Salvo Praxis | Project lead, original tools, data collection |
+| Claude (Anthropic) | AI development partner, code generation |
+| Chaotic Crumb | ICC sata_slots fix, firmware data |
+| Singing Pot Beast | ICC sata_slots report |
+| gamers2000 | Firmware programs suggestion |
+| Crona | Future additions suggestions |
+| AlinaNova21 | Device calculator overhaul, network device data |
+| Блинчик | Community contributions |
 
 ## Links
 
-- [Style Guide](docs/STYLE_GUIDE.md) — Detailed CSS reference
+- [Style Guide](docs/STYLE_GUIDE.md) — Detailed CSS reference (includes Custom Dropdown pattern)
 - [Contributing](CONTRIBUTING.md) — How to contribute (markdown)
+- [Contributions](CONTRIBUTIONS.md) — Running contribution history
 - [Contributing Guide](contributing.html) — How to contribute (styled)
 - [Credits](credits.html) — Sources, contributors, greetz
 - [TNI on Steam](https://store.steampowered.com/app/2939600/Tower_Networking_Inc/)
@@ -254,7 +326,7 @@ Tips for effective development sessions:
 
 Instead of: *"Build a power calculator"*
 
-Say: *"Create `tools/power-calculator.html` following the style guide. It should let users select equipment from tni-store.json and sum up power draw. Use the same panel/card structure as seed-finder."*
+Say: *"Create `tools/power-calculator.html` following the style guide. It should let users select equipment from tni-store.json and sum up power draw. Use the same panel/card structure as device-calculator."*
 
 ### Iterate in Small Chunks
 
@@ -267,7 +339,7 @@ If something breaks, you know exactly which step caused it.
 
 ### Reference Existing Files
 
-*"Look at `tools/seed-finder.html` and use the same card hover pattern"*
+*"Look at `tools/device-calculator.html` and use the same card hover pattern"*
 
 Point to concrete examples rather than abstract descriptions.
 
@@ -286,3 +358,28 @@ Specific symptoms → faster fixes → less thrashing.
 ### Reset to Source of Truth
 
 If confused: *"Stop. Read CLAUDE.md and docs/STYLE_GUIDE.md again. Then look at the current state of [file]."*
+
+---
+
+## Recent Session Notes
+
+### 2025-12-08: AlinaNova21 PR Integration
+
+**Merged contributions:**
+- `device-calculator.html` v1.2.0 — Major overhaul adding all device types, category filter, search, sharecode system, file table display
+- `tni-store.json` v1.1.0 — Added firmware/cpu/memory/storage to all network devices
+- `tni-programs.json` v1.1.1 — Whitespace cleanup
+
+**Style guide alignment applied:**
+- Replaced native `<select>` with Custom Dropdown pattern
+- Standardized input padding to `10px 12px`
+- Updated table headers to `#58a6ff` with font-weight 600
+- Added `.btn-secondary` button styling
+
+**File renamed:** `server-calculator.html` → `device-calculator.html`
+
+**Documentation updated:**
+- All HTML files now have box-drawing header comments
+- `contributing.html` documents HTML header format
+- `STYLE_GUIDE.md` includes Custom Dropdown pattern
+- `README.md` updated with new tool name and contributors

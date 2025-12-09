@@ -2,8 +2,8 @@
   "_meta": {
     "game": "Tower Networking Inc.",
     "dataset": "store",
-    "version": "1.0.1",
-    "last_updated": "2025-12-07",
+    "version": "1.1.0",
+    "last_updated": "2025-12-08",
     "description": "Nearly complete catalog of purchasable items from D-Market2, Barracks and Sons, and other in-game vendors.",
     "notes": "Some warranty values may be inaccurate (recorded during LAB session). Other apps still need documentation. Corrections welcome.",
     "sources": [
@@ -20,7 +20,9 @@
       "Salvo Praxis",
       "Claude (Anthropic)",
       "Chaotic Crumb",
-      "Singing Pot Beast"
+      "Singing Pot Beast",
+      "AlinaNova21",
+      "Блинчик"
     ],
     "corrections": [
       {
@@ -28,6 +30,12 @@
         "correction": "ICC sata_slots corrected from 2 to 1",
         "reported_by": "Singing Pot Beast",
         "corrected_by": "Chaotic Crumb"
+      },
+      {
+        "version": "1.1.0",
+        "correction": "Added cpu, memory, storage, and firmware fields to all network devices (switches, routers, firewalls, TAPs, debuggers)",
+        "suggested_by": "Блинчик",
+        "contributor": "AlinaNova21"
       }
     ]
   },
@@ -1166,17 +1174,44 @@
   ],
   "network_cables": {
     "ethernet_rj45_cat5": [
-      { "length_px": 200, "price": 5 },
-      { "length_px": 500, "price": 15 },
-      { "length_px": 1000, "price": 40 },
-      { "length_px": 1500, "price": 75 },
-      { "length_px": 2000, "price": 150 }
+      {
+        "length_px": 200,
+        "price": 5
+      },
+      {
+        "length_px": 500,
+        "price": 15
+      },
+      {
+        "length_px": 1000,
+        "price": 40
+      },
+      {
+        "length_px": 1500,
+        "price": 75
+      },
+      {
+        "length_px": 2000,
+        "price": 150
+      }
     ],
     "fiber_sc_double_core": [
-      { "length_px": 200, "price": 1 },
-      { "length_px": 500, "price": 5 },
-      { "length_px": 1500, "price": 25 },
-      { "length_px": 3000, "price": 60 }
+      {
+        "length_px": 200,
+        "price": 1
+      },
+      {
+        "length_px": 500,
+        "price": 5
+      },
+      {
+        "length_px": 1500,
+        "price": 25
+      },
+      {
+        "length_px": 3000,
+        "price": 60
+      }
     ],
     "color_options": [
       "Original",
@@ -1196,7 +1231,16 @@
       "cable_type": "ethernet_rj45_cat5",
       "capacity_px": 20000,
       "price": 1500,
-      "colors": ["Original", "Yellow", "Blue", "Purple", "Orange", "Green", "Red", "Grey"],
+      "colors": [
+        "Original",
+        "Yellow",
+        "Blue",
+        "Purple",
+        "Orange",
+        "Green",
+        "Red",
+        "Grey"
+      ],
       "requires_app": "D-Market2",
       "notes": "Cabling toolkit for RJ-45 terminations. Stores up to 20000 length."
     },
@@ -1206,7 +1250,16 @@
       "cable_type": "fiber_sc_double_core",
       "capacity_px": 20000,
       "price": 1500,
-      "colors": ["Original", "Yellow", "Blue", "Purple", "Orange", "Green", "Red", "Grey"],
+      "colors": [
+        "Original",
+        "Yellow",
+        "Blue",
+        "Purple",
+        "Orange",
+        "Green",
+        "Red",
+        "Grey"
+      ],
       "requires_app": "D-Market2",
       "notes": "Cabling toolkit for Fiber optic (SC) terminations. Stores up to 20000 length."
     }
@@ -1250,56 +1303,80 @@
     {
       "model": "Narrow Rack (425pxW x 220pxH)",
       "vendor": "Barracks and Sons",
-      "dimensions": { "width_px": 425, "height_px": 220 },
+      "dimensions": {
+        "width_px": 425,
+        "height_px": 220
+      },
       "price": 40,
       "requires_app": "Barracks and Sons"
     },
     {
       "model": "Narrow Rack (425pxW x 345pxH)",
       "vendor": "Barracks and Sons",
-      "dimensions": { "width_px": 425, "height_px": 345 },
+      "dimensions": {
+        "width_px": 425,
+        "height_px": 345
+      },
       "price": 60,
       "requires_app": "Barracks and Sons"
     },
     {
       "model": "Narrow Rack (425pxW x 640pxH)",
       "vendor": "Barracks and Sons",
-      "dimensions": { "width_px": 425, "height_px": 640 },
+      "dimensions": {
+        "width_px": 425,
+        "height_px": 640
+      },
       "price": 80,
       "requires_app": "Barracks and Sons"
     },
     {
       "model": "Narrow Rack (425pxW x 920pxH)",
       "vendor": "Barracks and Sons",
-      "dimensions": { "width_px": 425, "height_px": 920 },
+      "dimensions": {
+        "width_px": 425,
+        "height_px": 920
+      },
       "price": 95,
       "requires_app": "Barracks and Sons"
     },
     {
       "model": "Wide Rack (775pxW x 165pxH)",
       "vendor": "Barracks and Sons",
-      "dimensions": { "width_px": 775, "height_px": 165 },
+      "dimensions": {
+        "width_px": 775,
+        "height_px": 165
+      },
       "price": 45,
       "requires_app": "Barracks and Sons"
     },
     {
       "model": "Wide Rack (775pxW x 280pxH)",
       "vendor": "Barracks and Sons",
-      "dimensions": { "width_px": 775, "height_px": 280 },
+      "dimensions": {
+        "width_px": 775,
+        "height_px": 280
+      },
       "price": 65,
       "requires_app": "Barracks and Sons"
     },
     {
       "model": "Wide Rack (775pxW x 500pxH)",
       "vendor": "Barracks and Sons",
-      "dimensions": { "width_px": 775, "height_px": 500 },
+      "dimensions": {
+        "width_px": 775,
+        "height_px": 500
+      },
       "price": 85,
       "requires_app": "Barracks and Sons"
     },
     {
       "model": "Wide Rack (775pxW x 725pxH)",
       "vendor": "Barracks and Sons",
-      "dimensions": { "width_px": 775, "height_px": 725 },
+      "dimensions": {
+        "width_px": 775,
+        "height_px": 725
+      },
       "price": 100,
       "requires_app": "Barracks and Sons"
     }

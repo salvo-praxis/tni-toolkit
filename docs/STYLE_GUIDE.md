@@ -483,7 +483,167 @@ select:focus {
     outline: none;
     border-color: #58a6ff;
 }
+```
 
+> ⚠️ **Note:** Native `<select>` elements cannot style their `<option>` children consistently across browsers, especially on dark themes. Use the **Custom Dropdown** pattern below for styled dropdowns.
+
+### Custom Dropdown
+
+A fully-styled dropdown replacement for native `<select>`. Use when you need consistent dark theme styling for option lists.
+
+**When to use:**
+- Category/filter dropdowns
+- Any dropdown where options need custom styling
+- When native `<select>` looks jarring on the dark theme
+
+**HTML Structure:**
+```html
+<div class="custom-select" id="my-select">
+    <div class="custom-select-trigger">Select an option</div>
+    <div class="custom-select-options">
+        <div class="custom-select-option selected" data-value="all">All Items</div>
+        <div class="custom-select-option" data-value="category1">Category 1</div>
+        <div class="custom-select-option" data-value="category2">Category 2</div>
+    </div>
+</div>
+```
+
+**CSS:**
+```css
+/* Custom Dropdown Container */
+.custom-select {
+    position: relative;
+}
+
+/* Trigger (visible button) */
+.custom-select-trigger {
+    width: 100%;
+    padding: 10px 12px;
+    padding-right: 36px;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    background: rgba(22, 27, 34, 0.8);
+    color: #c9d1d9;
+    font-size: 12px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color 0.15s;
+}
+
+.custom-select-trigger:hover {
+    border-color: #58a6ff;
+}
+
+.custom-select-trigger.open {
+    border-color: #58a6ff;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* Dropdown arrow */
+.custom-select-trigger::after {
+    content: '▼';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    color: #8b949e;
+    transition: transform 0.15s;
+}
+
+.custom-select-trigger.open::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+/* Options container */
+.custom-select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(22, 27, 34, 0.98);
+    border: 1px solid #58a6ff;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none;
+}
+
+.custom-select-options.open {
+    display: block;
+}
+
+/* Individual options */
+.custom-select-option {
+    padding: 10px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-bottom: 1px solid #21262d;
+}
+
+.custom-select-option:last-child {
+    border-bottom: none;
+}
+
+.custom-select-option:hover {
+    background: rgba(88, 166, 255, 0.08);
+}
+
+.custom-select-option.selected {
+    background: rgba(0, 255, 136, 0.1);
+    color: #00ff88;
+}
+```
+
+**JavaScript:**
+```javascript
+const trigger = document.getElementById('my-select').querySelector('.custom-select-trigger');
+const options = document.getElementById('my-select').querySelector('.custom-select-options');
+
+// Toggle dropdown
+trigger.addEventListener('click', () => {
+    trigger.classList.toggle('open');
+    options.classList.toggle('open');
+});
+
+// Close when clicking outside
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('#my-select')) {
+        trigger.classList.remove('open');
+        options.classList.remove('open');
+    }
+});
+
+// Handle selection
+options.querySelectorAll('.custom-select-option').forEach(option => {
+    option.addEventListener('click', () => {
+        const value = option.dataset.value;
+        const text = option.textContent;
+        
+        // Update trigger text
+        trigger.textContent = text;
+        
+        // Update selected state
+        options.querySelectorAll('.custom-select-option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        option.classList.add('selected');
+        
+        // Close dropdown
+        trigger.classList.remove('open');
+        options.classList.remove('open');
+        
+        // Do something with the value
+        console.log('Selected:', value);
+    });
+});
+```
+
+```css
 /* Checkbox (styled as card) */
 .checkbox-card {
     display: flex;

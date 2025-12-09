@@ -1,3 +1,24 @@
+<!--
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  TNI Toolkit - Contributing Guide                                            ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Version: 1.1.0                                                              ║
+║  Updated: 2025-12-08                                                         ║
+║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Description:                                                                ║
+║    Styled contribution guide for the TNI Toolkit. Documents standards for    ║
+║    data files, tools, and attribution.                                       ║
+║                                                                              ║
+║  Contributors:                                                               ║
+║    - Salvo Praxis (original author)                                          ║
+║    - Claude (Anthropic)                                                      ║
+║                                                                              ║
+║  Changelog:                                                                  ║
+║    1.1.0 - Added HTML header format documentation                            ║
+║    1.0.0 - Initial release                                                   ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -544,6 +565,34 @@
             </div>
             
             <div class="panel">
+                <h3>HTML Header Format</h3>
+                <p>All HTML tools include a comment header at the top of the file (before <code>&lt;!DOCTYPE html&gt;</code>):</p>
+                <pre><code><span class="json-key">&lt;!--</span>
+<span class="json-string">╔══════════════════════════════════════════════════════════════════════════════╗</span>
+<span class="json-string">║  Tool Name                                                                   ║</span>
+<span class="json-string">╠══════════════════════════════════════════════════════════════════════════════╣</span>
+<span class="json-string">║  Version: X.Y.Z                                                              ║</span>
+<span class="json-string">║  Updated: YYYY-MM-DD                                                         ║</span>
+<span class="json-string">║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║</span>
+<span class="json-string">╠══════════════════════════════════════════════════════════════════════════════╣</span>
+<span class="json-string">║  Description:                                                                ║</span>
+<span class="json-string">║    Brief description of what this tool does.                                 ║</span>
+<span class="json-string">║                                                                              ║</span>
+<span class="json-string">║  Features:                                                                   ║</span>
+<span class="json-string">║    - Feature 1                                                               ║</span>
+<span class="json-string">║    - Feature 2                                                               ║</span>
+<span class="json-string">║                                                                              ║</span>
+<span class="json-string">║  Contributors:                                                               ║</span>
+<span class="json-string">║    - Name (contribution type)                                                ║</span>
+<span class="json-string">║                                                                              ║</span>
+<span class="json-string">║  Changelog:                                                                  ║</span>
+<span class="json-string">║    X.Y.Z - Description of changes                                            ║</span>
+<span class="json-string">╚══════════════════════════════════════════════════════════════════════════════╝</span>
+<span class="json-key">--&gt;</span></code></pre>
+                <p style="margin-top: 12px; font-size: 11px; color: #8b949e;">This mirrors the <code>_meta</code> format in JSON files — version tracking, attribution, and changelog in one place.</p>
+            </div>
+            
+            <div class="panel">
                 <h3>Before Building</h3>
                 <div class="steps">
                     <div class="step">
@@ -565,6 +614,7 @@
                 <h3>Checklist</h3>
                 <ul class="checklist">
                     <li><span class="check-box">☐</span> Single HTML file in <code>tools/</code> directory</li>
+                    <li><span class="check-box">☐</span> Includes HTML header comment (version, contributors, changelog)</li>
                     <li><span class="check-box">☐</span> Matches NOC theme (dark, green/blue accents)</li>
                     <li><span class="check-box">☐</span> Works offline (no fetch requests)</li>
                     <li><span class="check-box">☐</span> Includes standard footer with links</li>

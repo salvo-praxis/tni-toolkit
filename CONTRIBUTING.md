@@ -31,7 +31,7 @@ Thanks for your interest in contributing! This project thrives on community inpu
 
 ### JSON Structure
 
-All data files use this header format:
+All data files use this header format in `_meta`:
 
 ```json
 {
@@ -65,7 +65,12 @@ All data files use this header format:
       "Your Name or Handle"
     ],
     "corrections": [
-      "v1.0.1: Description of what was fixed"
+      {
+        "version": "1.0.1",
+        "correction": "Description of what was fixed",
+        "reported_by": "Who reported it",
+        "corrected_by": "Who fixed it"
+      }
     ],
     "future_additions": [
       {
@@ -86,14 +91,16 @@ All data files use this header format:
    - Update `last_updated` to today
    - Add yourself to `contributors` if not already listed
 3. **Add sources** — If data came from somewhere, credit it
-4. **Log corrections** — Add to `corrections` array with version prefix
+4. **Log corrections** — Add to `corrections` array with structured entry
 5. **Track suggestions** — Use `future_additions` for community ideas not yet implemented
 
 ### Version Numbering
 
-- `1.0.0` → `1.0.1` — Corrections, typo fixes
-- `1.0.1` → `1.1.0` — New data additions
-- `1.1.0` → `2.0.0` — Structure changes (rare, coordinate first)
+| Change | Example |
+|--------|---------|
+| Corrections, typo fixes | `1.0.0` → `1.0.1` |
+| New data additions | `1.0.1` → `1.1.0` |
+| Structure changes (rare) | `1.1.0` → `2.0.0` |
 
 ---
 
@@ -107,21 +114,60 @@ All tools are **standalone HTML files**:
 - Data embedded directly in the file
 - Follows the [style guide](docs/STYLE_GUIDE.md)
 
+### HTML Header Format
+
+All HTML tools include a comment header **before** `<!DOCTYPE html>`:
+
+```html
+<!--
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  Tool Name                                                                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Version: X.Y.Z                                                              ║
+║  Updated: YYYY-MM-DD                                                         ║
+║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Description:                                                                ║
+║    Brief description of what this tool does.                                 ║
+║                                                                              ║
+║  Features:                                                                   ║
+║    - Feature 1                                                               ║
+║    - Feature 2                                                               ║
+║                                                                              ║
+║  Contributors:                                                               ║
+║    - Name (contribution type)                                                ║
+║                                                                              ║
+║  Changelog:                                                                  ║
+║    X.Y.Z - Description of changes                                            ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+-->
+```
+
+This mirrors the `_meta` format in JSON files — version tracking, attribution, and changelog in one place.
+
 ### Before Building
 
 1. Read [CLAUDE.md](CLAUDE.md) for project context
 2. Read [docs/STYLE_GUIDE.md](docs/STYLE_GUIDE.md) for styling
-3. Look at existing tools for patterns
+3. Look at existing tools for patterns (especially `device-calculator.html`)
 4. Check if data files exist for what you need
 
 ### Checklist
 
 - [ ] Single HTML file in `tools/` directory
+- [ ] Includes HTML header comment (version, contributors, changelog)
 - [ ] Matches NOC theme (dark, green/blue accents)
 - [ ] Works offline (no fetch requests)
 - [ ] Includes standard footer with links
 - [ ] Mobile responsive
 - [ ] Tested in multiple browsers
+
+### Style Guide Highlights
+
+- **Custom Dropdown**: Use the Custom Dropdown pattern from `STYLE_GUIDE.md` instead of native `<select>` elements (they don't style well on dark themes)
+- **Input padding**: Always `10px 12px`
+- **Table headers**: Color `#58a6ff`, font-weight `600`
+- **Buttons**: Use `.btn-primary` (green) or `.btn-secondary` (blue outline) patterns
 
 ### Pipeline-Generated Tools
 
@@ -164,6 +210,7 @@ Example: [tni-seed-harvester](https://github.com/salvo-praxis/tni-seed-harvester
 ## Credits
 
 Contributors are recognized in:
+- HTML file header comments
 - JSON file `contributors` arrays
 - [Credits page](credits.html) on the toolkit site
 - This project's heart ❤️

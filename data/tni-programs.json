@@ -2,8 +2,8 @@
   "_meta": {
     "game": "Tower Networking Inc.",
     "dataset": "programs",
-    "version": "1.1.0",
-    "last_updated": "2025-12-07",
+    "version": "1.1.1",
+    "last_updated": "2025-12-08",
     "description": "Complete catalog of installable server programs with resource requirements, outputs, and dependencies.",
     "notes": "Program types: producer (generates uses), converter (transforms inputs to outputs), data storage (persists data), firmware (device operating systems).",
     "sources": [
@@ -21,7 +21,8 @@
       "Claude (Anthropic)",
       "Chaotic Crumb",
       "gamers2000",
-      "Crona"
+      "Crona",
+      "AlinaNova21"
     ],
     "corrections": [
       {
@@ -29,6 +30,11 @@
         "correction": "Added 8 firmware programs (rtkernel, hakernel, bladeos, vlanfirm, firewatcher, wirerat, netpeeker, dnsspam) and 4 new program_categories (router, switch, firewall, debugging)",
         "suggested_by": "gamers2000",
         "added_by": "Chaotic Crumb"
+      },
+      {
+        "version": "1.1.1",
+        "correction": "Whitespace cleanup: removed trailing spaces from firmware entries",
+        "contributor": "AlinaNova21"
       }
     ],
     "future_additions": [
@@ -52,7 +58,9 @@
       "memory": 1,
       "storage": 2,
       "output": {
-        "uses": ["reply-dns-queries"],
+        "uses": [
+          "reply-dns-queries"
+        ],
         "amount": 3,
         "rate": "per tick"
       },
@@ -67,12 +75,16 @@
       "memory": 3,
       "storage": 3,
       "input": {
-        "uses": ["store-text"],
+        "uses": [
+          "store-text"
+        ],
         "amount": 1,
         "rate": "per tick"
       },
       "output": {
-        "uses": ["reply-dns-queries"],
+        "uses": [
+          "reply-dns-queries"
+        ],
         "amount": 20,
         "rate": "per tick",
         "target": "source"
@@ -88,12 +100,16 @@
       "memory": 6,
       "storage": 9,
       "input": {
-        "uses": ["store-text"],
+        "uses": [
+          "store-text"
+        ],
         "amount": 3,
         "rate": "per tick"
       },
       "output": {
-        "uses": ["reply-dns-queries"],
+        "uses": [
+          "reply-dns-queries"
+        ],
         "amount": 40,
         "rate": "per tick",
         "target": "source"
@@ -109,7 +125,9 @@
       "memory": 1,
       "storage": 2,
       "output": {
-        "uses": ["reply-dhcp-request"],
+        "uses": [
+          "reply-dhcp-request"
+        ],
         "amount": 3,
         "rate": "per tick"
       },
@@ -124,12 +142,16 @@
       "memory": 5,
       "storage": 7,
       "input": {
-        "uses": ["store-text"],
+        "uses": [
+          "store-text"
+        ],
         "amount": 1,
         "rate": "per tick"
       },
       "output": {
-        "uses": ["reply-dhcp-request"],
+        "uses": [
+          "reply-dhcp-request"
+        ],
         "amount": 15,
         "rate": "per tick",
         "target": "source"
@@ -145,7 +167,10 @@
       "memory": 2,
       "storage": 4,
       "output": {
-        "uses": ["store-text", "store-image"],
+        "uses": [
+          "store-text",
+          "store-image"
+        ],
         "amount": 1,
         "rate": "per tick"
       },
@@ -160,7 +185,11 @@
       "memory": 4,
       "storage": 8,
       "output": {
-        "uses": ["store-text", "store-image", "store-audio"],
+        "uses": [
+          "store-text",
+          "store-image",
+          "store-audio"
+        ],
         "amount": 2,
         "rate": "per tick"
       },
@@ -175,7 +204,12 @@
       "memory": 6,
       "storage": 12,
       "output": {
-        "uses": ["store-text", "store-image", "store-audio", "store-video"],
+        "uses": [
+          "store-text",
+          "store-image",
+          "store-audio",
+          "store-video"
+        ],
         "amount": 4,
         "rate": "per tick"
       },
@@ -190,7 +224,9 @@
       "memory": 4,
       "storage": 6,
       "output": {
-        "uses": ["store-text"],
+        "uses": [
+          "store-text"
+        ],
         "amount": 4,
         "rate": "per tick"
       },
@@ -205,12 +241,17 @@
       "memory": 2,
       "storage": 4,
       "input": {
-        "uses": ["store-text"],
+        "uses": [
+          "store-text"
+        ],
         "amount": 2,
         "rate": "per tick"
       },
       "output": {
-        "uses": ["read-text", "update-software"],
+        "uses": [
+          "read-text",
+          "update-software"
+        ],
         "amount": 16,
         "rate": "per tick",
         "target": "source"
@@ -226,13 +267,20 @@
       "memory": 6,
       "storage": 3,
       "input": {
-        "uses": ["store-text", "store-image"],
+        "uses": [
+          "store-text",
+          "store-image"
+        ],
         "amount": 3,
         "rate": "per tick",
         "logic": "AND"
       },
       "output": {
-        "uses": ["read-text", "post-text", "verify-user"],
+        "uses": [
+          "read-text",
+          "post-text",
+          "verify-user"
+        ],
         "amount": 15,
         "rate": "per tick",
         "target": "source"
@@ -248,7 +296,9 @@
       "memory": 2,
       "storage": 5,
       "output": {
-        "uses": ["accept-voip-phone-connection"],
+        "uses": [
+          "accept-voip-phone-connection"
+        ],
         "amount": 10,
         "rate": "per tick"
       },
@@ -263,7 +313,10 @@
       "memory": 4,
       "storage": 10,
       "output": {
-        "uses": ["accept-cctv-camera-connection", "accept-cctv-monitor-connection"],
+        "uses": [
+          "accept-cctv-camera-connection",
+          "accept-cctv-monitor-connection"
+        ],
         "amount": 13,
         "rate": "per tick"
       },
@@ -278,7 +331,9 @@
       "memory": 12,
       "storage": 6,
       "output": {
-        "uses": ["facilitate-p2p-transaction"],
+        "uses": [
+          "facilitate-p2p-transaction"
+        ],
         "amount": 10,
         "rate": "per tick"
       },
@@ -293,7 +348,9 @@
       "memory": 2,
       "storage": 2,
       "stores": {
-        "uses": ["access-p2p-currency"],
+        "uses": [
+          "access-p2p-currency"
+        ],
         "capacity": "10 per free storage"
       },
       "requires": null,
@@ -306,12 +363,16 @@
       "memory": 1,
       "storage": 1,
       "input": {
-        "uses": ["access-p2p-currency"],
+        "uses": [
+          "access-p2p-currency"
+        ],
         "amount": 1,
         "rate": "per tick"
       },
       "output": {
-        "uses": ["access-p2p-currency"],
+        "uses": [
+          "access-p2p-currency"
+        ],
         "amount": 1,
         "rate": "per tick",
         "target": "source"
@@ -327,12 +388,16 @@
       "memory": 4,
       "storage": 6,
       "input": {
-        "uses": ["inspect-user-packets"],
+        "uses": [
+          "inspect-user-packets"
+        ],
         "amount": 4,
         "rate": "per tick"
       },
       "output": {
-        "uses": ["support-bots"],
+        "uses": [
+          "support-bots"
+        ],
         "amount": 4,
         "rate": "per tick",
         "target": "source"
@@ -398,7 +463,9 @@
       "memory": 2,
       "storage": 1,
       "output": {
-        "uses": ["inspect-user-packets"],
+        "uses": [
+          "inspect-user-packets"
+        ],
         "amount": 4,
         "rate": "per tick"
       },
@@ -428,24 +495,83 @@
     }
   ],
   "program_categories": {
-    "dns": ["dns-lite", "dns-server", "sun-dns"],
-    "dhcp": ["dnsmasq", "kea"],
-    "storage": ["padu_v1", "padu_v2", "padu_v3", "poems-db"],
-    "services": ["gitcoffee", "mailer", "voip-server", "rtsp-diva-r"],
-    "decentro": ["decentro-node", "decentro-wallet", "decentro-collector"],
-    "botnet": ["ubbt"],
-    "router": ["rtkernel", "hakernel"],
-    "switch": ["bladeos", "vlanfirm"],
-    "firewall": ["firewatcher"],
-    "debugging": ["wirerat", "netpeeker", "dnsspam"]
+    "dns": [
+      "dns-lite",
+      "dns-server",
+      "sun-dns"
+    ],
+    "dhcp": [
+      "dnsmasq",
+      "kea"
+    ],
+    "storage": [
+      "padu_v1",
+      "padu_v2",
+      "padu_v3",
+      "poems-db"
+    ],
+    "services": [
+      "gitcoffee",
+      "mailer",
+      "voip-server",
+      "rtsp-diva-r"
+    ],
+    "decentro": [
+      "decentro-node",
+      "decentro-wallet",
+      "decentro-collector"
+    ],
+    "botnet": [
+      "ubbt"
+    ],
+    "router": [
+      "rtkernel",
+      "hakernel"
+    ],
+    "switch": [
+      "bladeos",
+      "vlanfirm"
+    ],
+    "firewall": [
+      "firewatcher"
+    ],
+    "debugging": [
+      "wirerat",
+      "netpeeker",
+      "dnsspam"
+    ]
   },
   "use_types": {
-    "storage": ["store-text", "store-image", "store-audio", "store-video"],
-    "dns": ["reply-dns-queries"],
-    "dhcp": ["reply-dhcp-request"],
-    "services": ["read-text", "post-text", "update-software", "verify-user"],
-    "connections": ["accept-voip-phone-connection", "accept-cctv-camera-connection", "accept-cctv-monitor-connection"],
-    "decentro": ["facilitate-p2p-transaction", "access-p2p-currency"],
-    "network": ["inspect-user-packets", "support-bots"]
+    "storage": [
+      "store-text",
+      "store-image",
+      "store-audio",
+      "store-video"
+    ],
+    "dns": [
+      "reply-dns-queries"
+    ],
+    "dhcp": [
+      "reply-dhcp-request"
+    ],
+    "services": [
+      "read-text",
+      "post-text",
+      "update-software",
+      "verify-user"
+    ],
+    "connections": [
+      "accept-voip-phone-connection",
+      "accept-cctv-camera-connection",
+      "accept-cctv-monitor-connection"
+    ],
+    "decentro": [
+      "facilitate-p2p-transaction",
+      "access-p2p-currency"
+    ],
+    "network": [
+      "inspect-user-packets",
+      "support-bots"
+    ]
   }
 }

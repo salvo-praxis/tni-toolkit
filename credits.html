@@ -1,3 +1,25 @@
+<!--
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  TNI Toolkit - Credits & Sources                                             ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Version: 1.3.0                                                              ║
+║  Updated: 2025-12-08                                                         ║
+║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Description:                                                                ║
+║    Credits page listing all contributors, data sources, and acknowledgments. ║
+║                                                                              ║
+║  Contributors:                                                               ║
+║    - Salvo Praxis (original author)                                          ║
+║    - Claude (Anthropic)                                                      ║
+║                                                                              ║
+║  Changelog:                                                                  ║
+║    1.3.0 - Greetz redesign: contributor counts, descending order, split view ║
+║    1.2.0 - Renamed "Core Team" to "Created By", link to CONTRIBUTIONS.md     ║
+║    1.1.0 - Added AlinaNova21, Блинчик contributions                          ║
+║    1.0.0 - Initial release                                                   ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -193,26 +215,59 @@
             font-style: italic;
         }
         
+        .greetz-label {
+            color: #7d8590;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            margin-top: 16px;
+        }
+        
+        .greetz-label:first-of-type {
+            margin-top: 0;
+        }
+        
         .greetz-list {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 8px 16px;
-            margin-bottom: 20px;
+            gap: 8px 12px;
+            margin-bottom: 12px;
         }
         
         .greetz-item {
-            color: #58a6ff;
+            display: inline-flex;
+            align-items: stretch;
             font-size: 12px;
-            padding: 4px 12px;
-            background: rgba(88, 166, 255, 0.08);
             border-radius: 4px;
+            overflow: hidden;
             transition: all 0.15s;
         }
         
-        .greetz-item:hover {
+        .greetz-item .name {
+            color: #58a6ff;
+            padding: 4px 10px;
+            background: rgba(88, 166, 255, 0.08);
+            transition: all 0.15s;
+        }
+        
+        .greetz-item .count {
+            color: #00ff88;
+            padding: 4px 8px;
+            background: rgba(0, 255, 136, 0.12);
+            font-size: 11px;
+            font-weight: 600;
+            border-left: 1px solid rgba(0, 255, 136, 0.2);
+        }
+        
+        .greetz-item:hover .name {
             background: rgba(88, 166, 255, 0.15);
             color: #00ff88;
+        }
+        
+        .greetz-item:hover .count {
+            background: rgba(0, 255, 136, 0.2);
         }
         
         .greetz-item a {
@@ -220,12 +275,28 @@
             text-decoration: none;
         }
         
+        /* Simple items without count */
+        .greetz-item.simple {
+            color: #8b949e;
+            padding: 4px 10px;
+            background: rgba(139, 148, 158, 0.08);
+        }
+        
+        .greetz-item.simple:hover {
+            background: rgba(139, 148, 158, 0.15);
+            color: #c9d1d9;
+        }
+        
+        .greetz-item.simple a {
+            color: inherit;
+        }
+        
         .greetz-message {
             color: #8b949e;
             font-size: 11px;
             border-top: 1px solid #30363d;
             padding-top: 16px;
-            margin-top: 8px;
+            margin-top: 16px;
         }
         
         .greetz-message .highlight {
@@ -360,26 +431,28 @@
             </div>
         </section>
         
-        <!-- Core Team -->
+        <!-- Created By -->
         <section class="section">
             <div class="section-header">
-                <span>👥</span>
-                <h2>Core Team</h2>
+                <span>⌨️</span>
+                <h2>Created By</h2>
             </div>
             
             <div class="team-grid">
                 <div class="team-card">
                     <h3>Salvo Praxis</h3>
-                    <div class="team-role">Project Lead</div>
-                    <div class="team-desc">Data collection, tool design, architecture, and wrangling Claude into productivity at 3am.</div>
+                    <div class="team-desc">Tools, data, design, documentation, and late-night automation pipelines.</div>
                 </div>
                 
                 <div class="team-card">
-                    <h3>Claude</h3>
-                    <div class="team-role">AI Development Partner</div>
-                    <div class="team-desc">Code generation, documentation, pair programming, and occasionally being told to read the style guide again.</div>
+                    <h3>Claude <span style="color: #8b949e; font-size: 11px; font-weight: 400;">(Anthropic)</span></h3>
+                    <div class="team-desc">AI development partner. Code generation, pair programming, and occasionally being told to read the style guide again.</div>
                 </div>
             </div>
+            
+            <p style="text-align: center; color: #7d8590; font-size: 11px; margin-top: 16px;">
+                <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/CONTRIBUTIONS.md" target="_blank" style="color: #58a6ff;">View full contribution history →</a>
+            </p>
         </section>
         
         <!-- Data Sources -->
@@ -441,20 +514,27 @@
                 
                 <p class="greetz-intro">Shoutouts to the community, contributors, and anyone who's ever debugged a network at 2am...</p>
                 
+                <p class="greetz-label">Contributors</p>
                 <div class="greetz-list">
-                    <span class="greetz-item"><a href="https://pocosia.com/" target="_blank">Pocosia Studios</a></span>
-                    <span class="greetz-item"><a href="https://discord.com/invite/nNKRMjDhf2" target="_blank">TNI Discord Community</a></span>
-                    <span class="greetz-item"><a href="https://hackmd.io/@tower-network" target="_blank">@tower-network (HackMD Wiki)</a></span>
-                    <span class="greetz-item">Thorinbur</span>
-                    <span class="greetz-item">Chaotic Crumb</span>
-                    <span class="greetz-item">Singing Pot Beast</span>
-                    <span class="greetz-item">gamers2000</span>
-                    <span class="greetz-item">Crona</span>
-                    <span class="greetz-item">The Packet Pushers</span>
-                    <span class="greetz-item">Late Night Debuggers</span>
-                    <span class="greetz-item">Cable Mgmt Perfectionists</span>
-                    <span class="greetz-item"><a href="https://anthropic.com" target="_blank">Anthropic</a></span>
-                    <span class="greetz-item">All Future Contributors</span>
+                    <span class="greetz-item"><span class="name">AlinaNova21</span><span class="count">3</span></span>
+                    <span class="greetz-item"><span class="name">Chaotic Crumb</span><span class="count">2</span></span>
+                    <span class="greetz-item"><span class="name">Singing Pot Beast</span><span class="count">1</span></span>
+                    <span class="greetz-item"><span class="name">gamers2000</span><span class="count">1</span></span>
+                    <span class="greetz-item"><span class="name">Crona</span><span class="count">1</span></span>
+                    <span class="greetz-item"><span class="name">Блинчик</span><span class="count">1</span></span>
+                </div>
+                
+                <p class="greetz-label">Shoutouts</p>
+                <div class="greetz-list">
+                    <span class="greetz-item simple"><a href="https://pocosia.com/" target="_blank">Pocosia Studios</a></span>
+                    <span class="greetz-item simple"><a href="https://discord.com/invite/nNKRMjDhf2" target="_blank">TNI Discord</a></span>
+                    <span class="greetz-item simple"><a href="https://hackmd.io/@tower-network" target="_blank">@tower-network</a></span>
+                    <span class="greetz-item simple">Thorinbur</span>
+                    <span class="greetz-item simple"><a href="https://anthropic.com" target="_blank">Anthropic</a></span>
+                    <span class="greetz-item simple">The Packet Pushers</span>
+                    <span class="greetz-item simple">Late Night Debuggers</span>
+                    <span class="greetz-item simple">Cable Mgmt Perfectionists</span>
+                    <span class="greetz-item simple">All Future Contributors</span>
                 </div>
                 
                 <p class="greetz-message">
@@ -482,6 +562,24 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <td><code>device-calculator.html</code></td>
+                        <td>v1.2.0</td>
+                        <td>Device categories, search, sharecode sharing, file table display</td>
+                        <td>Added: <strong>AlinaNova21</strong><br>Mentioned: <strong>Блинчик</strong></td>
+                    </tr>
+                    <tr>
+                        <td><code>tni-store.json</code></td>
+                        <td>v1.1.0</td>
+                        <td>Added cpu, memory, storage, firmware fields to network devices</td>
+                        <td>Added: <strong>AlinaNova21</strong></td>
+                    </tr>
+                    <tr>
+                        <td><code>tni-programs.json</code></td>
+                        <td>v1.1.1</td>
+                        <td>Whitespace cleanup (trailing spaces removed)</td>
+                        <td>Cleaned: <strong>AlinaNova21</strong></td>
+                    </tr>
+                    <tr>
                         <td><code>tni-store.json</code></td>
                         <td>v1.0.1</td>
                         <td>ICC sata_slots corrected from 2 to 1</td>
@@ -496,8 +594,8 @@
                     <tr>
                         <td><code>tni-traffic-types.json</code></td>
                         <td>v1.0.0</td>
-                        <td>Network traffic types data from HackMD wiki</td>
-                        <td>Source: <strong>@tower-network</strong><br>Confirmed: <strong>Thorinbur</strong></td>
+                        <td>Network traffic types converted from HackMD wiki</td>
+                        <td>Source: <strong>@tower-network</strong><br>Converted: <strong>Salvo Praxis</strong></td>
                     </tr>
                 </tbody>
             </table>
