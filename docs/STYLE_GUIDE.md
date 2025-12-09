@@ -1095,4 +1095,173 @@ Use these consistently in headers:
 
 ## Version History
 
+- **v1.1** (2025-12-09) - Added Page Header, Footer, and Back Link patterns
 - **v1.0** (2024-12) - Initial style guide based on seed-finder and server-calculator
+
+---
+
+## Page Layout Patterns
+
+### Standardized Header
+
+All pages use consistent header structure and spacing:
+
+```css
+.header {
+    text-align: center;
+    padding: 40px 0 30px;
+    border-bottom: 1px solid #30363d;
+    margin-bottom: 30px;  /* 0 for index */
+}
+
+h1 {
+    color: #00ff88;
+    text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+h1 span { color: #58a6ff; }
+
+.tagline, .subtitle {
+    color: #8b949e;
+    font-size: 12px;
+    margin: 0;
+}
+```
+
+**Spacing breakdown:**
+```
+40px ─── padding-top
+TITLE
+8px ─── h1 margin-bottom  
+Subtitle
+16px ─── back-link margin-top
+[← Back to Toolkit]
+30px ─── padding-bottom
+─────── border-bottom
+```
+
+**Color scheme:**
+- Pages (index/credits/contributing): TNI (green `#00ff88`) + TOOLKIT (blue `#58a6ff`)
+- Tools: TNI (blue `#58a6ff`) + APP NAME (green `#00ff88`)
+
+### Back Link Button
+
+Styled as secondary button, positioned inside header after subtitle:
+
+```css
+.back-link {
+    display: inline-block;  /* or none for conditional */
+    margin-top: 16px;
+    color: #58a6ff;
+    text-decoration: none;
+    font-size: 11px;
+    padding: 6px 12px;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    transition: all 0.15s;
+}
+
+.back-link:hover {
+    border-color: #58a6ff;
+    background: rgba(88, 166, 255, 0.1);
+}
+
+/* For conditional display in tools */
+.back-link.visible {
+    display: inline-block;
+}
+```
+
+```html
+<div class="header">
+    <h1><span>TNI</span> APP NAME</h1>
+    <p class="subtitle">Subtitle text</p>
+    <a href="../index.html" class="back-link">← Back to Toolkit</a>
+</div>
+```
+
+### Standardized Footer
+
+Three-row structure: nav links, charm line, badges.
+
+```html
+<footer class="footer">
+    <div class="footer-links">
+        <a href="...">GitHub</a>
+        <span class="footer-sep">|</span>
+        <a href="...">Contributions Log</a>
+        <span class="footer-sep">|</span>
+        <!-- page links, hide current page -->
+        <a href="...">TNI on Steam</a>
+    </div>
+    <p class="footer-note">Charm line here</p>
+    <div class="footer-badges">
+        <span class="version-badge">v1.2.0</span>
+        <a href="..." class="license-badge">MIT License — Free to use, modify, and share</a>
+    </div>
+</footer>
+```
+
+```css
+.footer {
+    text-align: center;
+    padding-top: 24px;
+    margin-top: 40px;
+    border-top: 1px solid #30363d;
+    font-size: 12px;
+}
+
+.footer-links a {
+    color: #8b949e;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.footer-links a:hover { color: #58a6ff; }
+
+.footer-sep {
+    margin: 0 8px;
+    color: #30363d;
+}
+
+.footer-note {
+    color: #7d8590;
+    font-size: 11px;
+    margin: 12px 0;
+}
+
+.footer-badges { margin-top: 12px; }
+
+.version-badge {
+    display: inline-block;
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid #30363d;
+    color: #8b949e;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    margin-right: 8px;
+}
+
+.license-badge {
+    display: inline-block;
+    background: rgba(88, 166, 255, 0.1);
+    border: 1px solid #30363d;
+    color: #8b949e;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    text-decoration: none;
+    transition: all 0.15s;
+}
+
+.license-badge:hover {
+    border-color: #58a6ff;
+    color: #58a6ff;
+}
+```

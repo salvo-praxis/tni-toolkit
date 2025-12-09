@@ -4,6 +4,21 @@ Running log of all contributions to the TNI Toolkit. For guidelines on contribut
 
 ---
 
+## 2025-12-09
+
+### Salvo Praxis
+- `index.html` v1.3.0 — Header/footer standardization, launch opens same tab, download buttons
+- `seed-finder.html` v1.1.0 — Renamed to "Starting Proposal Seed Finder", merged subtitle, header/footer standardization
+- `device-calculator.html` v1.3.0 — Header/footer standardization, container max-width
+- `credits.html` v1.4.0 — Footer standardization, table column width fix
+- `contributing.html` v1.2.0 — Footer standardization with badges
+- `STYLE_GUIDE.md` v1.1 — Added Page Layout Patterns (header, footer, back link CSS)
+- `build-zip.ps1` — New script for packaging toolkit ZIP
+- Conditional back button: moved inside header, query param detection
+- Navigation: launch opens same tab, download uses raw GitHub URLs
+
+---
+
 ## 2025-12-08
 
 ### AlinaNova21
@@ -17,7 +32,7 @@ Running log of all contributions to the TNI Toolkit. For guidelines on contribut
 - Added HTML header format to all HTML files
 - Added Custom Dropdown pattern to `STYLE_GUIDE.md`
 - Updated all documentation (CLAUDE.md, README.md, CONTRIBUTING.md, contributing.html)
-- Added contribution tracking to credits.html
+- `credits.html` v1.3.0 — Redesigned greetz with contribution counts, added CONTRIBUTIONS.md link
 
 ### Блинчик
 - Mentioned device calculator improvements in Discord
@@ -80,4 +95,8 @@ This is a simple changelog-style record of who contributed what and when. It com
 - **JSON `_meta.contributors`** — Attribution embedded in data files
 - **HTML header comments** — Attribution embedded in tool files
 
-When you contribute, add your entry here with a one-liner describing what you did.
+**Adding entries:**
+- Group by date, then by contributor
+- Version-bumped files: `` `filename` vX.Y.Z — Brief description ``
+- General work: one-liner describing the change
+- Keep it concise — details live in commit messages and file headers

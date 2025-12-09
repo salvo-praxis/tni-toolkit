@@ -158,13 +158,18 @@ This mirrors the `_meta` format in JSON files — version tracking, attribution,
 - [ ] Includes HTML header comment (version, contributors, changelog)
 - [ ] Matches NOC theme (dark, green/blue accents)
 - [ ] Works offline (no fetch requests)
-- [ ] Includes standard footer with links
+- [ ] Includes standardized header (`padding: 40px 0 30px`, h1 margin `0 0 8px 0`)
+- [ ] Includes conditional back link (shows when launched from toolkit)
+- [ ] Includes standardized footer (links, charm line, version/license badges)
 - [ ] Mobile responsive
 - [ ] Tested in multiple browsers
 
 ### Style Guide Highlights
 
-- **Custom Dropdown**: Use the Custom Dropdown pattern from `STYLE_GUIDE.md` instead of native `<select>` elements (they don't style well on dark themes)
+- **Headers**: Use standardized header CSS from `STYLE_GUIDE.md` — consistent padding, spacing, color scheme
+- **Back Link**: Conditional "← Back to Toolkit" button in header (see `STYLE_GUIDE.md` for CSS/JS pattern)
+- **Footer**: Three rows — nav links (TNI Toolkit | GitHub | Contributions Log | TNI on Steam), charm line, version/license badges
+- **Custom Dropdown**: Use the Custom Dropdown pattern instead of native `<select>` elements (they don't style well on dark themes)
 - **Input padding**: Always `10px 12px`
 - **Table headers**: Color `#58a6ff`, font-weight `600`
 - **Buttons**: Use `.btn-primary` (green) or `.btn-secondary` (blue outline) patterns
@@ -199,6 +204,45 @@ Example: [tni-seed-harvester](https://github.com/salvo-praxis/tni-seed-harvester
 
 ---
 
+## Toolkit Releases
+
+The toolkit itself has a version number separate from individual tools and data files. Tools and data get frequent updates from the community; toolkit releases are periodic bundles.
+
+### Versioning
+
+Toolkit uses **semantic versioning**: `vMAJOR.MINOR.PATCH`
+
+| Change Type | Version Bump | Example |
+|-------------|--------------|---------|
+| Bug fixes, typos, small tweaks | PATCH | `v1.2.0` → `v1.2.1` |
+| New tools, features, data files | MINOR | `v1.2.1` → `v1.3.0` |
+| Breaking changes, major redesign | MAJOR | `v1.3.0` → `v2.0.0` |
+
+### What Triggers a Release?
+
+- New tool added
+- Significant feature additions to existing tools
+- Major data file additions or schema changes
+- Accumulation of multiple smaller changes
+
+Not every commit needs a release. Day-to-day fixes and small additions stay on `main` until there's enough to bundle.
+
+### Downloads
+
+A `tni-toolkit.zip` file is maintained in the repo root for end users who want to download and run the toolkit locally. It contains user-facing files (tools, HTML pages, license) — no `.md` contributor documentation.
+
+**Download**: [tni-toolkit.zip](https://github.com/salvo-praxis/tni-toolkit/raw/main/tni-toolkit.zip)
+
+### For Maintainers
+
+When updating the ZIP:
+
+1. Update version in `index.html` header comment and footer badge
+2. Run `.\build-zip.ps1` from repo root
+3. Commit the updated ZIP
+
+---
+
 ## Questions?
 
 - Open an issue for questions or discussion
@@ -210,6 +254,7 @@ Example: [tni-seed-harvester](https://github.com/salvo-praxis/tni-seed-harvester
 ## Credits
 
 Contributors are recognized in:
+- [Contributions Log](CONTRIBUTIONS.md) — running changelog of all contributions
 - HTML file header comments
 - JSON file `contributors` arrays
 - [Credits page](credits.html) on the toolkit site

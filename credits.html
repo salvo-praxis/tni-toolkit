@@ -2,8 +2,8 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║  TNI Toolkit - Credits & Sources                                             ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║  Version: 1.3.0                                                              ║
-║  Updated: 2025-12-08                                                         ║
+║  Version: 1.4.0                                                              ║
+║  Updated: 2025-12-09                                                         ║
 ║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Description:                                                                ║
@@ -14,6 +14,7 @@
 ║    - Claude (Anthropic)                                                      ║
 ║                                                                              ║
 ║  Changelog:                                                                  ║
+║    1.4.0 - Footer standardization, table column width fix                    ║
 ║    1.3.0 - Greetz redesign: contributor counts, descending order, split view ║
 ║    1.2.0 - Renamed "Core Team" to "Created By", link to CONTRIBUTIONS.md     ║
 ║    1.1.0 - Added AlinaNova21, Блинчик contributions                          ║
@@ -145,7 +146,13 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 12px;
+            table-layout: fixed;
         }
+        
+        .sources-table th:nth-child(1) { width: 170px; }  /* File */
+        .sources-table th:nth-child(2) { width: 75px; }   /* Version */
+        .sources-table th:nth-child(3) { width: auto; }   /* Contribution */
+        .sources-table th:nth-child(4) { width: 120px; }  /* Credit */
         
         .sources-table th {
             text-align: left;
@@ -162,6 +169,7 @@
             padding: 12px;
             border-bottom: 1px solid rgba(48, 54, 61, 0.5);
             vertical-align: top;
+            word-wrap: break-word;
         }
         
         .sources-table tr:hover td {
@@ -396,9 +404,36 @@
         
         .footer-sep { color: #30363d; }
         
-        .license {
-            color: #7d8590;
-            font-size: 11px;
+        .footer-badges {
+            margin-top: 12px;
+        }
+        
+        .version-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #30363d;
+            color: #8b949e;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            margin-right: 8px;
+        }
+        
+        .license-badge {
+            display: inline-block;
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid #30363d;
+            color: #8b949e;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+        
+        .license-badge:hover {
+            border-color: #58a6ff;
+            color: #58a6ff;
         }
         
         /* Responsive */
@@ -628,15 +663,20 @@
         <!-- Footer -->
         <footer class="footer">
             <div class="footer-links">
+                <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub</a>
+                <span class="footer-sep">|</span>
+                <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/CONTRIBUTIONS.md" target="_blank">Contributions Log</a>
+                <span class="footer-sep">|</span>
                 <a href="index.html">Home</a>
                 <span class="footer-sep">|</span>
                 <a href="contributing.html">Contributing</a>
                 <span class="footer-sep">|</span>
-                <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub</a>
-                <span class="footer-sep">|</span>
                 <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">TNI on Steam</a>
             </div>
-            <p class="license">MIT License — Free to use, modify, and share</p>
+            <div class="footer-badges">
+                <span class="version-badge">v1.2.0</span>
+                <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/LICENSE" target="_blank" class="license-badge">MIT License — Free to use, modify, and share</a>
+            </div>
         </footer>
     </div>
 </body>

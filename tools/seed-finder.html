@@ -2,8 +2,8 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║  TNI Starting Proposal Seed Finder                                           ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║  Version: 1.0.0                                                              ║
-║  Updated: 2025-12-07                                                         ║
+║  Version: 1.1.0                                                              ║
+║  Updated: 2025-12-09                                                         ║
 ║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
 ║  Source:  TNI Seed Harvester (https://github.com/salvo-praxis/tni-seed-harvester)
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -25,6 +25,7 @@
 ║    - Claude (Anthropic)                                                      ║
 ║                                                                              ║
 ║  Changelog:                                                                  ║
+║    1.1.0 - Renamed "Starting Proposal Seed Finder", header/footer, back link ║
 ║    1.0.0 - Initial release with 3,794 seeds, 455 combinations                ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
 -->
@@ -33,7 +34,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TNI Seed Finder</title> 
+    <title>TNI Starting Proposal Seed Finder</title> 
     <style>
         * { box-sizing: border-box; }
         
@@ -44,15 +45,36 @@
             margin: 0;
             padding: 24px;
             min-height: 100vh;
+            line-height: 1.6;
         }
         
         .container { max-width: 1200px; margin: 0 auto; }
         
+        /* Back to Toolkit button */
+        .back-link {
+            display: none;
+            margin-top: 16px;
+            color: #58a6ff;
+            text-decoration: none;
+            font-size: 11px;
+            padding: 6px 12px;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            transition: all 0.15s;
+        }
+        .back-link:hover {
+            border-color: #58a6ff;
+            background: rgba(88, 166, 255, 0.1);
+        }
+        .back-link.visible {
+            display: inline-block;
+        }
+        
         .header {
-            border-bottom: 1px solid #30363d;
-            padding-bottom: 16px;
-            margin-bottom: 24px;
             text-align: center;
+            padding: 40px 0 30px;
+            border-bottom: 1px solid #30363d;
+            margin-bottom: 30px;
         }
         
         h1 {
@@ -269,14 +291,51 @@
             margin: 0 8px;
             color: #30363d;
         }
+        
+        .site-footer .footer-note {
+            margin: 12px 0;
+            color: #7d8590;
+        }
+        
+        .site-footer .footer-badges {
+            margin-top: 12px;
+        }
+        
+        .site-footer .version-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #30363d;
+            color: #8b949e;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            margin-right: 8px;
+        }
+        
+        .site-footer .license-badge {
+            display: inline-block;
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid #30363d;
+            color: #8b949e;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+        
+        .site-footer .license-badge:hover {
+            border-color: #58a6ff;
+            color: #58a6ff;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>TNI <span>SEED FINDER</span></h1>
-            <p class="subtitle">Find seeds by selecting desired proposals</p>
-            <p class="stats">Database: <span id="seedCount">0</span> verified seeds</p>
+            <h1><span>TNI</span> STARTING PROPOSAL SEED FINDER</h1>
+            <p class="subtitle">Select Proposals • 455 Combinations • <span id="seedCount">3794</span> Seeds</p>
+            <a href="../index.html" class="back-link" id="back-to-toolkit">← Back to Toolkit</a>
         </div>
         
         <div class="panel">
@@ -441,12 +500,54 @@
 
         document.getElementById('proposalSearch').addEventListener('input', renderProposals);
         init();
+        
+        // Show back link if toolkit index is accessible
+        (function() {
+            const backLink = document.getElementById('back-to-toolkit');
+            const isGitHubPages = window.location.hostname.includes('github.io');
+            const fromToolkit = new URLSearchParams(window.location.search).get('from') === 'toolkit';
+            const hasIndexReferrer = document.referrer.includes('index.html') || 
+                                     document.referrer.includes('tni-toolkit');
+            const isHttp = window.location.protocol.startsWith('http');
+            
+            if (isGitHubPages) {
+                // GitHub Pages - toolkit guaranteed, use absolute URL
+                backLink.classList.add('visible');
+                backLink.href = 'https://salvo-praxis.github.io/tni-toolkit/';
+            } else if (fromToolkit || hasIndexReferrer) {
+                // Launched from index.html (query param or referrer)
+                backLink.classList.add('visible');
+                backLink.href = '../index.html';
+            } else if (isHttp) {
+                // HTTP/HTTPS but no referrer (bookmarked?) - try fetch
+                fetch('../index.html', { method: 'HEAD' })
+                    .then(response => {
+                        if (response.ok) {
+                            backLink.classList.add('visible');
+                            backLink.href = '../index.html';
+                        }
+                    })
+                    .catch(() => {});
+            }
+            // file:// with no referrer/param = standalone download, stays hidden
+        })();
     </script>
     
-    <div class="site-footer">
-        <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">TNI Toolkit</a>
-        <span class="sep">|</span>
-        <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">Tower Networking Inc. on Steam</a>
-    </div>
+    <footer class="site-footer">
+        <div class="footer-links">
+            <a href="https://salvo-praxis.github.io/tni-toolkit/" target="_blank">TNI Toolkit</a>
+            <span class="sep">|</span>
+            <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub</a>
+            <span class="sep">|</span>
+            <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/CONTRIBUTIONS.md" target="_blank">Contributions Log</a>
+            <span class="sep">|</span>
+            <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">TNI on Steam</a>
+        </div>
+        <p class="footer-note">Made with ❤️ for the TNI community</p>
+        <div class="footer-badges">
+            <span class="version-badge">v1.2.0</span>
+            <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/LICENSE" target="_blank" class="license-badge">MIT License — Free to use, modify, and share</a>
+        </div>
+    </footer>
 </body>
 </html>

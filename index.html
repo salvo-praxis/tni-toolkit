@@ -2,8 +2,8 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║  TNI Toolkit - Landing Page                                                  ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║  Version: 1.1.0                                                              ║
-║  Updated: 2025-12-08                                                         ║
+║  Version: 1.3.0                                                              ║
+║  Updated: 2025-12-09                                                         ║
 ║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Description:                                                                ║
@@ -15,6 +15,8 @@
 ║    - Claude (Anthropic)                                                      ║
 ║                                                                              ║
 ║  Changelog:                                                                  ║
+║    1.3.0 - Header/footer standardization, launch same tab, download buttons  ║
+║    1.2.0 - Download buttons, toolkit releases support                        ║
 ║    1.1.0 - Renamed Server Calculator to Device Compatibility Calculator      ║
 ║    1.0.0 - Initial release with tools, data links, roadmap                   ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
@@ -48,7 +50,7 @@
             text-align: center;
             padding: 40px 0 30px;
             border-bottom: 1px solid #30363d;
-            margin-bottom: 30px;
+            margin-bottom: 0;
         }
         
         .logo {
@@ -85,7 +87,7 @@
             align-items: center;
             gap: 10px;
             margin-bottom: 16px;
-            padding-bottom: 10px;
+            padding: 8px 0;
             border-bottom: 1px solid #30363d;
         }
         
@@ -95,6 +97,15 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1.5px;
+        }
+        
+        .section-header .spacer {
+            flex-grow: 1;
+        }
+        
+        .section-header .btn {
+            padding: 6px 12px;
+            font-size: 10px;
         }
         
         .section-icon {
@@ -145,6 +156,21 @@
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .tool-links .spacer {
+            flex-grow: 1;
+        }
+        
+        .btn-download {
+            background: rgba(139, 148, 158, 0.1);
+            border: 1px solid #30363d;
+            color: #8b949e;
+        }
+        .btn-download:hover {
+            border-color: #f0883e;
+            color: #f0883e;
         }
         
         .btn {
@@ -380,6 +406,10 @@
             margin-top: 16px;
         }
         
+        .footer-badges {
+            margin-top: 12px;
+        }
+        
         .license-badge {
             display: inline-block;
             background: rgba(88, 166, 255, 0.1);
@@ -388,7 +418,24 @@
             padding: 4px 10px;
             border-radius: 4px;
             font-size: 10px;
-            margin-top: 12px;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+        
+        .license-badge:hover {
+            border-color: #58a6ff;
+            color: #58a6ff;
+        }
+        
+        .version-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #30363d;
+            color: #8b949e;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            margin-right: 8px;
         }
         
         /* Responsive */
@@ -420,6 +467,8 @@
             <div class="section-header">
                 <span class="section-icon">🛠️</span>
                 <h2>Tools</h2>
+                <span class="spacer"></span>
+                <a href="https://github.com/salvo-praxis/tni-toolkit/raw/main/tni-toolkit.zip" class="btn btn-secondary" title="Download toolkit ZIP">🗂️ Download Toolkit</a>
             </div>
             <p style="color: #8b949e; font-size: 12px; margin-bottom: 20px;">
                 Standalone HTML files — open in any browser. Works offline. All data embedded.
@@ -430,17 +479,21 @@
                     <h3>📊 Device Compatibility Calculator</h3>
                     <p>Select a server, check off programs, and instantly see if CPU/Memory/Storage requirements fit. Automatically factors in SATA expansion.</p>
                     <div class="tool-links">
-                        <a href="tools/device-calculator.html" class="btn btn-primary">▶ Launch Tool</a>
+                        <a href="tools/device-calculator.html?from=toolkit" class="btn btn-primary">▶ Launch</a>
                         <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/tools/device-calculator.html" class="btn btn-secondary" target="_blank">📄 Source</a>
+                        <span class="spacer"></span>
+                        <a href="https://github.com/salvo-praxis/tni-toolkit/raw/main/tools/device-calculator.html" class="btn btn-download" download title="Download this tool">💾 Download</a>
                     </div>
                 </div>
                 
                 <div class="tool-card">
-                    <h3>🎯 Seed Finder</h3>
-                    <p>Search 3,794 verified seeds by selecting up to 3 starting proposals. Find the perfect seed for your playstyle — 455 possible combinations.</p>
+                    <h3>🎯 Starting Proposal Seed Finder</h3>
+                    <p>Select up to 3 starting proposals to find matching seeds. 455 combinations across 3,794 verified seeds.</p>
                     <div class="tool-links">
-                        <a href="tools/seed-finder.html" class="btn btn-primary">▶ Launch Tool</a>
+                        <a href="tools/seed-finder.html?from=toolkit" class="btn btn-primary">▶ Launch</a>
                         <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/tools/seed-finder.html" class="btn btn-secondary" target="_blank">📄 Source</a>
+                        <span class="spacer"></span>
+                        <a href="https://github.com/salvo-praxis/tni-toolkit/raw/main/tools/seed-finder.html" class="btn btn-download" download title="Download this tool">💾 Download</a>
                     </div>
                 </div>
             </div>
@@ -540,27 +593,30 @@
         <!-- Footer -->
         <footer class="footer">
             <div class="footer-links">
-                <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub Repository</a>
+                <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub</a>
                 <span class="footer-sep">|</span>
-                <a href="contributing.html">Contributing</a>
+                <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/CONTRIBUTIONS.md" target="_blank">Contributions Log</a>
                 <span class="footer-sep">|</span>
                 <a href="credits.html">Credits & Sources</a>
                 <span class="footer-sep">|</span>
-                <a href="https://github.com/salvo-praxis/tni-seed-harvester" target="_blank">Seed Harvester</a>
+                <a href="contributing.html">Contributing</a>
                 <span class="footer-sep">|</span>
                 <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">TNI on Steam</a>
             </div>
             
             <p class="footer-note">
-                Fan project. <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">Tower Networking Inc.</a> 
-                is developed by <a href="https://pocosia.com/" target="_blank">Pocosia Studios</a> — a 2-person team making co-op economic sims.
+                Fan project • <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">Tower Networking Inc.</a> 
+                by <a href="https://pocosia.com/" target="_blank">Pocosia Studios</a>
             </p>
             
             <p class="footer-shoutout">
                 🏆 Keep up the awesome work Pocosia — yours is the only game like it!
             </p>
             
-            <span class="license-badge">MIT License</span>
+            <div class="footer-badges">
+                <span class="version-badge">v1.2.0</span>
+                <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/LICENSE" target="_blank" class="license-badge">MIT License — Free to use, modify, and share</a>
+            </div>
         </footer>
     </div>
 </body>

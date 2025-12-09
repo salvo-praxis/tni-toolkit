@@ -20,14 +20,17 @@ tni-toolkit/
 ├── contributing.html      # Contribution guide (styled)
 ├── credits.html           # Credits, sources, greetz
 ├── README.md              # GitHub readme
+├── LICENSE                # MIT License
+├── build-zip.ps1          # ZIP build script (PowerShell)
+├── tni-toolkit.zip        # Downloadable toolkit bundle
 ├── data/                  # Source JSON datasets
 │   ├── tni-store.json     # Equipment catalog (v1.1.0)
 │   ├── tni-programs.json  # Server programs (v1.1.1)
 │   ├── tni-cli-commands.json
 │   └── tni-traffic-types.json
 ├── tools/                 # Standalone HTML tools
-│   ├── device-calculator.html  # Device compatibility calculator (v1.2.0)
-│   └── seed-finder.html
+│   ├── device-calculator.html  # Device compatibility calculator (v1.2.1)
+│   └── seed-finder.html        # Seed finder (v1.1.0)
 └── docs/
     └── STYLE_GUIDE.md     # Detailed styling reference
 ```
@@ -38,8 +41,236 @@ tni-toolkit/
 2. **Single HTML file** — All CSS in `<style>`, all JS in `<script>`, data embedded as JS objects
 3. **Include HTML header comment** — Version, contributors, changelog (see format below)
 4. **Match the NOC aesthetic** — Dark theme, monospace font, green/blue accents
-5. **Include standard footer** — Links to TNI Toolkit and Steam page
-6. **Test offline** — Tools must work without network access
+5. **Include standard footer** — Links to TNI Toolkit (.io site), GitHub, and Steam page
+6. **Include conditional back link** — See pattern below
+7. **Test offline** — Tools must work without network access
+
+## Tool Navigation Patterns
+
+### index.html Tool Cards
+
+Each tool card has three buttons:
+- **▶ Launch** — Opens tool in same tab (users can right-click or ctrl+click for new tab)
+- **📄 Source** — Links to GitHub file view (`target="_blank"`)
+- **💾 Download** — Right-aligned, raw GitHub URL forces download
+
+Section header includes **🗂️ Download Toolkit** button linking to GitHub ZIP archive.
+
+### Conditional Back Link
+
+Tools include a "← Back to Toolkit" button that shows only when appropriate:
+
+**index.html Launch links include `?from=toolkit`:**
+```html
+<a href="tools/device-calculator.html?from=toolkit" class="btn btn-primary">▶ Launch</a>
+```
+
+**Tool script checks for the param:**
+```javascript
+(function() {
+    const backLink = document.getElementById('back-to-toolkit');
+    const isGitHubPages = window.location.hostname.includes('github.io');
+    const fromToolkit = new URLSearchParams(window.location.search).get('from') === 'toolkit';
+    const hasIndexReferrer = document.referrer.includes('index.html') || 
+                             document.referrer.includes('tni-toolkit');
+    const isHttp = window.location.protocol.startsWith('http');
+    
+    if (isGitHubPages) {
+        backLink.classList.add('visible');
+        backLink.href = 'https://salvo-praxis.github.io/tni-toolkit/';
+    } else if (fromToolkit || hasIndexReferrer) {
+        backLink.classList.add('visible');
+        backLink.href = '../index.html';
+    } else if (isHttp) {
+        fetch('../index.html', { method: 'HEAD' })
+            .then(response => {
+                if (response.ok) {
+                    backLink.classList.add('visible');
+                    backLink.href = '../index.html';
+                }
+            })
+            .catch(() => {});
+    }
+})();
+```
+
+**Behavior:**
+
+| Scenario | Back Link |
+|----------|-----------|
+| GitHub Pages (any access) | ✅ Shows (absolute URL) |
+| Launched from index.html (local/hosted) | ✅ Shows (query param) |
+| Bookmarked on hosted site | ✅ Shows (fetch succeeds) |
+| Standalone downloaded file | ❌ Hidden (no param, fetch blocked) |
+
+CSS for back link (styled as secondary button, centered in header):
+```css
+.back-link {
+    display: none;  /* or inline-block for static pages */
+    margin-top: 16px;
+    color: #58a6ff;
+    text-decoration: none;
+    font-size: 11px;
+    padding: 6px 12px;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    transition: all 0.15s;
+}
+.back-link:hover {
+    border-color: #58a6ff;
+    background: rgba(88, 166, 255, 0.1);
+}
+.back-link.visible {
+    display: inline-block;
+}
+```
+
+### Standardized Header CSS
+
+All pages use this header format for visual consistency:
+
+```css
+.header {
+    text-align: center;
+    padding: 40px 0 30px;
+    border-bottom: 1px solid #30363d;
+    margin-bottom: 30px;  /* or 0 for index */
+}
+
+h1 {
+    color: #00ff88;
+    text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+h1 span { color: #58a6ff; }
+
+.tagline, .subtitle {
+    color: #8b949e;
+    font-size: 12px;
+    margin: 0;
+}
+```
+
+**Header spacing breakdown:**
+```
+40px ─── padding-top
+TITLE
+8px ─── h1 margin-bottom  
+Subtitle
+16px ─── back-link margin-top
+[← Back to Toolkit]
+30px ─── padding-bottom
+─────── border-bottom
+```
+
+**Color scheme:**
+- Index/Credits/Contributing: TNI (green `#00ff88`) + TOOLKIT (blue `#58a6ff`)
+- Tools: TNI (blue `#58a6ff`) + APP NAME (green `#00ff88`)
+
+HTML placement (inside header, after subtitle):
+```html
+<div class="header">
+    <h1><span>TNI</span> APP NAME</h1>
+    <p class="subtitle">Subtitle text</p>
+    <a href="../index.html" class="back-link" id="back-to-toolkit">← Back to Toolkit</a>
+</div>
+```
+
+### Standardized Footer
+
+**Structure:**
+```
+[Row 1: Navigation Links]
+[Row 2: Charm Line - unique per page]
+[Row 3: Version & License Badges]
+```
+
+**Pages (index, credits, contributing):**
+```html
+<footer class="footer">
+    <div class="footer-links">
+        <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub</a>
+        <span class="footer-sep">|</span>
+        <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/CONTRIBUTIONS.md" target="_blank">Contributions Log</a>
+        <span class="footer-sep">|</span>
+        <!-- Hide current page link -->
+        <a href="credits.html">Credits & Sources</a>
+        <span class="footer-sep">|</span>
+        <a href="contributing.html">Contributing</a>
+        <span class="footer-sep">|</span>
+        <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">TNI on Steam</a>
+    </div>
+    <p class="footer-note">Charm line here</p>
+    <div class="footer-badges">
+        <span class="version-badge">v1.2.0</span>
+        <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/LICENSE" target="_blank" class="license-badge">MIT License — Free to use, modify, and share</a>
+    </div>
+</footer>
+```
+
+**Tools:**
+```html
+<footer class="site-footer">
+    <div class="footer-links">
+        <a href="https://salvo-praxis.github.io/tni-toolkit/" target="_blank">TNI Toolkit</a>
+        <span class="sep">|</span>
+        <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub</a>
+        <span class="sep">|</span>
+        <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/CONTRIBUTIONS.md" target="_blank">Contributions Log</a>
+        <span class="sep">|</span>
+        <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">TNI on Steam</a>
+    </div>
+    <p class="footer-note">Made with ❤️ for the TNI community</p>
+    <div class="footer-badges">
+        <span class="version-badge">v1.2.0</span>
+        <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/LICENSE" target="_blank" class="license-badge">MIT License — Free to use, modify, and share</a>
+    </div>
+</footer>
+```
+
+**Charm lines by page:**
+- Index: "Fan project • Tower Networking Inc. by Pocosia Studios" + shoutout
+- Credits: (none - badges cover it)
+- Contributing: "Made with ❤️ for the TNI community"
+- Tools: "Made with ❤️ for the TNI community"
+
+**Badge CSS:**
+```css
+.footer-badges { margin-top: 12px; }
+
+.version-badge {
+    display: inline-block;
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid #30363d;
+    color: #8b949e;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    margin-right: 8px;
+}
+
+.license-badge {
+    display: inline-block;
+    background: rgba(88, 166, 255, 0.1);
+    border: 1px solid #30363d;
+    color: #8b949e;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    text-decoration: none;
+    transition: all 0.15s;
+}
+
+.license-badge:hover {
+    border-color: #58a6ff;
+    color: #58a6ff;
+}
+```
 
 ## File Header Formats
 
@@ -361,6 +592,37 @@ If confused: *"Stop. Read CLAUDE.md and docs/STYLE_GUIDE.md again. Then look at 
 
 ---
 
+## Building the Toolkit ZIP
+
+A `tni-toolkit.zip` is maintained in the repo root for users who want to download everything at once.
+
+### Build Script
+
+Run from repo root:
+```powershell
+.\build-zip.ps1
+```
+
+This creates `tni-toolkit.zip` containing only user-facing files:
+- `tools/` — all standalone tools
+- `index.html` — landing page
+- `contributing.html` — contribution guide
+- `credits.html` — attribution
+- `LICENSE`
+
+**Excluded:** Everything else — `data/`, `docs/`, all `.md` files, build scripts, IDE files. These are for contributors who clone the repo, not end users.
+
+### When to Update
+
+Rebuild the ZIP when:
+- Adding new tools
+- Significant feature additions
+- Before announcing updates to the community
+
+Don't forget to update the version badge in `index.html` footer.
+
+---
+
 ## Recent Session Notes
 
 ### 2025-12-08: AlinaNova21 PR Integration
@@ -378,8 +640,32 @@ If confused: *"Stop. Read CLAUDE.md and docs/STYLE_GUIDE.md again. Then look at 
 
 **File renamed:** `server-calculator.html` → `device-calculator.html`
 
-**Documentation updated:**
-- All HTML files now have box-drawing header comments
-- `contributing.html` documents HTML header format
-- `STYLE_GUIDE.md` includes Custom Dropdown pattern
-- `README.md` updated with new tool name and contributors
+### 2025-12-09: UX Polish & Standardization
+
+**Header standardization (all pages):**
+- Consistent padding: `40px 0 30px`
+- H1 margin: `0 0 8px 0`, subtitle margin: `0`
+- Back button: `margin-top: 16px`, matches credits/contributing styling
+- Color scheme: Tools use TNI (blue) + APP NAME (green); Pages use TNI (green) + TOOLKIT (blue)
+
+**Footer standardization (all pages):**
+- Row 1: GitHub | Contributions Log | [page links] | TNI on Steam
+- Row 2: Charm line (unique per page)
+- Row 3: Version badge + MIT License badge (links to LICENSE file)
+
+**Navigation:**
+- Launch buttons open in same tab (removed `target="_blank"`)
+- `?from=toolkit` param enables conditional back button
+- Download buttons use raw GitHub URLs for forced download
+
+**Tool updates:**
+- Seed Finder renamed to "Starting Proposal Seed Finder"
+- Subtitle merged: "Select Proposals • 455 Combinations • 3794 Seeds"
+- Both tools: `max-width: 1200px` container, `line-height: 1.6` on body
+
+**Build system:**
+- Added `build-zip.ps1` PowerShell script
+- ZIP contains: `tools/`, `index.html`, `contributing.html`, `credits.html`, `LICENSE`
+
+**Pending:**
+- Update `tni-seed-harvester` Python generator to match new seed-finder template

@@ -2,8 +2,8 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║  TNI Toolkit - Contributing Guide                                            ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║  Version: 1.1.0                                                              ║
-║  Updated: 2025-12-08                                                         ║
+║  Version: 1.2.0                                                              ║
+║  Updated: 2025-12-09                                                         ║
 ║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Description:                                                                ║
@@ -15,6 +15,7 @@
 ║    - Claude (Anthropic)                                                      ║
 ║                                                                              ║
 ║  Changelog:                                                                  ║
+║    1.2.0 - Footer standardization with badges                                ║
 ║    1.1.0 - Added HTML header format documentation                            ║
 ║    1.0.0 - Initial release                                                   ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
@@ -412,6 +413,38 @@
             color: #f85149;
         }
         
+        .footer-badges {
+            margin-top: 12px;
+        }
+        
+        .version-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #30363d;
+            color: #8b949e;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            margin-right: 8px;
+        }
+        
+        .license-badge {
+            display: inline-block;
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid #30363d;
+            color: #8b949e;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+        
+        .license-badge:hover {
+            border-color: #58a6ff;
+            color: #58a6ff;
+        }
+        
         /* Responsive */
         @media (max-width: 600px) {
             body { padding: 16px; }
@@ -699,15 +732,21 @@
         <!-- Footer -->
         <footer class="footer">
             <div class="footer-links">
+                <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub</a>
+                <span class="footer-sep">|</span>
+                <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/CONTRIBUTIONS.md" target="_blank">Contributions Log</a>
+                <span class="footer-sep">|</span>
                 <a href="index.html">Home</a>
                 <span class="footer-sep">|</span>
-                <a href="credits.html">Credits</a>
-                <span class="footer-sep">|</span>
-                <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub</a>
+                <a href="credits.html">Credits & Sources</a>
                 <span class="footer-sep">|</span>
                 <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">TNI on Steam</a>
             </div>
             <p class="footer-note">Made with <span class="heart">❤️</span> for the TNI community</p>
+            <div class="footer-badges">
+                <span class="version-badge">v1.2.0</span>
+                <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/LICENSE" target="_blank" class="license-badge">MIT License — Free to use, modify, and share</a>
+            </div>
         </footer>
     </div>
 </body>
