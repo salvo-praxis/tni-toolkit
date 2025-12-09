@@ -52,7 +52,7 @@ tni-toolkit/
 Each tool card has three buttons:
 - **▶ Launch** — Opens tool in same tab (users can right-click or ctrl+click for new tab)
 - **📄 Source** — Links to GitHub file view (`target="_blank"`)
-- **💾 Download** — Right-aligned, raw GitHub URL forces download
+- **💾 Download** — Uses fetch/blob workaround for forced download
 
 Section header includes **🗂️ Download Toolkit** button linking to GitHub ZIP archive.
 
@@ -549,6 +549,84 @@ This keeps complex tooling isolated while the toolkit remains a clean collection
 
 ---
 
+## Change Pipeline
+
+When making changes to the toolkit, follow this pipeline to keep everything consistent.
+
+### Files That Need Updates
+
+| Change Type | Files to Update |
+|-------------|-----------------|
+| **Tool HTML change** | Tool file, CONTRIBUTIONS.md, COMMIT_MESSAGE.txt |
+| **Page HTML change** | Page file, CONTRIBUTIONS.md, COMMIT_MESSAGE.txt |
+| **New feature/pattern** | Affected files, STYLE_GUIDE.md, CONTRIBUTIONS.md, COMMIT_MESSAGE.txt |
+| **Data file change** | JSON file (`_meta`), CONTRIBUTIONS.md, COMMIT_MESSAGE.txt |
+| **Version bump** | HTML header (Version, Updated, Changelog), CONTRIBUTIONS.md |
+
+### Version Bump Rules
+
+**File versions** (in HTML header comments):
+- Patch (1.0.0 → 1.0.1): Bug fixes, typos, minor CSS tweaks
+- Minor (1.0.1 → 1.1.0): New features, significant changes
+- Major (1.1.0 → 2.0.0): Breaking changes, major redesign
+
+**Toolkit version** (footer badges): Only bump on releases, stays consistent across all files.
+
+### HTML File Header Updates
+
+When changing an HTML file, update these fields in the header comment:
+```
+║  Version: X.Y.Z        ← bump appropriately
+║  Updated: YYYY-MM-DD   ← today's date
+...
+║  Changelog:
+║    X.Y.Z - Brief description of changes   ← add new entry at top
+```
+
+### Documentation Chain
+
+1. **CONTRIBUTIONS.md** — Add entry under current date/contributor:
+   - Version-bumped files: `` `filename` vX.Y.Z — description ``
+   - General changes: one-liner description
+
+2. **COMMIT_MESSAGE.txt** — Summarize all changes for git commit
+
+3. **STYLE_GUIDE.md** — If adding new CSS patterns, document them
+
+4. **CLAUDE.md** — Update if:
+   - File structure changes
+   - New tools added
+   - Workflow/pipeline changes
+   - Session notes (temporary, consolidate later)
+
+### Pre-Commit Checklist
+
+```
+□ HTML header Version matches changelog top entry
+□ HTML header Updated is today's date
+□ HTML header Changelog has new entry
+□ CONTRIBUTIONS.md has entry for all version bumps
+□ COMMIT_MESSAGE.txt summarizes changes
+□ No version gaps (1.0 → 1.2 without 1.1)
+□ No duplicate version entries
+□ Footer toolkit version unchanged (unless release)
+```
+
+### Starting a Fresh Session
+
+Provide Claude with:
+1. **CLAUDE.md** — Project context, file structure, patterns
+2. **CONTRIBUTIONS.md** — Recent change history
+3. **Specific files** being modified
+
+Claude can then:
+- Understand project architecture
+- Follow established patterns
+- Update all required documentation
+- Maintain version consistency
+
+---
+
 ## Working with Claude Code
 
 Tips for effective development sessions:
@@ -656,7 +734,7 @@ Don't forget to update the version badge in `index.html` footer.
 **Navigation:**
 - Launch buttons open in same tab (removed `target="_blank"`)
 - `?from=toolkit` param enables conditional back button
-- Download buttons use raw GitHub URLs for forced download
+- Download buttons use fetch/blob workaround for forced download
 
 **Tool updates:**
 - Seed Finder renamed to "Starting Proposal Seed Finder"

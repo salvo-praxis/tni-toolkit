@@ -192,6 +192,7 @@
             font-weight: 500;
             text-decoration: none;
             transition: all 0.15s;
+            cursor: pointer;
         }
         
         .btn-primary {
@@ -490,7 +491,7 @@
                         <a href="tools/device-calculator.html?from=toolkit" class="btn btn-primary">▶ Launch</a>
                         <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/tools/device-calculator.html" class="btn btn-secondary" target="_blank">📄 Source</a>
                         <span class="spacer"></span>
-                        <a href="https://github.com/salvo-praxis/tni-toolkit/raw/main/tools/device-calculator.html" class="btn btn-download" download title="Download this tool">💾 Download</a>
+                        <button onclick="downloadFile('https://raw.githubusercontent.com/salvo-praxis/tni-toolkit/main/tools/device-calculator.html', 'device-calculator.html')" class="btn btn-download" title="Download this tool">💾 Download</button>
                     </div>
                 </div>
                 
@@ -501,7 +502,7 @@
                         <a href="tools/seed-finder.html?from=toolkit" class="btn btn-primary">▶ Launch</a>
                         <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/tools/seed-finder.html" class="btn btn-secondary" target="_blank">📄 Source</a>
                         <span class="spacer"></span>
-                        <a href="https://github.com/salvo-praxis/tni-toolkit/raw/main/tools/seed-finder.html" class="btn btn-download" download title="Download this tool">💾 Download</a>
+                        <button onclick="downloadFile('https://raw.githubusercontent.com/salvo-praxis/tni-toolkit/main/tools/seed-finder.html', 'seed-finder.html')" class="btn btn-download" title="Download this tool">💾 Download</button>
                     </div>
                 </div>
             </div>
@@ -627,5 +628,22 @@
             </div>
         </footer>
     </div>
+    <script>
+        async function downloadFile(url, filename) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Download failed');
+                const blob = await response.blob();
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = filename;
+                a.click();
+                URL.revokeObjectURL(a.href);
+            } catch (e) {
+                // Fallback: open raw URL directly
+                window.open(url, '_blank');
+            }
+        }
+    </script>
 </body>
 </html>

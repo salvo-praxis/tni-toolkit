@@ -15,7 +15,7 @@ Running log of all contributions to the TNI Toolkit. For guidelines on contribut
 - `STYLE_GUIDE.md` v1.1 — Added Page Layout Patterns (header, footer, back link CSS)
 - `build-zip.ps1` — New script for packaging toolkit ZIP
 - Conditional back button: moved inside header, query param detection
-- Navigation: launch opens same tab, download uses raw GitHub URLs
+- Navigation: launch opens same tab, download uses fetch/blob workaround
 - Custom scrollbars: NOC-themed scrollbars added to all HTML files
 
 ---
