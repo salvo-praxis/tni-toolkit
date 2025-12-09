@@ -16,6 +16,7 @@ Running log of all contributions to the TNI Toolkit. For guidelines on contribut
 - `build-zip.ps1` — New script for packaging toolkit ZIP
 - Conditional back button: moved inside header, query param detection
 - Navigation: launch opens same tab, download uses raw GitHub URLs
+- Custom scrollbars: NOC-themed scrollbars added to all HTML files
 
 ---
 

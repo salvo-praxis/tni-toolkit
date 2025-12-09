@@ -120,6 +120,55 @@ font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
 --transition-base: 0.2s ease;
 ```
 
+### Custom Scrollbars
+
+Styled scrollbars that match the NOC terminal aesthetic.
+
+**Firefox (standard):**
+```css
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #30363d #0d1117;  /* thumb track */
+}
+```
+
+**WebKit (Chrome, Safari, Edge):**
+```css
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0d1117;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 4px;
+    border: 1px solid #0d1117;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #58a6ff;
+}
+
+::-webkit-scrollbar-corner {
+    background: #0d1117;
+}
+```
+
+**Compact version (for inline styles):**
+```css
+* { scrollbar-width: thin; scrollbar-color: #30363d #0d1117; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0d1117; border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; border: 1px solid #0d1117; }
+::-webkit-scrollbar-thumb:hover { background: #58a6ff; }
+::-webkit-scrollbar-corner { background: #0d1117; }
+```
+
 ---
 
 ## Base Template
