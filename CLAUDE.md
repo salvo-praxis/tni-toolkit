@@ -22,7 +22,6 @@ tni-toolkit/
 ├── credits.html           # Credits, sources, greetz
 ├── README.md              # GitHub readme
 ├── LICENSE                # MIT License
-├── build-zip.ps1          # ZIP build script (PowerShell)
 ├── tni-toolkit.zip        # Downloadable toolkit bundle
 ├── data/                  # Source JSON datasets
 │   ├── tni-store.json     # Equipment catalog (v1.1.0)
@@ -699,17 +698,13 @@ If confused: *"Stop. Read CLAUDE.md and docs/STYLE_GUIDE.md again. Then look at 
 
 A `tni-toolkit.zip` is maintained in the repo root for users who want to download everything at once.
 
-### Build Script
+### Contents
 
-Run from repo root:
-```powershell
-.\build-zip.ps1
-```
-
-This creates `tni-toolkit.zip` containing only user-facing files:
+The ZIP contains only user-facing files:
 - `tools/` — all standalone tools
 - `index.html` — landing page
 - `contributing.html` — contribution guide
+- `contributions.html` —  contribution history (styled)
 - `credits.html` — attribution
 - `LICENSE`
 
@@ -765,10 +760,6 @@ Don't forget to update the version badge in `index.html` footer.
 - Seed Finder renamed to "Starting Proposal Seed Finder"
 - Subtitle merged: "Select Proposals • 455 Combinations • 3794 Seeds"
 - Both tools: `max-width: 1200px` container, `line-height: 1.6` on body
-
-**Build system:**
-- Added `build-zip.ps1` PowerShell script
-- ZIP contains: `tools/`, `index.html`, `contributing.html`, `credits.html`, `LICENSE`
 
 **Pending:**
 - Update `tni-seed-harvester` Python generator to match new seed-finder template

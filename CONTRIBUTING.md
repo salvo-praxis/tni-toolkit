@@ -238,7 +238,7 @@ A `tni-toolkit.zip` file is maintained in the repo root for end users who want t
 When updating the ZIP:
 
 1. Update version in `index.html` header comment and footer badge
-2. Run `.\build-zip.ps1` from repo root
+2. Rebuild the ZIP with updated files
 3. Commit the updated ZIP
 
 ---

@@ -28,7 +28,7 @@ Standalone HTML files — download and open in any browser. Works offline. All t
 
 Select any device (servers, switches, routers, firewalls, debuggers), check off programs/firmware, and instantly see if CPU/Memory/Storage requirements fit. Features category filtering, search, shareable configuration codes via URL, and file-level resource breakdown.
 
-**[Use: Device Calculator](https://salvo-praxis.github.io/tni-toolkit/tools/device-calculator.html) or [Download: `tools/device-calculator.html`](tools/device-calculator.html)**
+**[Use: Device Calculator](https://tni-toolkit.salvo.host/tools/device-calculator.html) or [Download: `tools/device-calculator.html`](tools/device-calculator.html)**
 
 ![Device Calculator Screenshot](docs/screenshots/device-calculator.png)
 
@@ -44,7 +44,7 @@ Search a database of 3,794 verified seeds by selecting up to 3 starting proposal
 > |------|-------------|------------|
 > | `JNLRY` | Scanning Exploit + Second Monitor + Undervoltage | 3900 |
 
-**[Use: Seed Finder](https://salvo-praxis.github.io/tni-toolkit/tools/seed-finder.html) or [Download: `tools/seed-finder.html`](tools/seed-finder.html)**
+**[Use: Seed Finder](https://tni-toolkit.salvo.host/tools/seed-finder.html) or [Download: `tools/seed-finder.html`](tools/seed-finder.html)**
 
 ![Seed Finder Screenshot](docs/screenshots/seed-finder.png)
 
@@ -73,10 +73,10 @@ Search a database of 3,794 verified seeds by selecting up to 3 starting proposal
 
 | File | Description |
 |------|-------------|
-| [`data/tni-store.json`](https://salvo-praxis.github.io/tni-toolkit/data/tni-store.json) | Complete catalog of purchasable items (servers, switches, routers, cables, racks, etc.) |
-| [`data/tni-programs.json`](https://salvo-praxis.github.io/tni-toolkit/data/tni-programs.json) | All installable programs with resource requirements, inputs/outputs, and dependencies |
-| [`data/tni-cli-commands.json`](https://salvo-praxis.github.io/tni-toolkit/data/tni-cli-commands.json) | Terminal command reference with syntax and examples |
-| [`data/tni-traffic-types.json`](https://salvo-praxis.github.io/tni-toolkit/data/tni-traffic-types.json) | Network traffic types for firewall rules and router configuration |
+| [`data/tni-store.json`](https://tni-toolkit.salvo.host/data/tni-store.json) | Complete catalog of purchasable items (servers, switches, routers, cables, racks, etc.) |
+| [`data/tni-programs.json`](https://tni-toolkit.salvo.host/data/tni-programs.json) | All installable programs with resource requirements, inputs/outputs, and dependencies |
+| [`data/tni-cli-commands.json`](https://tni-toolkit.salvo.host/data/tni-cli-commands.json) | Terminal command reference with syntax and examples |
+| [`data/tni-traffic-types.json`](https://tni-toolkit.salvo.host/data/tni-traffic-types.json) | Network traffic types for firewall rules and router configuration |
 
 > **Note:** Some warranty values may be inaccurate (recorded during a LAB session). Corrections welcome via PR or issue.
 
@@ -219,7 +219,7 @@ Terminal commands with subcommands, syntax, and examples:
 
 Found an error? Have data to add? PRs and issues welcome.
 
-**[📖 Full Contributing Guide](https://salvo-praxis.github.io/tni-toolkit/contributing.html)** | **[CONTRIBUTING.md](CONTRIBUTING.md)**
+**[📖 Full Contributing Guide](https://tni-toolkit.salvo.host/contributing.html)** | **[CONTRIBUTING.md](CONTRIBUTING.md)**
 
 When editing JSON files, please:
 - Maintain the existing structure and formatting
@@ -241,13 +241,13 @@ When editing JSON files, please:
 
 **Game:** [Tower Networking Inc.](https://store.steampowered.com/app/2939600/Tower_Networking_Inc/) by [Pocosia Studios](https://pocosia.com/)
 
-**[View full credits →](https://salvo-praxis.github.io/tni-toolkit/credits.html)** | **[Contribution history →](CONTRIBUTIONS.md)**
+**[View full credits →](https://tni-toolkit.salvo.host/credits.html)** | **[Contribution history →](CONTRIBUTIONS.md)**
 
 ---
 
 ## 🔗 Links
 
-- [TNI Toolkit Site](https://salvo-praxis.github.io/tni-toolkit/) — Live tools and data
+- [TNI Toolkit Site](https://tni-toolkit.salvo.host/) — Live tools and data
 - [TNI Discord Community](https://discord.com/invite/nNKRMjDhf2) — Join the community
 - [HackMD @tower-network](https://hackmd.io/@tower-network) — Community wiki
 - [Tower Networking Inc. on Steam](https://store.steampowered.com/app/2939600/Tower_Networking_Inc/)

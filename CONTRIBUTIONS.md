@@ -4,6 +4,13 @@ Running log of all contributions to the TNI Toolkit. For guidelines on contribut
 
 ---
 
+## 2025-12-10
+
+### Salvo Praxis
+- `device-calculator.html` v1.4.0 — Smart SATA expansion (x/y slots, charges only what's needed), program type filter, device category dividers, needs/output on separate lines with ←/→ arrows, click-to-deselect, sharecode fixes, excluded refurbs
+
+---
+
 ## 2025-12-09
 
 ### Salvo Praxis
@@ -15,7 +22,6 @@ Running log of all contributions to the TNI Toolkit. For guidelines on contribut
 - `contributions.html` v1.0.0 — New HTML version of CONTRIBUTIONS.md
 - `docs/style-guide.html` v1.0.0 — New HTML version of STYLE_GUIDE.md
 - `STYLE_GUIDE.md` v1.1 — Added Page Layout Patterns (header, footer, back link CSS)
-- `build-zip.ps1` — New script for packaging toolkit ZIP
 - Conditional back button: moved inside header, query param detection
 - Navigation: launch opens same tab, download native on salvo.host (fetch/blob on GitHub Pages)
 - Custom scrollbars: NOC-themed scrollbars added to all HTML files

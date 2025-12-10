@@ -2,8 +2,8 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║  TNI Device Compatibility Calculator                                         ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║  Version: 1.3.0                                                              ║
-║  Updated: 2025-12-09                                                         ║
+║  Version: 1.4.0                                                              ║
+║  Updated: 2025-12-10                                                         ║
 ║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Description:                                                                ║
@@ -24,6 +24,9 @@
 ║    - AlinaNova21 (device categories, search, sharecode, file table)          ║
 ║                                                                              ║
 ║  Changelog:                                                                  ║
+║    1.4.0 - Smart SATA (x/y slots, cost-per-need), program type filter,       ║
+║            device category dividers, needs on own line (←/→ arrows),         ║
+║            click-to-deselect, sharecode fixes, excluded refurbs              ║
 ║    1.3.0 - Header/footer standardization, container max-width, back button   ║
 ║    1.2.0 - Added all device types, category filter, search, sharecode,       ║
 ║            file table display (AlinaNova21); renamed from server-calculator; ║
@@ -141,6 +144,13 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 24px;
+            align-items: stretch;
+        }
+        
+        .grid > div {
+            display: flex;
+            flex-direction: column;
+            max-height: 520px;
         }
         
         @media (max-width: 800px) {
@@ -276,12 +286,13 @@
             background: rgba(22,27,34,0.8);
             border: 1px solid #30363d;
             border-radius: 6px;
-            max-height: 280px;
+            min-height: 200px;
+            flex: 1;
             overflow-y: auto;
         }
 
         .list-container.programs {
-            max-height: 325px;
+            /* Flex: 1 fills to match column height */
         }
         
         .list-item {
@@ -382,7 +393,9 @@
         }
         
         .item-requires {
+            font-size: 10px;
             color: #f0883e;
+            margin-top: 2px;
         }
         
         .install-method {
@@ -402,8 +415,20 @@
             font-size: 11px;
         }
         
+        .sata-toggle.disabled {
+            opacity: 0.5;
+        }
+        
+        .sata-toggle.disabled label {
+            cursor: not-allowed;
+        }
+        
         .sata-toggle input {
             accent-color: #58a6ff;
+        }
+        
+        .sata-toggle input:disabled {
+            cursor: not-allowed;
         }
         
         .sata-info {
@@ -741,11 +766,11 @@
             </div>
             <div class="list-container" id="device-list"></div>
             
-            <!-- SATA Toggle -->
-            <div class="sata-toggle hidden" id="sata-toggle">
-                <input type="checkbox" id="sata-checkbox" checked>
+            <!-- SATA Toggle (always visible, state-dependent) -->
+            <div class="sata-toggle" id="sata-toggle">
+                <input type="checkbox" id="sata-checkbox" disabled>
                 <label for="sata-checkbox">Use SATA Expansion</label>
-                <span class="sata-info" id="sata-info"></span>
+                <span class="sata-info" id="sata-info">(no device selected)</span>
             </div>
         </div>
         
@@ -753,6 +778,16 @@
         <div>
             <h2 class="section-title">▸ Select Programs</h2>
             <input type="text" class="search-input" id="program-search" placeholder="Search programs...">
+            <div class="custom-select" id="program-type-select">
+                <div class="custom-select-trigger" id="program-type-trigger">All Programs</div>
+                <div class="custom-select-options" id="program-type-options">
+                    <div class="custom-select-option selected" data-value="all">All Programs</div>
+                    <div class="custom-select-option" data-value="Producer">Producers</div>
+                    <div class="custom-select-option" data-value="Converter">Converters</div>
+                    <div class="custom-select-option" data-value="Storage">Storage</div>
+                    <div class="custom-select-option" data-value="Firmware">Firmware</div>
+                </div>
+            </div>
             <div class="list-container programs" id="program-list"></div>
         </div>
     </div>
@@ -903,6 +938,7 @@
         let selectedPrograms = [];
         let useSataExpansion = true;
         let currentFilter = 'all';
+        let programFilter = 'all';
         let deviceSearch = '';
         let programSearch = '';
 
@@ -913,6 +949,8 @@
         const deviceTypeOptions = document.getElementById('device-type-options');
         const programListEl = document.getElementById('program-list');
         const programSearchEl = document.getElementById('program-search');
+        const programTypeTrigger = document.getElementById('program-type-trigger');
+        const programTypeOptions = document.getElementById('program-type-options');
         const sataToggleEl = document.getElementById('sata-toggle');
         const sataCheckboxEl = document.getElementById('sata-checkbox');
         const sataInfoEl = document.getElementById('sata-info');
@@ -970,6 +1008,45 @@
             });
         });
 
+        // === PROGRAM DROPDOWN LOGIC ===
+        programTypeTrigger.addEventListener('click', () => {
+            programTypeTrigger.classList.toggle('open');
+            programTypeOptions.classList.toggle('open');
+        });
+
+        // Close program dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#program-type-select')) {
+                programTypeTrigger.classList.remove('open');
+                programTypeOptions.classList.remove('open');
+            }
+        });
+
+        // Handle program type option selection
+        programTypeOptions.querySelectorAll('.custom-select-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.dataset.value;
+                const text = option.textContent;
+                
+                // Update trigger text
+                programTypeTrigger.textContent = text;
+                
+                // Update selected state
+                programTypeOptions.querySelectorAll('.custom-select-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                option.classList.add('selected');
+                
+                // Close dropdown
+                programTypeTrigger.classList.remove('open');
+                programTypeOptions.classList.remove('open');
+                
+                // Apply filter
+                programFilter = value;
+                renderPrograms();
+            });
+        });
+
         // === SHARECODE FUNCTIONS ===
         function generateSharecode() {
             const data = {
@@ -1023,9 +1100,15 @@
         }
 
         function updateSharecode() {
+            // Clear sharecode if nothing selected
+            if (!selectedDevice && selectedPrograms.length === 0) {
+                sharecodeEl.value = '';
+                try { history.replaceState(null, '', window.location.pathname); } catch(e) {}
+                return;
+            }
             const code = generateSharecode();
             sharecodeEl.value = code;
-            history.replaceState(null, '', '#' + code);
+            try { history.replaceState(null, '', '#' + code); } catch(e) {}
         }
 
         // === GET FILTERED DEVICES ===
@@ -1040,6 +1123,8 @@
             } else {
                 result = devices[currentFilter].map(d => ({ ...d, _category: currentFilter }));
             }
+            // Exclude refurb devices (identical specs to non-refurb, only price/warranty differs)
+            result = result.filter(d => !d.model.includes('Refurb'));
             // Apply search filter
             if (deviceSearch) {
                 const search = deviceSearch.toLowerCase();
@@ -1051,13 +1136,30 @@
         // === RENDER DEVICES ===
         function renderDevices() {
             const filteredDevices = getFilteredDevices();
+            let html = '';
+            let lastCategory = null;
+            
+            // Category display names
+            const categoryNames = {
+                'servers': 'Servers',
+                'network_switches': 'Switches',
+                'routers': 'Routers',
+                'firewalls_and_taps': 'Firewalls & TAPs',
+                'debuggers_and_test_devices': 'Debuggers'
+            };
 
-            deviceListEl.innerHTML = filteredDevices.map((device, idx) => {
+            filteredDevices.forEach((device, idx) => {
+                // Add category divider when showing all devices
+                if (currentFilter === 'all' && device._category !== lastCategory) {
+                    html += `<div class="category-divider">${categoryNames[device._category] || device._category}</div>`;
+                    lastCategory = device._category;
+                }
+
                 const isSelected = selectedDevice && selectedDevice.model === device.model && selectedDeviceCategory === device._category;
                 const sataInfo = device.sata_slots > 0 ? ` +${device.sata_slots}SATA` : '';
                 const firmwareInfo = device.firmware ? `<span class="firmware-tag">FW:${device.firmware}</span>` : '';
 
-                return `
+                html += `
                     <div class="list-item ${isSelected ? 'selected' : ''}"
                          data-device-idx="${idx}">
                         <div class="item-header">
@@ -1075,15 +1177,28 @@
                         </div>
                     </div>
                 `;
-            }).join('');
+            });
+
+            deviceListEl.innerHTML = html;
 
             // Add click handlers
             deviceListEl.querySelectorAll('.list-item').forEach(el => {
                 el.addEventListener('click', () => {
                     const idx = parseInt(el.dataset.deviceIdx);
                     const device = filteredDevices[idx];
-                    selectedDevice = device;
-                    selectedDeviceCategory = device._category;
+                    // Toggle selection: click again to deselect
+                    if (selectedDevice && selectedDevice.model === device.model) {
+                        selectedDevice = null;
+                        selectedDeviceCategory = null;
+                        useSataExpansion = true; // Reset to default
+                    } else {
+                        selectedDevice = device;
+                        selectedDeviceCategory = device._category;
+                        // Auto-enable SATA if device has slots
+                        if (device.sata_slots > 0) {
+                            useSataExpansion = true;
+                        }
+                    }
                     renderDevices();
                     updateToggles();
                     calculate();
@@ -1093,9 +1208,20 @@
 
         // === GET FILTERED PROGRAMS ===
         function getFilteredPrograms() {
-            if (!programSearch) return programs;
-            const search = programSearch.toLowerCase();
-            return programs.filter(p => p.name.toLowerCase().includes(search) || p.output.toLowerCase().includes(search));
+            let result = programs;
+            
+            // Filter by type
+            if (programFilter !== 'all') {
+                result = result.filter(p => p.type === programFilter);
+            }
+            
+            // Filter by search
+            if (programSearch) {
+                const search = programSearch.toLowerCase();
+                result = result.filter(p => p.name.toLowerCase().includes(search) || p.output.toLowerCase().includes(search));
+            }
+            
+            return result;
         }
 
         // === RENDER PROGRAMS ===
@@ -1108,14 +1234,16 @@
             filteredPrograms.forEach((program) => {
                 const idx = programs.indexOf(program);
 
-                // Add dividers
-                if (program.type !== 'Firmware' && !programsDividerAdded) {
-                    html += '<div class="category-divider">Programs (program install)</div>';
-                    programsDividerAdded = true;
-                }
-                if (program.type === 'Firmware' && !firmwareDividerAdded) {
-                    html += '<div class="category-divider">Firmware (format install)</div>';
-                    firmwareDividerAdded = true;
+                // Add dividers only when showing all programs
+                if (programFilter === 'all') {
+                    if (program.type !== 'Firmware' && !programsDividerAdded) {
+                        html += '<div class="category-divider">Programs (program install)</div>';
+                        programsDividerAdded = true;
+                    }
+                    if (program.type === 'Firmware' && !firmwareDividerAdded) {
+                        html += '<div class="category-divider">Firmware (sftp copy)</div>';
+                        firmwareDividerAdded = true;
+                    }
                 }
 
                 const isSelected = selectedPrograms.some(p => p.name === program.name);
@@ -1134,8 +1262,8 @@
                         </div>
                         <div class="item-output">
                             → ${program.output}
-                            ${program.requires ? `<span class="item-requires"> • needs: ${program.requires}</span>` : ''}
                         </div>
+                        ${program.requires ? `<div class="item-requires">← needs: ${program.requires}</div>` : ''}
                     </div>
                 `;
             });
@@ -1163,11 +1291,26 @@
 
         // === UPDATE TOGGLES ===
         function updateToggles() {
-            if (selectedDevice && selectedDevice.sata_slots > 0) {
-                sataToggleEl.classList.remove('hidden');
-                sataInfoEl.textContent = `(${selectedDevice.sata_slots} slots @ $${SATA_DRIVE_COST}/+${SATA_DRIVE_STORAGE} storage each)`;
+            const sataSlots = selectedDevice ? (selectedDevice.sata_slots || 0) : 0;
+            
+            if (!selectedDevice) {
+                // No device selected
+                sataToggleEl.classList.add('disabled');
+                sataCheckboxEl.disabled = true;
+                sataCheckboxEl.checked = false;
+                sataInfoEl.textContent = '(no device selected)';
+            } else if (sataSlots === 0) {
+                // Device has no SATA slots
+                sataToggleEl.classList.add('disabled');
+                sataCheckboxEl.disabled = true;
+                sataCheckboxEl.checked = false;
+                sataInfoEl.textContent = '(device has no SATA slots)';
             } else {
-                sataToggleEl.classList.add('hidden');
+                // Device has SATA slots - show base info (calculate() will update with x/y)
+                sataToggleEl.classList.remove('disabled');
+                sataCheckboxEl.disabled = false;
+                sataCheckboxEl.checked = useSataExpansion;
+                sataInfoEl.textContent = `(0/${sataSlots} slots needed)`;
             }
         }
 
@@ -1185,20 +1328,36 @@
 
             const sataSlots = selectedDevice.sata_slots || 0;
             const maxStorage = selectedDevice.storage + (sataSlots * SATA_DRIVE_STORAGE);
-            const baseStorageDeficit = totalStorage - selectedDevice.storage;
 
+            // Calculate how many SATA slots are actually needed
+            const storageDeficit = totalStorage - selectedDevice.storage;
             let sataNeeded = 0;
+            let sataUsed = 0;
             let sataStorageProvided = 0;
-            if (useSataExpansion && baseStorageDeficit > 0 && sataSlots > 0) {
-                sataNeeded = Math.min(
-                    Math.ceil(baseStorageDeficit / SATA_DRIVE_STORAGE),
-                    sataSlots
-                );
-                sataStorageProvided = sataNeeded * SATA_DRIVE_STORAGE;
+            
+            if (storageDeficit > 0 && sataSlots > 0) {
+                // Calculate slots needed to cover deficit
+                sataNeeded = Math.ceil(storageDeficit / SATA_DRIVE_STORAGE);
+                // Cap at available slots
+                sataNeeded = Math.min(sataNeeded, sataSlots);
+            }
+            
+            if (useSataExpansion && sataNeeded > 0) {
+                sataUsed = sataNeeded;
+                sataStorageProvided = sataUsed * SATA_DRIVE_STORAGE;
+            }
+            
+            // Update SATA info text with x/y format
+            if (sataSlots > 0) {
+                if (sataNeeded > 0) {
+                    sataInfoEl.textContent = `(${sataNeeded}/${sataSlots} slots @ $${SATA_DRIVE_COST}/+${SATA_DRIVE_STORAGE} storage each)`;
+                } else {
+                    sataInfoEl.textContent = `(0/${sataSlots} slots needed)`;
+                }
             }
 
             const effectiveStorage = selectedDevice.storage + sataStorageProvided;
-            const sataCost = sataNeeded * SATA_DRIVE_COST;
+            const sataCost = sataUsed * SATA_DRIVE_COST;
             const totalCost = selectedDevice.price + sataCost;
 
             const cpuFits = totalCpu <= selectedDevice.cpu;
@@ -1225,7 +1384,7 @@
                 ${renderMetric('CPU LOAD', totalCpu, selectedDevice.cpu, cpuFits, cpuRemaining, '')}
                 ${renderMetric('MEMORY', totalMemory, selectedDevice.memory, memoryFits, memoryRemaining, '')}
                 ${renderMetric(
-                    'STORAGE' + (sataNeeded > 0 ? ` (+${sataNeeded} SATA)` : ''),
+                    'STORAGE' + (sataUsed > 0 ? ` (+${sataUsed} SATA)` : ''),
                     totalStorage,
                     effectiveStorage,
                     storageFits,
@@ -1325,10 +1484,13 @@
         // === INITIALIZE ===
         renderDevices();
         renderPrograms();
+        updateToggles();
 
-        // Load from URL hash if present
+        // Load from URL hash if present, otherwise clear sharecode
         if (window.location.hash) {
             loadSharecode(window.location.hash.slice(1));
+        } else {
+            updateSharecode();
         }
         
         // Show back link if toolkit index is accessible
