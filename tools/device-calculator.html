@@ -2,7 +2,7 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║  TNI Device Compatibility Calculator                                         ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║  Version: 1.4.0                                                              ║
+║  Version: 1.5.0                                                              ║
 ║  Updated: 2025-12-10                                                         ║
 ║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -24,6 +24,8 @@
 ║    - AlinaNova21 (device categories, search, sharecode, file table)          ║
 ║                                                                              ║
 ║  Changelog:                                                                  ║
+║    1.5.0 - SATA stepper control (−/+ buttons, auto-adjust + manual override) ║
+║    1.4.1 - Fixed SATA storage value: 6 → 4 (thanks Kurtchen!)                ║
 ║    1.4.0 - Smart SATA (x/y slots, cost-per-need), program type filter,       ║
 ║            device category dividers, needs on own line (←/→ arrows),         ║
 ║            click-to-deselect, sharecode fixes, excluded refurbs              ║
@@ -411,7 +413,7 @@
             border-radius: 6px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             font-size: 11px;
         }
         
@@ -419,20 +421,76 @@
             opacity: 0.5;
         }
         
-        .sata-toggle.disabled label {
+        .sata-toggle.disabled .sata-stepper button {
             cursor: not-allowed;
+            pointer-events: none;
         }
         
-        .sata-toggle input {
-            accent-color: #58a6ff;
+        .sata-label {
+            color: #c9d1d9;
         }
         
-        .sata-toggle input:disabled {
+        .sata-stepper {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: #21262d;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #30363d;
+        }
+        
+        .sata-stepper button {
+            width: 28px;
+            height: 26px;
+            border: none;
+            background: linear-gradient(180deg, #2d333b 0%, #22272e 100%);
+            color: #58a6ff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .sata-stepper button:hover:not(:disabled) {
+            background: linear-gradient(180deg, #3d444d 0%, #2d333b 100%);
+            color: #00ff88;
+        }
+        
+        .sata-stepper button:active:not(:disabled) {
+            background: linear-gradient(180deg, #22272e 0%, #2d333b 100%);
+        }
+        
+        .sata-stepper button:disabled {
+            color: #484f58;
             cursor: not-allowed;
+            background: #21262d;
+        }
+        
+        .sata-stepper button:first-child {
+            border-right: 1px solid #30363d;
+        }
+        
+        .sata-stepper button:last-child {
+            border-left: 1px solid #30363d;
+        }
+        
+        .sata-stepper-value {
+            min-width: 40px;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: #00ff88;
+            padding: 0 6px;
+            background: rgba(0, 255, 136, 0.05);
         }
         
         .sata-info {
             color: #8b949e;
+            flex: 1;
         }
         
         /* === RESULTS PANEL === */
@@ -766,10 +824,14 @@
             </div>
             <div class="list-container" id="device-list"></div>
             
-            <!-- SATA Toggle (always visible, state-dependent) -->
+            <!-- SATA Stepper (always visible, state-dependent) -->
             <div class="sata-toggle" id="sata-toggle">
-                <input type="checkbox" id="sata-checkbox" disabled>
-                <label for="sata-checkbox">Use SATA Expansion</label>
+                <span class="sata-label">SATA Expansion</span>
+                <div class="sata-stepper">
+                    <button id="sata-minus" disabled>−</button>
+                    <span class="sata-stepper-value" id="sata-value">0/0</span>
+                    <button id="sata-plus" disabled>+</button>
+                </div>
                 <span class="sata-info" id="sata-info">(no device selected)</span>
             </div>
         </div>
@@ -930,13 +992,14 @@
 
         // Constants
         const SATA_DRIVE_COST = 75;
-        const SATA_DRIVE_STORAGE = 6;
+        const SATA_DRIVE_STORAGE = 4;
 
         // State
         let selectedDevice = null;
         let selectedDeviceCategory = null;
         let selectedPrograms = [];
-        let useSataExpansion = true;
+        let sataSelected = 0; // Number of SATA slots selected
+        let sataManualOverride = false; // True if user manually adjusted SATA
         let currentFilter = 'all';
         let programFilter = 'all';
         let deviceSearch = '';
@@ -952,7 +1015,9 @@
         const programTypeTrigger = document.getElementById('program-type-trigger');
         const programTypeOptions = document.getElementById('program-type-options');
         const sataToggleEl = document.getElementById('sata-toggle');
-        const sataCheckboxEl = document.getElementById('sata-checkbox');
+        const sataValueEl = document.getElementById('sata-value');
+        const sataMinusBtn = document.getElementById('sata-minus');
+        const sataPlusBtn = document.getElementById('sata-plus');
         const sataInfoEl = document.getElementById('sata-info');
         const resultsEl = document.getElementById('results');
         const resultsTitleEl = document.getElementById('results-title');
@@ -1052,7 +1117,7 @@
             const data = {
                 d: selectedDevice ? selectedDevice.model : null,
                 p: selectedPrograms.map(p => p.name),
-                s: useSataExpansion
+                s: sataSelected
             };
             return btoa(JSON.stringify(data));
         }
@@ -1085,9 +1150,15 @@
                     });
                 }
 
-                // Set SATA expansion
-                useSataExpansion = data.s !== false;
-                sataCheckboxEl.checked = useSataExpansion;
+                // Set SATA expansion (handle old boolean format and new number format)
+                if (typeof data.s === 'number') {
+                    sataSelected = data.s;
+                } else if (data.s === true) {
+                    // Old format: true means auto-calculate needed slots
+                    sataSelected = 0; // Will be updated by calculate()
+                } else {
+                    sataSelected = 0;
+                }
 
                 // Update UI
                 renderDevices();
@@ -1190,14 +1261,11 @@
                     if (selectedDevice && selectedDevice.model === device.model) {
                         selectedDevice = null;
                         selectedDeviceCategory = null;
-                        useSataExpansion = true; // Reset to default
+                        sataSelected = 0; // Reset to 0
                     } else {
                         selectedDevice = device;
                         selectedDeviceCategory = device._category;
-                        // Auto-enable SATA if device has slots
-                        if (device.sata_slots > 0) {
-                            useSataExpansion = true;
-                        }
+                        sataSelected = 0; // Start at 0, user can increment
                     }
                     renderDevices();
                     updateToggles();
@@ -1282,6 +1350,9 @@
                     } else {
                         selectedPrograms.push(program);
                     }
+                    
+                    // Reset SATA override so it auto-adjusts to new program requirements
+                    sataManualOverride = false;
 
                     renderPrograms();
                     calculate();
@@ -1296,21 +1367,24 @@
             if (!selectedDevice) {
                 // No device selected
                 sataToggleEl.classList.add('disabled');
-                sataCheckboxEl.disabled = true;
-                sataCheckboxEl.checked = false;
+                sataMinusBtn.disabled = true;
+                sataPlusBtn.disabled = true;
+                sataValueEl.textContent = '0/0';
                 sataInfoEl.textContent = '(no device selected)';
             } else if (sataSlots === 0) {
                 // Device has no SATA slots
                 sataToggleEl.classList.add('disabled');
-                sataCheckboxEl.disabled = true;
-                sataCheckboxEl.checked = false;
+                sataMinusBtn.disabled = true;
+                sataPlusBtn.disabled = true;
+                sataValueEl.textContent = '0/0';
                 sataInfoEl.textContent = '(device has no SATA slots)';
             } else {
-                // Device has SATA slots - show base info (calculate() will update with x/y)
+                // Device has SATA slots
                 sataToggleEl.classList.remove('disabled');
-                sataCheckboxEl.disabled = false;
-                sataCheckboxEl.checked = useSataExpansion;
-                sataInfoEl.textContent = `(0/${sataSlots} slots needed)`;
+                sataMinusBtn.disabled = sataSelected <= 0;
+                sataPlusBtn.disabled = sataSelected >= sataSlots;
+                sataValueEl.textContent = `${sataSelected}/${sataSlots}`;
+                sataInfoEl.textContent = `@ $${SATA_DRIVE_COST}/+${SATA_DRIVE_STORAGE} storage each`;
             }
         }
 
@@ -1328,33 +1402,22 @@
 
             const sataSlots = selectedDevice.sata_slots || 0;
             const maxStorage = selectedDevice.storage + (sataSlots * SATA_DRIVE_STORAGE);
-
-            // Calculate how many SATA slots are actually needed
+            
+            // Calculate how many SATA slots are needed
             const storageDeficit = totalStorage - selectedDevice.storage;
-            let sataNeeded = 0;
-            let sataUsed = 0;
-            let sataStorageProvided = 0;
+            const sataNeeded = (storageDeficit > 0 && sataSlots > 0)
+                ? Math.min(Math.ceil(storageDeficit / SATA_DRIVE_STORAGE), sataSlots)
+                : 0;
             
-            if (storageDeficit > 0 && sataSlots > 0) {
-                // Calculate slots needed to cover deficit
-                sataNeeded = Math.ceil(storageDeficit / SATA_DRIVE_STORAGE);
-                // Cap at available slots
-                sataNeeded = Math.min(sataNeeded, sataSlots);
+            // Only auto-adjust if user hasn't manually overridden
+            if (!sataManualOverride && sataNeeded !== sataSelected) {
+                sataSelected = sataNeeded;
+                updateToggles();
             }
             
-            if (useSataExpansion && sataNeeded > 0) {
-                sataUsed = sataNeeded;
-                sataStorageProvided = sataUsed * SATA_DRIVE_STORAGE;
-            }
-            
-            // Update SATA info text with x/y format
-            if (sataSlots > 0) {
-                if (sataNeeded > 0) {
-                    sataInfoEl.textContent = `(${sataNeeded}/${sataSlots} slots @ $${SATA_DRIVE_COST}/+${SATA_DRIVE_STORAGE} storage each)`;
-                } else {
-                    sataInfoEl.textContent = `(0/${sataSlots} slots needed)`;
-                }
-            }
+            // Use sataSelected (auto-adjusted or user-controlled)
+            const sataUsed = Math.min(sataSelected, sataSlots);
+            const sataStorageProvided = sataUsed * SATA_DRIVE_STORAGE;
 
             const effectiveStorage = selectedDevice.storage + sataStorageProvided;
             const sataCost = sataUsed * SATA_DRIVE_COST;
@@ -1447,9 +1510,23 @@
         }
 
         // === EVENT HANDLERS ===
-        sataCheckboxEl.addEventListener('change', (e) => {
-            useSataExpansion = e.target.checked;
-            calculate();
+        sataMinusBtn.addEventListener('click', () => {
+            if (sataSelected > 0) {
+                sataSelected--;
+                sataManualOverride = true;
+                updateToggles();
+                calculate();
+            }
+        });
+
+        sataPlusBtn.addEventListener('click', () => {
+            const sataSlots = selectedDevice ? (selectedDevice.sata_slots || 0) : 0;
+            if (sataSelected < sataSlots) {
+                sataSelected++;
+                sataManualOverride = true;
+                updateToggles();
+                calculate();
+            }
         });
 
         deviceSearchEl.addEventListener('input', (e) => {

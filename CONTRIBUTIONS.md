@@ -7,7 +7,12 @@ Running log of all contributions to the TNI Toolkit. For guidelines on contribut
 ## 2025-12-10
 
 ### Salvo Praxis
+- `device-calculator.html` v1.5.0 — SATA stepper control (−/+ buttons), auto-adjusts to program needs with manual override
+- `device-calculator.html` v1.4.1 — Fixed SATA storage value
 - `device-calculator.html` v1.4.0 — Smart SATA expansion (x/y slots, charges only what's needed), program type filter, device category dividers, needs/output on separate lines with ←/→ arrows, click-to-deselect, sharecode fixes, excluded refurbs
+
+### Kurtchen
+- `device-calculator.html` v1.4.1 — Reported SATA storage bug (was +6, should be +4)
 
 ---
 

@@ -704,7 +704,6 @@ The ZIP contains only user-facing files:
 - `tools/` — all standalone tools
 - `index.html` — landing page
 - `contributing.html` — contribution guide
-- `contributions.html` —  contribution history (styled)
 - `credits.html` — attribution
 - `LICENSE`
 
