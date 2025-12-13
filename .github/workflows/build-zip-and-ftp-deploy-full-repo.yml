@@ -2,8 +2,8 @@
 # TNI Toolkit - GitHub Actions Workflow
 # File: .github/workflows/build-zip-and-ftp-deploy.yml
 # Name: Build zip and FTP deploy (tni-toolkit)
-# Version: 1.0.0
-# Updated: 2025-12-11
+# Version: 1.0.1
+# Updated: 2025-12-12
 # Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
 # Description:
 #   Regenerates tni-toolkit.zip from selected files and mirrors the
@@ -12,6 +12,7 @@
 #   - salvo-praxis (@salvo-praxis) - workflow design & integration
 #   - Claude - YAML scaffolding, comments, and refactors
 # Changelog:
+#   1.0.1 - Fixed FTP-Deploy-Action version tag (v4 → v4.3.5)
 #   1.0.0 - Initial combined zip-build + FTP deploy workflow.
 # ============================================================================
 
@@ -82,7 +83,7 @@ jobs:
       # Step 4: Sync the repo (including new zip) to the FTP server.
       # ----------------------------------------------------------
       - name: Deploy entire repo over FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           # FTP hostname (e.g. ftp.yourhost.com).
           server:   ${{ secrets.FTP_SERVER }}
