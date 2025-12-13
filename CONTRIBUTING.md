@@ -27,7 +27,9 @@ Thanks for your interest in contributing! This project thrives on community inpu
 
 ---
 
-## Data File Guidelines
+## File Header Standards
+
+All project files include standardized headers for version tracking, attribution, and changelog.
 
 ### JSON Structure
 
@@ -83,36 +85,19 @@ All data files use this header format in `_meta`:
 }
 ```
 
-### When Editing Data Files
+**JSON `_meta` Fields:**
 
-1. **Maintain structure** — Don't change field names or nesting
-2. **Update metadata**:
-   - Bump `version` (patch for fixes, minor for additions)
-   - Update `last_updated` to today
-   - Add yourself to `contributors` if not already listed
-3. **Add sources** — If data came from somewhere, credit it
-4. **Log corrections** — Add to `corrections` array with structured entry
-5. **Track suggestions** — Use `future_additions` for community ideas not yet implemented
-
-### Version Numbering
-
-| Change | Example |
-|--------|---------|
-| Corrections, typo fixes | `1.0.0` → `1.0.1` |
-| New data additions | `1.0.1` → `1.1.0` |
-| Structure changes (rare) | `1.1.0` → `2.0.0` |
-
----
-
-## Tool Development Guidelines
-
-### Architecture
-
-All tools are **standalone HTML files**:
-- Single `.html` file with embedded CSS and JS
-- No external dependencies (works offline)
-- Data embedded directly in the file
-- Follows the [style guide](docs/STYLE_GUIDE.md)
+| Field | Required | Description |
+|-------|----------|-------------|
+| game | Yes | Always "Tower Networking Inc." |
+| dataset | Yes | Identifier for the dataset (e.g., "programs", "store") |
+| version | Yes | Semantic version (X.Y.Z) |
+| last_updated | Yes | Last modified date (YYYY-MM-DD) |
+| description | Yes | What this dataset contains |
+| sources | No | Array of data sources (in-game, wiki, etc.) |
+| contributors | Yes | Array of contributor names/handles |
+| corrections | No | Array of data corrections made |
+| future_additions | No | Array of planned additions |
 
 ### HTML Header Format
 
@@ -145,6 +130,180 @@ All HTML tools include a comment header **before** `<!DOCTYPE html>`:
 
 This mirrors the `_meta` format in JSON files — version tracking, attribution, and changelog in one place.
 
+**HTML Header Fields:**
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| Tool Name | Yes | Human-readable name of the tool |
+| Version | Yes | Semantic version (X.Y.Z) |
+| Updated | Yes | Last modified date (YYYY-MM-DD) |
+| Part of | Yes | Always "TNI Toolkit" with GitHub URL |
+| Description | Yes | What the tool does |
+| Contributors | Yes | List of contributors with roles |
+| Changelog | Yes | Version history with descriptions |
+
+### YAML Header Format
+
+YAML configuration files (GitHub Actions, CI/CD, etc.) use comment headers:
+
+```yaml
+# ============================================================================
+# TNI Toolkit - [File Type/Purpose]
+# File: [path/to/file.yml]
+# Name: [Workflow or Config Name]
+# Version: X.Y.Z
+# Updated: YYYY-MM-DD
+# Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+# Description:
+#   Brief description of what this file does.
+#   Can span multiple lines if needed.
+# Contributors:
+#   - Name (@handle) - contribution type
+#   - Claude - contribution type
+# Changelog:
+#   X.Y.Z - Description of changes
+# ============================================================================
+```
+
+**YAML Header Fields:**
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| File | Yes | Path relative to repo root |
+| Name | Yes | Human-readable name (for workflows: matches `name:` key) |
+| Version | Yes | Semantic version (X.Y.Z) |
+| Updated | Yes | Last modified date (YYYY-MM-DD) |
+| Part of | Yes | Project name and repo URL |
+| Description | Yes | What the file does |
+| Contributors | Yes | List of contributors with roles |
+| Changelog | Yes | Version history with descriptions |
+
+### Python Header Format
+
+Python scripts use docstring headers:
+
+```python
+#!/usr/bin/env python3
+"""
+TNI Toolkit - [Script Name]
+File: [path/to/script.py]
+Version: X.Y.Z
+Updated: YYYY-MM-DD
+Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+
+Description:
+    Brief description of what this script does.
+    Can span multiple lines if needed.
+
+Contributors:
+    - Name (@handle) - contribution type
+    - Claude - contribution type
+
+Changelog:
+    X.Y.Z - Description of changes
+"""
+```
+
+**Python Header Fields:**
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| Shebang | Yes | `#!/usr/bin/env python3` |
+| Script Name | Yes | Human-readable name of the script |
+| File | Yes | Path relative to repo root |
+| Version | Yes | Semantic version (X.Y.Z) |
+| Updated | Yes | Last modified date (YYYY-MM-DD) |
+| Description | Yes | What the script does |
+| Contributors | Yes | List of contributors with @handles and roles |
+| Changelog | Yes | Version history with descriptions |
+
+### Shell Scripts (Bash/PowerShell)
+
+Shell scripts use comment headers:
+
+**Bash:**
+```bash
+#!/bin/bash
+# ============================================================================
+# TNI Toolkit - [Script Name]
+# File: [path/to/script.sh]
+# Version: X.Y.Z
+# Updated: YYYY-MM-DD
+# Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+# Description:
+#   Brief description of what this script does.
+# Contributors:
+#   - Name (@handle) - contribution type
+# Changelog:
+#   X.Y.Z - Description of changes
+# ============================================================================
+```
+
+**PowerShell:**
+```powershell
+<#
+============================================================================
+TNI Toolkit - [Script Name]
+File: [path/to/script.ps1]
+Version: X.Y.Z
+Updated: YYYY-MM-DD
+Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+Description:
+    Brief description of what this script does.
+Contributors:
+    - Name (@handle) - contribution type
+Changelog:
+    X.Y.Z - Description of changes
+============================================================================
+#>
+```
+
+**Shell Script Header Fields:**
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| Shebang | Yes | `#!/bin/bash` for Bash; none for PowerShell |
+| Script Name | Yes | Human-readable name of the script |
+| File | Yes | Path relative to repo root |
+| Version | Yes | Semantic version (X.Y.Z) |
+| Updated | Yes | Last modified date (YYYY-MM-DD) |
+| Description | Yes | What the script does |
+| Contributors | Yes | List of contributors with @handles and roles |
+| Changelog | Yes | Version history with descriptions |
+
+---
+
+## When Editing Data Files
+
+1. **Maintain structure** — Don't change field names or nesting
+2. **Update metadata**:
+   - Bump `version` (patch for fixes, minor for additions)
+   - Update `last_updated` to today
+   - Add yourself to `contributors` if not already listed
+3. **Add sources** — If data came from somewhere, credit it
+4. **Log corrections** — Add to `corrections` array with structured entry
+5. **Track suggestions** — Use `future_additions` for community ideas not yet implemented
+
+### Version Numbering
+
+| Change | Example |
+|--------|---------|
+| Corrections, typo fixes | `1.0.0` → `1.0.1` |
+| New data additions | `1.0.1` → `1.1.0` |
+| Structure changes (rare) | `1.1.0` → `2.0.0` |
+
+---
+
+## Tool Development Guidelines
+
+### Architecture
+
+All tools are **standalone HTML files**:
+- Single `.html` file with embedded CSS and JS
+- No external dependencies (works offline)
+- Data embedded directly in the file
+- Follows the [style guide](docs/STYLE_GUIDE.md)
+
 ### Before Building
 
 1. Read [CLAUDE.md](CLAUDE.md) for project context
@@ -158,18 +317,13 @@ This mirrors the `_meta` format in JSON files — version tracking, attribution,
 - [ ] Includes HTML header comment (version, contributors, changelog)
 - [ ] Matches NOC theme (dark, green/blue accents)
 - [ ] Works offline (no fetch requests)
-- [ ] Includes standardized header (`padding: 40px 0 30px`, h1 margin `0 0 8px 0`)
-- [ ] Includes conditional back link (shows when launched from toolkit)
-- [ ] Includes standardized footer (links, charm line, version/license badges)
+- [ ] Includes standard footer with links
 - [ ] Mobile responsive
 - [ ] Tested in multiple browsers
 
 ### Style Guide Highlights
 
-- **Headers**: Use standardized header CSS from `STYLE_GUIDE.md` — consistent padding, spacing, color scheme
-- **Back Link**: Conditional "← Back to Toolkit" button in header (see `STYLE_GUIDE.md` for CSS/JS pattern)
-- **Footer**: Three rows — nav links (TNI Toolkit | GitHub | Contributions Log | TNI on Steam), charm line, version/license badges
-- **Custom Dropdown**: Use the Custom Dropdown pattern instead of native `<select>` elements (they don't style well on dark themes)
+- **Custom Dropdown**: Use the Custom Dropdown pattern from `STYLE_GUIDE.md` instead of native `<select>` elements (they don't style well on dark themes)
 - **Input padding**: Always `10px 12px`
 - **Table headers**: Color `#58a6ff`, font-weight `600`
 - **Buttons**: Use `.btn-primary` (green) or `.btn-secondary` (blue outline) patterns
@@ -201,45 +355,7 @@ Example: [tni-seed-harvester](https://github.com/salvo-praxis/tni-seed-harvester
 - `tool: add power budget calculator`
 - `fix: correct Blade10 power draw in store.json`
 - `docs: update contributing guidelines`
-
----
-
-## Toolkit Releases
-
-The toolkit itself has a version number separate from individual tools and data files. Tools and data get frequent updates from the community; toolkit releases are periodic bundles.
-
-### Versioning
-
-Toolkit uses **semantic versioning**: `vMAJOR.MINOR.PATCH`
-
-| Change Type | Version Bump | Example |
-|-------------|--------------|---------|
-| Bug fixes, typos, small tweaks | PATCH | `v1.2.0` → `v1.2.1` |
-| New tools, features, data files | MINOR | `v1.2.1` → `v1.3.0` |
-| Breaking changes, major redesign | MAJOR | `v1.3.0` → `v2.0.0` |
-
-### What Triggers a Release?
-
-- New tool added
-- Significant feature additions to existing tools
-- Major data file additions or schema changes
-- Accumulation of multiple smaller changes
-
-Not every commit needs a release. Day-to-day fixes and small additions stay on `main` until there's enough to bundle.
-
-### Downloads
-
-A `tni-toolkit.zip` file is maintained in the repo root for end users who want to download and run the toolkit locally. It contains user-facing files (tools, HTML pages, license) — no `.md` contributor documentation.
-
-**Download**: [tni-toolkit.zip](https://github.com/salvo-praxis/tni-toolkit/raw/main/tni-toolkit.zip)
-
-### For Maintainers
-
-When updating the ZIP:
-
-1. Update version in `index.html` header comment and footer badge
-2. Rebuild the ZIP with updated files
-3. Commit the updated ZIP
+- `ci: add GitHub Actions workflow for deployment`
 
 ---
 
@@ -254,8 +370,8 @@ When updating the ZIP:
 ## Credits
 
 Contributors are recognized in:
-- [Contributions Log](CONTRIBUTIONS.md) — running changelog of all contributions
 - HTML file header comments
+- YAML file header comments
 - JSON file `contributors` arrays
 - [Credits page](credits.html) on the toolkit site
 - This project's heart ❤️

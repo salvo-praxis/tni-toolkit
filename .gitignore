@@ -2,13 +2,6 @@
 .vscode/
 *.code-workspace
 
-# Build artifacts (the zip is committed, but temp files are not)
-tni-toolkit-temp/
-
-# Session files
-COMMIT_MESSAGE.txt
-
 # OS files
 .DS_Store
 Thumbs.db
-build-zip.ps1

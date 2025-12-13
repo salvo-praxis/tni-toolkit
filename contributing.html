@@ -2,22 +2,22 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║  TNI Toolkit - Contributing Guide                                            ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║  Version: 1.2.0                                                              ║
-║  Updated: 2025-12-09                                                         ║
+║  Version: 1.2.1                                                              ║
+║  Updated: 2025-12-12                                                         ║
 ║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Description:                                                                ║
-║    Styled contribution guide for the TNI Toolkit. Documents standards for    ║
-║    data files, tools, and attribution.                                       ║
+║    Guide for contributing to the TNI Toolkit project. Covers data            ║
+║    contributions, tool development, and community guidelines.                ║
 ║                                                                              ║
 ║  Contributors:                                                               ║
 ║    - Salvo Praxis (original author)                                          ║
 ║    - Claude (Anthropic)                                                      ║
 ║                                                                              ║
 ║  Changelog:                                                                  ║
+║    1.2.1 - Added custom scrollbar CSS to match toolkit styling               ║
 ║    1.2.0 - Footer standardization with badges                                ║
-║    1.1.0 - Added HTML header format documentation                            ║
-║    1.0.0 - Initial release                                                   ║
+║    1.1.0 - Initial contributing guide with JSON/HTML sections                ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
 -->
 <!DOCTYPE html>
@@ -217,6 +217,11 @@
         .json-string { color: #a5d6ff; }
         .json-comment { color: #7d8590; font-style: italic; }
         
+        /* YAML syntax highlighting */
+        .yaml-comment { color: #7d8590; }
+        .yaml-key { color: #58a6ff; }
+        .yaml-value { color: #a5d6ff; }
+        
         /* Steps */
         .steps {
             counter-reset: step;
@@ -226,7 +231,7 @@
             display: flex;
             gap: 12px;
             margin-bottom: 12px;
-            align-items: flex-start;
+            align-items: center;
         }
         
         .step::before {
@@ -249,6 +254,7 @@
         .step-content {
             color: #c9d1d9;
             font-size: 12px;
+            line-height: 24px;
         }
         
         .step-content strong {
@@ -308,6 +314,39 @@
         
         .version-table td:last-child {
             color: #8b949e;
+        }
+        
+        /* Field table */
+        .field-table {
+            width: 100%;
+            font-size: 11px;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+        
+        .field-table th {
+            text-align: left;
+            color: #58a6ff;
+            font-weight: 600;
+            padding: 8px;
+            border-bottom: 1px solid #30363d;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+        
+        .field-table td {
+            padding: 8px;
+            border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+            color: #8b949e;
+        }
+        
+        .field-table td:first-child {
+            color: #00ff88;
+            font-weight: 500;
+        }
+        
+        .field-table td:nth-child(2) {
+            color: #f0883e;
         }
         
         /* PR format */
@@ -421,38 +460,6 @@
             color: #f85149;
         }
         
-        .footer-badges {
-            margin-top: 12px;
-        }
-        
-        .version-badge {
-            display: inline-block;
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid #30363d;
-            color: #8b949e;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 10px;
-            margin-right: 8px;
-        }
-        
-        .license-badge {
-            display: inline-block;
-            background: rgba(88, 166, 255, 0.1);
-            border: 1px solid #30363d;
-            color: #8b949e;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 10px;
-            text-decoration: none;
-            transition: all 0.15s;
-        }
-        
-        .license-badge:hover {
-            border-color: #58a6ff;
-            color: #58a6ff;
-        }
-        
         /* Responsive */
         @media (max-width: 600px) {
             body { padding: 16px; }
@@ -506,7 +513,7 @@
                     <h3>🛠️ Build Tools</h3>
                     <ul>
                         <li>Pick from the <a href="index.html#roadmap">roadmap</a></li>
-                        <li>Follow the style guide</li>
+                        <li>Follow the <a href="docs/style-guide.html">style guide</a></li>
                         <li>Create standalone HTML</li>
                     </ul>
                 </div>
@@ -526,7 +533,7 @@
         <section class="section">
             <div class="section-header">
                 <span>📋</span>
-                <h2>Data File Guidelines</h2>
+                <h2>File Format Standards</h2>
             </div>
             
             <div class="panel">
@@ -545,6 +552,347 @@
     <span class="json-key">"future_additions"</span>: [...]
   }
 }</code></pre>
+                
+                <table class="field-table">
+                    <tr>
+                        <th>Field</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>game</td>
+                        <td>Yes</td>
+                        <td>Always "Tower Networking Inc."</td>
+                    </tr>
+                    <tr>
+                        <td>dataset</td>
+                        <td>Yes</td>
+                        <td>Identifier for the dataset (e.g., "programs", "store")</td>
+                    </tr>
+                    <tr>
+                        <td>version</td>
+                        <td>Yes</td>
+                        <td>Semantic version (X.Y.Z)</td>
+                    </tr>
+                    <tr>
+                        <td>last_updated</td>
+                        <td>Yes</td>
+                        <td>Last modified date (YYYY-MM-DD)</td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
+                        <td>Yes</td>
+                        <td>What this dataset contains</td>
+                    </tr>
+                    <tr>
+                        <td>sources</td>
+                        <td style="color: #8b949e;">No</td>
+                        <td>Array of data sources (in-game, wiki, etc.)</td>
+                    </tr>
+                    <tr>
+                        <td>contributors</td>
+                        <td>Yes</td>
+                        <td>Array of contributor names/handles</td>
+                    </tr>
+                    <tr>
+                        <td>corrections</td>
+                        <td style="color: #8b949e;">No</td>
+                        <td>Array of data corrections made</td>
+                    </tr>
+                    <tr>
+                        <td>future_additions</td>
+                        <td style="color: #8b949e;">No</td>
+                        <td>Array of planned additions</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="panel">
+                <h3>HTML Header Format</h3>
+                <p>All HTML tools include a comment header <strong>before</strong> <code>&lt;!DOCTYPE html&gt;</code>:</p>
+                <pre><code><span class="yaml-comment">&lt;!--
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  Tool Name                                                                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Version: X.Y.Z                                                              ║
+║  Updated: YYYY-MM-DD                                                         ║
+║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Description:                                                                ║
+║    Brief description of what this tool does.                                 ║
+║                                                                              ║
+║  Contributors:                                                               ║
+║    - Name (contribution type)                                                ║
+║                                                                              ║
+║  Changelog:                                                                  ║
+║    X.Y.Z - Description of changes                                            ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+--&gt;</span></code></pre>
+                
+                <table class="field-table">
+                    <tr>
+                        <th>Field</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>Tool Name</td>
+                        <td>Yes</td>
+                        <td>Human-readable name of the tool</td>
+                    </tr>
+                    <tr>
+                        <td>Version</td>
+                        <td>Yes</td>
+                        <td>Semantic version (X.Y.Z)</td>
+                    </tr>
+                    <tr>
+                        <td>Updated</td>
+                        <td>Yes</td>
+                        <td>Last modified date (YYYY-MM-DD)</td>
+                    </tr>
+                    <tr>
+                        <td>Part of</td>
+                        <td>Yes</td>
+                        <td>Always "TNI Toolkit" with GitHub URL</td>
+                    </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td>Yes</td>
+                        <td>What the tool does</td>
+                    </tr>
+                    <tr>
+                        <td>Contributors</td>
+                        <td>Yes</td>
+                        <td>List of contributors with roles</td>
+                    </tr>
+                    <tr>
+                        <td>Changelog</td>
+                        <td>Yes</td>
+                        <td>Version history with descriptions</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="panel">
+                <h3>YAML Header Format</h3>
+                <p>YAML configuration files (GitHub Actions, CI/CD) use comment headers:</p>
+                <pre><code><span class="yaml-comment"># ============================================================================
+# TNI Toolkit - [File Type/Purpose]
+# File: [path/to/file.yml]
+# Name: [Workflow or Config Name]
+# Version: X.Y.Z
+# Updated: YYYY-MM-DD
+# Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+# Description:
+#   Brief description of what this file does.
+#   Can span multiple lines if needed.
+# Contributors:
+#   - Name (@handle) - contribution type
+#   - Claude - contribution type
+# Changelog:
+#   X.Y.Z - Description of changes
+# ============================================================================</span></code></pre>
+                
+                <table class="field-table">
+                    <tr>
+                        <th>Field</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>File</td>
+                        <td>Yes</td>
+                        <td>Path relative to repo root</td>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td>Yes</td>
+                        <td>Human-readable name (matches workflow name: key)</td>
+                    </tr>
+                    <tr>
+                        <td>Version</td>
+                        <td>Yes</td>
+                        <td>Semantic version (X.Y.Z)</td>
+                    </tr>
+                    <tr>
+                        <td>Updated</td>
+                        <td>Yes</td>
+                        <td>Last modified date (YYYY-MM-DD)</td>
+                    </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td>Yes</td>
+                        <td>What the file does</td>
+                    </tr>
+                    <tr>
+                        <td>Contributors</td>
+                        <td>Yes</td>
+                        <td>List of contributors with roles</td>
+                    </tr>
+                    <tr>
+                        <td>Changelog</td>
+                        <td>Yes</td>
+                        <td>Version history with descriptions</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="panel">
+                <h3>Python Header Format</h3>
+                <p>Python scripts use docstring headers:</p>
+                <pre><code><span class="yaml-comment">#!/usr/bin/env python3
+"""
+TNI Toolkit - [Script Name]
+File: [path/to/script.py]
+Version: X.Y.Z
+Updated: YYYY-MM-DD
+Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+
+Description:
+    Brief description of what this script does.
+    Can span multiple lines if needed.
+
+Contributors:
+    - Name (@handle) - contribution type
+    - Claude - contribution type
+
+Changelog:
+    X.Y.Z - Description of changes
+"""</span></code></pre>
+                
+                <table class="field-table">
+                    <tr>
+                        <th>Field</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>Shebang</td>
+                        <td>Yes</td>
+                        <td><code>#!/usr/bin/env python3</code></td>
+                    </tr>
+                    <tr>
+                        <td>Script Name</td>
+                        <td>Yes</td>
+                        <td>Human-readable name of the script</td>
+                    </tr>
+                    <tr>
+                        <td>File</td>
+                        <td>Yes</td>
+                        <td>Path relative to repo root</td>
+                    </tr>
+                    <tr>
+                        <td>Version</td>
+                        <td>Yes</td>
+                        <td>Semantic version (X.Y.Z)</td>
+                    </tr>
+                    <tr>
+                        <td>Updated</td>
+                        <td>Yes</td>
+                        <td>Last modified date (YYYY-MM-DD)</td>
+                    </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td>Yes</td>
+                        <td>What the script does</td>
+                    </tr>
+                    <tr>
+                        <td>Contributors</td>
+                        <td>Yes</td>
+                        <td>List of contributors with @handles and roles</td>
+                    </tr>
+                    <tr>
+                        <td>Changelog</td>
+                        <td>Yes</td>
+                        <td>Version history with descriptions</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="panel">
+                <h3>Shell Scripts (Bash/PowerShell)</h3>
+                <p>Shell scripts use comment headers:</p>
+                
+                <h4 style="color: #f0883e; font-size: 12px; margin: 16px 0 8px 0;">Bash:</h4>
+                <pre><code><span class="yaml-comment">#!/bin/bash
+# ============================================================================
+# TNI Toolkit - [Script Name]
+# File: [path/to/script.sh]
+# Version: X.Y.Z
+# Updated: YYYY-MM-DD
+# Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+# Description:
+#   Brief description of what this script does.
+# Contributors:
+#   - Name (@handle) - contribution type
+# Changelog:
+#   X.Y.Z - Description of changes
+# ============================================================================</span></code></pre>
+                
+                <h4 style="color: #f0883e; font-size: 12px; margin: 16px 0 8px 0;">PowerShell:</h4>
+                <pre><code><span class="yaml-comment">&lt;#
+============================================================================
+TNI Toolkit - [Script Name]
+File: [path/to/script.ps1]
+Version: X.Y.Z
+Updated: YYYY-MM-DD
+Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+Description:
+    Brief description of what this script does.
+Contributors:
+    - Name (@handle) - contribution type
+Changelog:
+    X.Y.Z - Description of changes
+============================================================================
+#&gt;</span></code></pre>
+                
+                <table class="field-table">
+                    <tr>
+                        <th>Field</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>Shebang</td>
+                        <td>Yes</td>
+                        <td><code>#!/bin/bash</code> for Bash; none for PowerShell</td>
+                    </tr>
+                    <tr>
+                        <td>Script Name</td>
+                        <td>Yes</td>
+                        <td>Human-readable name of the script</td>
+                    </tr>
+                    <tr>
+                        <td>File</td>
+                        <td>Yes</td>
+                        <td>Path relative to repo root</td>
+                    </tr>
+                    <tr>
+                        <td>Version</td>
+                        <td>Yes</td>
+                        <td>Semantic version (X.Y.Z)</td>
+                    </tr>
+                    <tr>
+                        <td>Updated</td>
+                        <td>Yes</td>
+                        <td>Last modified date (YYYY-MM-DD)</td>
+                    </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td>Yes</td>
+                        <td>What the script does</td>
+                    </tr>
+                    <tr>
+                        <td>Contributors</td>
+                        <td>Yes</td>
+                        <td>List of contributors with @handles and roles</td>
+                    </tr>
+                    <tr>
+                        <td>Changelog</td>
+                        <td>Yes</td>
+                        <td>Version history with descriptions</td>
+                    </tr>
+                </table>
             </div>
             
             <div class="panel">
@@ -606,41 +954,13 @@
             </div>
             
             <div class="panel">
-                <h3>HTML Header Format</h3>
-                <p>All HTML tools include a comment header at the top of the file (before <code>&lt;!DOCTYPE html&gt;</code>):</p>
-                <pre><code><span class="json-key">&lt;!--</span>
-<span class="json-string">╔══════════════════════════════════════════════════════════════════════════════╗</span>
-<span class="json-string">║  Tool Name                                                                   ║</span>
-<span class="json-string">╠══════════════════════════════════════════════════════════════════════════════╣</span>
-<span class="json-string">║  Version: X.Y.Z                                                              ║</span>
-<span class="json-string">║  Updated: YYYY-MM-DD                                                         ║</span>
-<span class="json-string">║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║</span>
-<span class="json-string">╠══════════════════════════════════════════════════════════════════════════════╣</span>
-<span class="json-string">║  Description:                                                                ║</span>
-<span class="json-string">║    Brief description of what this tool does.                                 ║</span>
-<span class="json-string">║                                                                              ║</span>
-<span class="json-string">║  Features:                                                                   ║</span>
-<span class="json-string">║    - Feature 1                                                               ║</span>
-<span class="json-string">║    - Feature 2                                                               ║</span>
-<span class="json-string">║                                                                              ║</span>
-<span class="json-string">║  Contributors:                                                               ║</span>
-<span class="json-string">║    - Name (contribution type)                                                ║</span>
-<span class="json-string">║                                                                              ║</span>
-<span class="json-string">║  Changelog:                                                                  ║</span>
-<span class="json-string">║    X.Y.Z - Description of changes                                            ║</span>
-<span class="json-string">╚══════════════════════════════════════════════════════════════════════════════╝</span>
-<span class="json-key">--&gt;</span></code></pre>
-                <p style="margin-top: 12px; font-size: 11px; color: #8b949e;">This mirrors the <code>_meta</code> format in JSON files — version tracking, attribution, and changelog in one place.</p>
-            </div>
-            
-            <div class="panel">
                 <h3>Before Building</h3>
                 <div class="steps">
                     <div class="step">
                         <div class="step-content">Read <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/CLAUDE.md" target="_blank">CLAUDE.md</a> for project context</div>
                     </div>
                     <div class="step">
-                        <div class="step-content">Read <a href="docs/style-guide.html">docs/style-guide.html</a> for styling</div>
+                        <div class="step-content">Read the <a href="docs/style-guide.html">Style Guide</a> for styling</div>
                     </div>
                     <div class="step">
                         <div class="step-content">Look at existing tools for patterns</div>
@@ -655,7 +975,7 @@
                 <h3>Checklist</h3>
                 <ul class="checklist">
                     <li><span class="check-box">☐</span> Single HTML file in <code>tools/</code> directory</li>
-                    <li><span class="check-box">☐</span> Includes HTML header comment (version, contributors, changelog)</li>
+                    <li><span class="check-box">☐</span> Includes file header comment (version, contributors, changelog)</li>
                     <li><span class="check-box">☐</span> Matches NOC theme (dark, green/blue accents)</li>
                     <li><span class="check-box">☐</span> Works offline (no fetch requests)</li>
                     <li><span class="check-box">☐</span> Includes standard footer with links</li>
@@ -699,6 +1019,7 @@
                     <div class="pr-example"><span class="pr-prefix">tool:</span> <span class="pr-desc">add power budget calculator</span></div>
                     <div class="pr-example"><span class="pr-prefix">fix:</span> <span class="pr-desc">correct Blade10 power draw in store.json</span></div>
                     <div class="pr-example"><span class="pr-prefix">docs:</span> <span class="pr-desc">update contributing guidelines</span></div>
+                    <div class="pr-example"><span class="pr-prefix">ci:</span> <span class="pr-desc">add GitHub Actions workflow for deployment</span></div>
                 </div>
             </div>
         </section>
@@ -729,7 +1050,8 @@
             <div class="panel" style="text-align: center;">
                 <p>Contributors are recognized in:</p>
                 <ul style="list-style: none; margin: 16px 0 0 0; padding: 0;">
-                    <li style="margin-bottom: 8px;">📄 JSON file <code>contributors</code> arrays</li>
+                    <li style="margin-bottom: 8px;">📄 HTML/YAML file header comments</li>
+                    <li style="margin-bottom: 8px;">📊 JSON file <code>contributors</code> arrays</li>
                     <li style="margin-bottom: 8px;">🌐 <a href="credits.html">Credits page</a> on the toolkit site</li>
                     <li>❤️ This project's heart</li>
                 </ul>
@@ -740,21 +1062,15 @@
         <!-- Footer -->
         <footer class="footer">
             <div class="footer-links">
-                <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub</a>
-                <span class="footer-sep">|</span>
-                <a href="contributions.html">Contributions Log</a>
-                <span class="footer-sep">|</span>
                 <a href="index.html">Home</a>
                 <span class="footer-sep">|</span>
-                <a href="credits.html">Credits & Sources</a>
+                <a href="credits.html">Credits</a>
+                <span class="footer-sep">|</span>
+                <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub</a>
                 <span class="footer-sep">|</span>
                 <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">TNI on Steam</a>
             </div>
             <p class="footer-note">Made with <span class="heart">❤️</span> for the TNI community</p>
-            <div class="footer-badges">
-                <span class="version-badge">v1.2.0</span>
-                <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/LICENSE" target="_blank" class="license-badge">MIT License — Free to use, modify, and share</a>
-            </div>
         </footer>
     </div>
 </body>

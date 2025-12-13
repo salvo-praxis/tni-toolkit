@@ -85,6 +85,52 @@
         }
         .tagline a:hover { text-decoration: underline; }
         
+        /* Table of Contents / Navigation */
+        .toc-nav {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            padding: 20px 0;
+            border-bottom: 1px solid #30363d;
+            flex-wrap: wrap;
+        }
+        
+        .toc-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .toc-group-title {
+            color: #8b949e;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        
+        .toc-links {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .toc-links a {
+            color: #c9d1d9;
+            text-decoration: none;
+            font-size: 12px;
+            padding: 4px 0;
+            transition: color 0.15s;
+        }
+        
+        .toc-links a:hover {
+            color: #00ff88;
+        }
+        
+        .toc-links a .emoji {
+            margin-right: 4px;
+        }
+        
         /* Section styling */
         .section {
             margin-bottom: 30px;
@@ -471,8 +517,31 @@
             </p>
         </header>
         
+        <!-- Table of Contents / Navigation -->
+        <nav class="toc-nav">
+            <div class="toc-group">
+                <div class="toc-group-title">On This Page</div>
+                <div class="toc-links">
+                    <a href="#tools"><span class="emoji">🛠️</span>Tools</a>
+                    <a href="#data-files"><span class="emoji">📊</span>Data Files</a>
+                    <a href="#roadmap"><span class="emoji">🗺️</span>Roadmap</a>
+                    <a href="#community"><span class="emoji">🤝</span>Community</a>
+                </div>
+            </div>
+            <div class="toc-group">
+                <div class="toc-group-title">Documentation</div>
+                <div class="toc-links">
+                    <a href="docs/style-guide.html"><span class="emoji">🎨</span>Style Guide</a>
+                    <a href="contributing.html"><span class="emoji">📋</span>Contributing</a>
+                    <a href="credits.html"><span class="emoji">🏆</span>Credits</a>
+                    <a href="contributions.html"><span class="emoji">📜</span>Contribution Log</a>
+                    <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank"><span class="emoji">🐙</span>GitHub</a>
+                </div>
+            </div>
+        </nav>
+        
         <!-- Tools Section -->
-        <section class="section">
+        <section id="tools" class="section">
             <div class="section-header">
                 <span class="section-icon">🛠️</span>
                 <h2>Tools</h2>
@@ -515,7 +584,7 @@
         </section>
         
         <!-- Data Files Section -->
-        <section class="section">
+        <section id="data-files" class="section">
             <div class="section-header">
                 <span class="section-icon">📊</span>
                 <h2>Data Files</h2>
@@ -553,7 +622,7 @@
         </section>
         
         <!-- Roadmap Section -->
-        <section class="section">
+        <section id="roadmap" class="section">
             <div class="section-header">
                 <span class="section-icon">🗺️</span>
                 <h2>Roadmap</h2>
@@ -574,7 +643,7 @@
         </section>
         
         <!-- Contributing & Credits -->
-        <section class="section">
+        <section id="community" class="section">
             <div class="info-grid">
                 <div class="info-panel">
                     <h3>🤝 Contributing</h3>

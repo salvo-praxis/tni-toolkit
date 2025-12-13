@@ -4,6 +4,24 @@ Running log of all contributions to the TNI Toolkit. For guidelines on contribut
 
 ---
 
+## 2025-12-12
+
+### Salvo Praxis
+- `device-calculator.html` v1.7.0 — Config menu with granular toggles (vendor, warranty, power, T/s, TPT, TPS, tooltip, refurbs, auto-SATA), traversal metrics with calculations, comprehensive hover tooltip, colorized stats, localStorage persistence, clear buttons, Decentro Rigs category, refurbished devices data
+- `tni-store.json` v1.2.0 — Added `compatible_programs` field to all 47 devices with placeholder examples
+- `style-guide.html` v1.5.0 — Collapsible UI components, syntax highlighting, Master JS section, tooltip dependencies
+- `credits.html` v1.6.1 — Updated contributor counts, consolidated entries
+- `contributions.html` v1.2.1 — Consolidated entries, added attributions
+- `CLAUDE.md` — Added versioning workflow, attribution pipeline, commit message format
+
+### gamers2000
+- `device-calculator.html` v1.7.0 — Suggested warranty display and refurbished devices features
+
+### Singing Pot Beast
+- `device-calculator.html` v1.7.0 — Suggested auto-prune/config menu feature
+
+---
+
 ## 2025-12-10
 
 ### Salvo Praxis

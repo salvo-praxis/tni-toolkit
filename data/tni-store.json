@@ -2,8 +2,8 @@
   "_meta": {
     "game": "Tower Networking Inc.",
     "dataset": "store",
-    "version": "1.1.0",
-    "last_updated": "2025-12-08",
+    "version": "1.2.0",
+    "last_updated": "2025-12-12",
     "description": "Nearly complete catalog of purchasable items from D-Market2, Barracks and Sons, and other in-game vendors.",
     "notes": "Some warranty values may be inaccurate (recorded during LAB session). Other apps still need documentation. Corrections welcome.",
     "sources": [
@@ -22,7 +22,7 @@
       "Chaotic Crumb",
       "Singing Pot Beast",
       "AlinaNova21",
-      "Блинчик"
+      "\u0411\u043b\u0438\u043d\u0447\u0438\u043a"
     ],
     "corrections": [
       {
@@ -34,8 +34,13 @@
       {
         "version": "1.1.0",
         "correction": "Added cpu, memory, storage, and firmware fields to all network devices (switches, routers, firewalls, TAPs, debuggers)",
-        "suggested_by": "Блинчик",
+        "suggested_by": "\u0411\u043b\u0438\u043d\u0447\u0438\u043a",
         "contributor": "AlinaNova21"
+      },
+      {
+        "version": "1.2.0",
+        "correction": "Added compatible_programs field to all 47 devices with placeholder examples for community contribution",
+        "contributor": "Salvo Praxis"
       }
     ]
   },
@@ -57,7 +62,11 @@
       "warranty_days": 7,
       "price": 100,
       "requires_app": "D-Market2",
-      "notes": "Entry-level L2 switch"
+      "notes": "Entry-level L2 switch",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Blade10",
@@ -76,7 +85,11 @@
       "warranty_days": 7,
       "price": 450,
       "requires_app": "D-Market2",
-      "notes": "Unmanaged mid switch"
+      "notes": "Unmanaged mid switch",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Blade4",
@@ -95,7 +108,11 @@
       "warranty_days": 7,
       "price": 100,
       "requires_app": "D-Market2",
-      "notes": "Small fiber switch"
+      "notes": "Small fiber switch",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Blade12",
@@ -114,7 +131,11 @@
       "warranty_days": 14,
       "price": 1000,
       "requires_app": "D-Market2",
-      "notes": "Managed; VLAN tagging"
+      "notes": "Managed; VLAN tagging",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Blade66",
@@ -133,7 +154,11 @@
       "warranty_days": 14,
       "price": 950,
       "requires_app": "D-Market2",
-      "notes": "Hybrid media L2"
+      "notes": "Hybrid media L2",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Blade15",
@@ -152,7 +177,11 @@
       "warranty_days": 14,
       "price": 900,
       "requires_app": "D-Market2",
-      "notes": "Managed; VLAN tagging"
+      "notes": "Managed; VLAN tagging",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Blade88",
@@ -171,7 +200,11 @@
       "warranty_days": 18,
       "price": 1600,
       "requires_app": "D-Market2",
-      "notes": "High-end mixed media"
+      "notes": "High-end mixed media",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Blade88 (Refurb)",
@@ -190,7 +223,11 @@
       "warranty_days": 3,
       "price": 480,
       "requires_app": "D-Market2",
-      "notes": "Refurbished; great value"
+      "notes": "Refurbished; great value",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Blade30",
@@ -209,7 +246,11 @@
       "warranty_days": 21,
       "price": 1650,
       "requires_app": "D-Market2",
-      "notes": "Enterprise managed"
+      "notes": "Enterprise managed",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Blade1515",
@@ -228,7 +269,11 @@
       "warranty_days": 21,
       "price": 1850,
       "requires_app": "D-Market2",
-      "notes": "Enterprise grade mixed-media"
+      "notes": "Enterprise grade mixed-media",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     }
   ],
   "servers": [
@@ -246,7 +291,11 @@
       "warranty_days": 14,
       "price": 540,
       "requires_app": "D-Market2",
-      "notes": "Small business server"
+      "notes": "Small business server",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "MacroHard Boulder+ SRV",
@@ -262,7 +311,11 @@
       "warranty_days": 14,
       "price": 1020,
       "requires_app": "D-Market2",
-      "notes": "High performance model"
+      "notes": "High performance model",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "MacroHard Boulder+ SRV (Refurb)",
@@ -278,7 +331,11 @@
       "warranty_days": 3,
       "price": 255,
       "requires_app": "D-Market2",
-      "notes": "Refurbished"
+      "notes": "Refurbished",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "MacroHard Boulder++ SRV",
@@ -294,7 +351,11 @@
       "warranty_days": 14,
       "price": 1750,
       "requires_app": "D-Market2",
-      "notes": "Extra port; more bandwidth"
+      "notes": "Extra port; more bandwidth",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "MacroHard Monolith SRV",
@@ -310,7 +371,11 @@
       "warranty_days": 14,
       "price": 2100,
       "requires_app": "D-Market2",
-      "notes": "Includes 2 SATA 3.5\" bays"
+      "notes": "Includes 2 SATA 3.5\" bays",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "MacroHard Ledge Two SRV",
@@ -326,7 +391,11 @@
       "warranty_days": 21,
       "price": 2625,
       "requires_app": "D-Market2",
-      "notes": "Fiber-enabled compute server"
+      "notes": "Fiber-enabled compute server",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "MacroHard Ledge Three SRV",
@@ -342,7 +411,11 @@
       "warranty_days": 21,
       "price": 4000,
       "requires_app": "D-Market2",
-      "notes": "Fiber; very high bandwidth"
+      "notes": "Fiber; very high bandwidth",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "MacroHard Megalith SRV",
@@ -358,7 +431,11 @@
       "warranty_days": 24,
       "price": 4750,
       "requires_app": "D-Market2",
-      "notes": "Comes with 6 SATA 3.5\" expansion slots"
+      "notes": "Comes with 6 SATA 3.5\" expansion slots",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Savannah Meerkat",
@@ -374,7 +451,11 @@
       "warranty_days": 21,
       "price": 950,
       "requires_app": "D-Market2",
-      "notes": "Scalable compute; efficient"
+      "notes": "Scalable compute; efficient",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Savannah Gazelle",
@@ -390,7 +471,11 @@
       "warranty_days": 35,
       "price": 2640,
       "requires_app": "D-Market2",
-      "notes": "Durable; long-life"
+      "notes": "Durable; long-life",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Savannah Gazelle",
@@ -406,7 +491,11 @@
       "warranty_days": 35,
       "price": 2200,
       "requires_app": "D-Market2",
-      "notes": "Same spec; alternate listing"
+      "notes": "Same spec; alternate listing",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Savannah Aardvark",
@@ -422,7 +511,11 @@
       "warranty_days": 42,
       "price": 4500,
       "requires_app": "D-Market2",
-      "notes": "2 extensible SATA 3.5\" slots"
+      "notes": "2 extensible SATA 3.5\" slots",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Savannah Wildebeest",
@@ -438,7 +531,11 @@
       "warranty_days": 49,
       "price": 6800,
       "requires_app": "D-Market2",
-      "notes": "High-end enterprise compute"
+      "notes": "High-end enterprise compute",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "MacroHard NLB2",
@@ -454,7 +551,11 @@
       "warranty_days": 73,
       "price": 437,
       "requires_app": "D-Market2",
-      "notes": "2-2 hardware load balancer (round-robin)"
+      "notes": "2-2 hardware load balancer (round-robin)",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "ICC1",
@@ -470,7 +571,11 @@
       "warranty_days": 8,
       "price": 160,
       "requires_app": "D-Market2",
-      "notes": "Modular computing unit. Homelab equipment."
+      "notes": "Modular computing unit. Homelab equipment.",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Golonys-Cinco",
@@ -486,7 +591,11 @@
       "warranty_days": 17,
       "price": 400,
       "requires_app": "D-Market2",
-      "notes": "1-port network storage device. Comes with 5 SATA 3.5\" expansion slots."
+      "notes": "1-port network storage device. Comes with 5 SATA 3.5\" expansion slots.",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     }
   ],
   "routers": [
@@ -505,7 +614,11 @@
       "warranty_days": 17,
       "price": 264,
       "requires_app": "D-Market2",
-      "notes": "Edge router; DC power."
+      "notes": "Edge router; DC power.",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Disco Nano 2G",
@@ -522,7 +635,11 @@
       "warranty_days": 21,
       "price": 180,
       "requires_app": "D-Market2",
-      "notes": "2nd generation edge"
+      "notes": "2nd generation edge",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Disco Nano 3H",
@@ -539,7 +656,11 @@
       "warranty_days": 28,
       "price": 450,
       "requires_app": "D-Market2",
-      "notes": "High-availability support"
+      "notes": "High-availability support",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Disco Milli",
@@ -556,7 +677,11 @@
       "warranty_days": 16,
       "price": 325,
       "requires_app": "D-Market2",
-      "notes": "Economical medium enterprise"
+      "notes": "Economical medium enterprise",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Disco Milli 2G",
@@ -573,7 +698,11 @@
       "warranty_days": 18,
       "price": 500,
       "requires_app": "D-Market2",
-      "notes": "Improved performance"
+      "notes": "Improved performance",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Disco Milli 3G",
@@ -590,7 +719,11 @@
       "warranty_days": 21,
       "price": 800,
       "requires_app": "D-Market2",
-      "notes": "HA support; 3rd gen"
+      "notes": "HA support; 3rd gen",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Disco Milli 4G",
@@ -607,7 +740,11 @@
       "warranty_days": 25,
       "price": 1150,
       "requires_app": "D-Market2",
-      "notes": "4th gen; very high capacity"
+      "notes": "4th gen; very high capacity",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Disco Micro",
@@ -624,7 +761,11 @@
       "warranty_days": 14,
       "price": 600,
       "requires_app": "D-Market2",
-      "notes": "Small business mixed"
+      "notes": "Small business mixed",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Disco Micro 2G",
@@ -641,7 +782,11 @@
       "warranty_days": 19,
       "price": 950,
       "requires_app": "D-Market2",
-      "notes": "Improved performance"
+      "notes": "Improved performance",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Disco Micro 2G (Refurb)",
@@ -658,7 +803,11 @@
       "warranty_days": 3,
       "price": 285,
       "requires_app": "D-Market2",
-      "notes": "Refurbished"
+      "notes": "Refurbished",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Disco Micro 3G",
@@ -675,7 +824,11 @@
       "warranty_days": 21,
       "price": 1300,
       "requires_app": "D-Market2",
-      "notes": "3rd gen; High-availability support"
+      "notes": "3rd gen; High-availability support",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Zodianet Spine Router",
@@ -692,7 +845,11 @@
       "warranty_days": 14,
       "price": 1200,
       "requires_app": "D-Market2",
-      "notes": "High-bandwidth core router"
+      "notes": "High-bandwidth core router",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Zodianet Beam Router",
@@ -709,7 +866,11 @@
       "warranty_days": 17,
       "price": 3700,
       "requires_app": "D-Market2",
-      "notes": "High-bandwidth core router"
+      "notes": "High-bandwidth core router",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     }
   ],
   "firewalls_and_taps": [
@@ -729,7 +890,11 @@
       "warranty_days": 19,
       "price": 550,
       "requires_app": "D-Market2",
-      "notes": "Inline monitoring and filtering"
+      "notes": "Inline monitoring and filtering",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "FireWatch CP4E",
@@ -747,7 +912,11 @@
       "warranty_days": 16,
       "price": 1500,
       "requires_app": "D-Market2",
-      "notes": "Ethernet firewall"
+      "notes": "Ethernet firewall",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "EthTapper",
@@ -765,7 +934,11 @@
       "warranty_days": 21,
       "price": 300,
       "requires_app": "D-Market2",
-      "notes": "Inline tap with port mirroring capabilities. Produces packet traffic captures packets."
+      "notes": "Inline tap with port mirroring capabilities. Produces packet traffic captures packets.",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "Bastion 5E",
@@ -783,7 +956,11 @@
       "warranty_days": 14,
       "price": 4000,
       "requires_app": "D-Market2",
-      "notes": "Top-tier enterprise firewall"
+      "notes": "Top-tier enterprise firewall",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     }
   ],
   "media_converters_and_repeaters": [
@@ -997,7 +1174,11 @@
       "warranty_days": 7,
       "price": 1320,
       "requires_app": "D-Market2",
-      "notes": "Decentro mining rig. Provides Decentro transaction verification to the p2p currency network."
+      "notes": "Decentro mining rig. Provides Decentro transaction verification to the p2p currency network.",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     }
   ],
   "peripherals": [
@@ -1410,7 +1591,11 @@
       "warranty_days": 21,
       "price": 1200,
       "requires_app": "D-Market2",
-      "notes": "2-port ethernet remote debugger."
+      "notes": "2-port ethernet remote debugger.",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "DNS Load Test Box",
@@ -1426,7 +1611,11 @@
       "warranty_days": 0,
       "price": 0,
       "requires_app": "LAB Mode",
-      "notes": "1-port ethernet DNS load testing box. Not for sale; comes pre-purchased in LAB Mode."
+      "notes": "1-port ethernet DNS load testing box. Not for sale; comes pre-purchased in LAB Mode.",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     },
     {
       "model": "DNS UDP/53 Load Tester",
@@ -1442,7 +1631,11 @@
       "warranty_days": 7,
       "price": 1200,
       "requires_app": "D-Market2",
-      "notes": "1-port ethernet load tester. Blasts UDP/53 DNS query traffic."
+      "notes": "1-port ethernet load tester. Blasts UDP/53 DNS query traffic.",
+      "compatible_programs": [
+        "example",
+        "example2"
+      ]
     }
   ],
   "monitoring_displays": [

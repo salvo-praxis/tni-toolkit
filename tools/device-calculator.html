@@ -2,14 +2,14 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║  TNI Device Compatibility Calculator                                         ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║  Version: 1.5.0                                                              ║
-║  Updated: 2025-12-10                                                         ║
+║  Version: 1.7.0                                                              ║
+║  Updated: 2025-12-12                                                         ║
 ║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Description:                                                                ║
 ║    Device resource planning tool. Calculate CPU, memory, and storage         ║
 ║    requirements for program configurations across all device types           ║
-║    including servers, switches, routers, firewalls, and debuggers.           ║
+║    including servers, switches, routers, firewalls, debuggers, and rigs.     ║
 ║                                                                              ║
 ║  Features:                                                                   ║
 ║    - Device selection with category filtering and search                     ║
@@ -17,13 +17,28 @@
 ║    - SATA expansion support for applicable devices                           ║
 ║    - Shareable configuration codes (URL hash support)                        ║
 ║    - File-level resource breakdown table                                     ║
+║    - Colorized stats display (CPU/MEM/HDD/W/T/s)                             ║
+║    - Traversal metrics (TPT, TPS, T/s) with granular toggles                 ║
+║    - Comprehensive device tooltip on hover (optional)                        ║
+║    - Warranty and vendor information display                                 ║
+║    - Config menu with persistent settings                                    ║
 ║                                                                              ║
 ║  Contributors:                                                               ║
 ║    - Salvo Praxis (original author, style guide compliance)                  ║
 ║    - Claude (Anthropic)                                                      ║
 ║    - AlinaNova21 (device categories, search, sharecode, file table)          ║
+║    - gamers2000 (warranty display, refurb devices suggestions)               ║
+║    - Singing Pot Beast (auto-prune/config menu suggestion)                   ║
 ║                                                                              ║
 ║  Changelog:                                                                  ║
+║    1.7.0 - Config menu with granular toggles: show refurbs, vendor,          ║
+║            warranty, power (W), traversals/sec (T/s), traversals/tick (TPT), ║
+║            ticks/sec (TPS); comprehensive device tooltip on hover (opt-in);  ║
+║            localStorage persistence; clear buttons; colorized stats;         ║
+║            traversals_per_tick and cpu_cycle data for all devices;           ║
+║            Decentro Rigs category with Dvergar; refurbished devices data;    ║
+║            auto-SATA toggle; auto-prune disabled pending compatibility data  ║
+║    1.6.0 - Warranty display, refurbished devices data (gamers2000)           ║
 ║    1.5.0 - SATA stepper control (−/+ buttons, auto-adjust + manual override) ║
 ║    1.4.1 - Fixed SATA storage value: 6 → 4 (thanks Kurtchen!)                ║
 ║    1.4.0 - Smart SATA (x/y slots, cost-per-need), program type filter,       ║
@@ -197,6 +212,37 @@
             color: #8b949e;
         }
         
+        /* === FILTER ROW (Dropdown + Clear Button) === */
+        .filter-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .filter-row .custom-select {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        .clear-btn {
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid #30363d;
+            background: rgba(22, 27, 34, 0.8);
+            color: #8b949e;
+            font-size: 11px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        
+        .clear-btn:hover {
+            border-color: #f85149;
+            color: #f85149;
+            background: rgba(248, 81, 73, 0.1);
+        }
+        
         /* === CUSTOM DROPDOWN (Style Guide Compliant) === */
         .custom-select {
             position: relative;
@@ -328,12 +374,21 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 8px;
+        }
+        
+        .item-header-left {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            min-width: 0;
         }
         
         .item-name {
             font-weight: 500;
             font-size: 12px;
             color: #c9d1d9;
+            white-space: nowrap;
         }
         
         .item-name.active {
@@ -344,27 +399,169 @@
             color: #00ff88;
         }
         
+        .item-vendor {
+            color: #7d8590;
+            font-size: 10px;
+            margin-left: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
         .item-price {
             color: #f0883e;
             font-size: 11px;
             font-weight: 600;
+            white-space: nowrap;
         }
         
         .item-stats {
             font-size: 10px;
-            color: #8b949e;
             margin-top: 4px;
             display: flex;
-            gap: 12px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .item-stats-left {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .stat {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .stat-label {
+            opacity: 0.7;
+            margin-right: 2px;
+        }
+        
+        .stat-cpu { color: #58a6ff; }
+        .stat-mem { color: #a371f7; }
+        .stat-hdd { color: #f0883e; }
+        .stat-pwr { color: #f0c674; }
+        .stat-tpt { color: #7ee787; }
+        .stat-tps { color: #79c0ff; }
+        .stat-tsec { color: #00ff88; }
+        
+        .stat-warranty {
+            color: #8b949e;
+            font-size: 9px;
+        }
+        
+        .stat-warranty .stat-label {
+            opacity: 0.6;
+        }
+        
+        /* Device tooltip */
+        .list-item.has-tooltip {
+            position: relative;
+        }
+        
+        .device-tooltip {
+            position: fixed;
+            z-index: 1000;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 11px;
+            min-width: 200px;
+            max-width: 280px;
+            pointer-events: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+        
+        .device-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 20px;
+            width: 10px;
+            height: 10px;
+            background: #161b22;
+            border-left: 1px solid #30363d;
+            border-top: 1px solid #30363d;
+            transform: rotate(45deg);
+        }
+        
+        .device-tooltip-header {
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #30363d;
+        }
+        
+        .device-tooltip-model {
+            color: #00ff88;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        
+        .device-tooltip-vendor {
+            color: #8b949e;
+            font-size: 10px;
+            margin-top: 2px;
+        }
+        
+        .device-tooltip-section {
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+        }
+        
+        .device-tooltip-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .device-tooltip-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3px;
+        }
+        
+        .device-tooltip-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .device-tooltip-label {
+            color: #8b949e;
+        }
+        
+        .device-tooltip-value {
+            color: #c9d1d9;
+            font-weight: 500;
+        }
+        
+        .device-tooltip-value.cpu { color: #58a6ff; }
+        .device-tooltip-value.mem { color: #a371f7; }
+        .device-tooltip-value.hdd { color: #f0883e; }
+        .device-tooltip-value.pwr { color: #f0c674; }
+        .device-tooltip-value.tsec { color: #00ff88; }
+        
+        .device-tooltip-calc {
+            font-size: 10px;
+            color: #7d8590;
+            margin-top: 4px;
         }
         
         .item-stats .firmware-tag {
             color: #00ff88;
+            margin-left: 6px;
         }
         
         .program-meta {
             font-size: 10px;
-            color: #8b949e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .program-stats {
+            display: flex;
+            gap: 8px;
         }
         
         .type-badge {
@@ -795,6 +992,194 @@
         .hidden {
             display: none;
         }
+        
+        /* === CONFIG MENU === */
+        .config-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        
+        .config-btn {
+            background: rgba(22, 27, 34, 0.8);
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #8b949e;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s;
+        }
+        
+        .config-btn:hover {
+            border-color: #58a6ff;
+            color: #c9d1d9;
+        }
+        
+        .config-btn.active {
+            border-color: #58a6ff;
+            background: rgba(88, 166, 255, 0.1);
+            color: #58a6ff;
+        }
+        
+        .config-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+        
+        .config-panel {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: rgba(22, 27, 34, 0.95);
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px;
+            min-width: 280px;
+            z-index: 100;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            display: none;
+        }
+        
+        .config-panel.show {
+            display: block;
+        }
+        
+        .config-panel h3 {
+            color: #58a6ff;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0 12px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #30363d;
+        }
+        
+        .config-section {
+            margin-bottom: 16px;
+        }
+        
+        .config-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .config-section-title {
+            color: #8b949e;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .config-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+        }
+        
+        .config-option:last-child {
+            border-bottom: none;
+        }
+        
+        .config-option-label {
+            color: #c9d1d9;
+            font-size: 12px;
+        }
+        
+        .config-option-desc {
+            color: #7d8590;
+            font-size: 10px;
+            margin-top: 2px;
+        }
+        
+        /* Toggle Switch */
+        .toggle {
+            position: relative;
+            width: 36px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+        
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 2px;
+            bottom: 2px;
+            background: #8b949e;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+        
+        .toggle input:checked + .toggle-slider {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: #00ff88;
+        }
+        
+        .toggle input:checked + .toggle-slider:before {
+            transform: translateX(16px);
+            background: #00ff88;
+        }
+        
+        .toggle input:focus + .toggle-slider {
+            box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.3);
+        }
+        
+        /* Disabled config option */
+        .config-option.disabled {
+            opacity: 0.5;
+        }
+        
+        .config-option.disabled .toggle {
+            pointer-events: none;
+        }
+        
+        .config-option-note {
+            margin-top: 6px;
+            padding: 6px 8px;
+            background: rgba(240, 136, 62, 0.1);
+            border-left: 2px solid #f0883e;
+            border-radius: 0 4px 4px 0;
+            font-size: 10px;
+            color: #8b949e;
+        }
+        
+        .config-option-note a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+        
+        .config-option-note a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -806,21 +1191,169 @@
         <a href="../index.html" class="back-link" id="back-to-toolkit">← Back to Toolkit</a>
     </div>
 
+    <!-- Config Bar -->
+    <div class="config-bar">
+        <button class="config-btn" id="config-toggle" onclick="toggleConfig()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            Settings
+        </button>
+        <div class="config-panel" id="config-panel">
+            <h3>⚙ Configuration</h3>
+            
+            <div class="config-section">
+                <div class="config-section-title">Device List</div>
+                
+                <div class="config-option">
+                    <div>
+                        <div class="config-option-label">Include refurbished devices</div>
+                        <div class="config-option-desc">Show devices from Refurb Hut (lower price, 3-day warranty)</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="config-show-refurbs" onchange="onConfigChange()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="config-option">
+                    <div>
+                        <div class="config-option-label">Show vendor</div>
+                        <div class="config-option-desc">Display vendor name on device cards</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="config-show-vendor" checked onchange="onConfigChange()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="config-option">
+                    <div>
+                        <div class="config-option-label">Show warranty</div>
+                        <div class="config-option-desc">Display warranty days on device cards</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="config-show-warranty" checked onchange="onConfigChange()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="config-section">
+                <div class="config-section-title">Inline Stats</div>
+                
+                <div class="config-option">
+                    <div>
+                        <div class="config-option-label">Show power (W)</div>
+                        <div class="config-option-desc">Display power consumption in watts</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="config-show-power" checked onchange="onConfigChange()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="config-option">
+                    <div>
+                        <div class="config-option-label">Show traversals/sec (T/s)</div>
+                        <div class="config-option-desc">Display calculated traversals per second</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="config-show-traversals" checked onchange="onConfigChange()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="config-option">
+                    <div>
+                        <div class="config-option-label">Show traversals/tick (TPT)</div>
+                        <div class="config-option-desc">Display raw traversals per tick value</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="config-show-tpt" onchange="onConfigChange()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="config-option">
+                    <div>
+                        <div class="config-option-label">Show ticks/sec (TPS)</div>
+                        <div class="config-option-desc">Display ticks per second from cpu_cycle</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="config-show-tps" onchange="onConfigChange()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="config-section">
+                <div class="config-section-title">Tooltip</div>
+                
+                <div class="config-option">
+                    <div>
+                        <div class="config-option-label">Show detailed tooltip on hover</div>
+                        <div class="config-option-desc">Comprehensive stats popup when hovering devices</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="config-show-tooltip" onchange="onConfigChange()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="config-section">
+                <div class="config-section-title">Behavior</div>
+                
+                <div class="config-option">
+                    <div>
+                        <div class="config-option-label">Auto-populate SATA slots</div>
+                        <div class="config-option-desc">Automatically add SATA modules to meet storage needs</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="config-auto-sata" onchange="onConfigChange()" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="config-option disabled">
+                    <div>
+                        <div class="config-option-label">Auto-prune incompatible</div>
+                        <div class="config-option-desc">Hide devices that can't run selected programs</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="config-auto-prune" disabled>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="config-option-note">
+                    ⚠ Requires firmware/software compatibility data not yet documented. 
+                    <a href="../contributing.html" target="_blank">Help contribute this data →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="grid">
         <!-- Device Selection -->
         <div>
             <h2 class="section-title">▸ Select Device</h2>
             <input type="text" class="search-input" id="device-search" placeholder="Search devices...">
-            <div class="custom-select" id="device-type-select">
-                <div class="custom-select-trigger" id="device-type-trigger">All Devices</div>
-                <div class="custom-select-options" id="device-type-options">
-                    <div class="custom-select-option selected" data-value="all">All Devices</div>
-                    <div class="custom-select-option" data-value="servers">Servers</div>
-                    <div class="custom-select-option" data-value="network_switches">Switches</div>
-                    <div class="custom-select-option" data-value="routers">Routers</div>
-                    <div class="custom-select-option" data-value="firewalls_and_taps">Firewalls &amp; TAPs</div>
-                    <div class="custom-select-option" data-value="debuggers_and_test_devices">Debuggers</div>
+            <div class="filter-row">
+                <div class="custom-select" id="device-type-select">
+                    <div class="custom-select-trigger" id="device-type-trigger">All Devices</div>
+                    <div class="custom-select-options" id="device-type-options">
+                        <div class="custom-select-option selected" data-value="all">All Devices</div>
+                        <div class="custom-select-option" data-value="servers">Servers</div>
+                        <div class="custom-select-option" data-value="network_switches">Switches</div>
+                        <div class="custom-select-option" data-value="routers">Routers</div>
+                        <div class="custom-select-option" data-value="firewalls_and_taps">Firewalls &amp; TAPs</div>
+                        <div class="custom-select-option" data-value="debuggers_and_test_devices">Debuggers</div>
+                        <div class="custom-select-option" data-value="decentro_rigs">Decentro Rigs</div>
+                    </div>
                 </div>
+                <button class="clear-btn" onclick="clearDeviceSelection()">Clear</button>
             </div>
             <div class="list-container" id="device-list"></div>
             
@@ -840,15 +1373,18 @@
         <div>
             <h2 class="section-title">▸ Select Programs</h2>
             <input type="text" class="search-input" id="program-search" placeholder="Search programs...">
-            <div class="custom-select" id="program-type-select">
-                <div class="custom-select-trigger" id="program-type-trigger">All Programs</div>
-                <div class="custom-select-options" id="program-type-options">
-                    <div class="custom-select-option selected" data-value="all">All Programs</div>
-                    <div class="custom-select-option" data-value="Producer">Producers</div>
-                    <div class="custom-select-option" data-value="Converter">Converters</div>
-                    <div class="custom-select-option" data-value="Storage">Storage</div>
-                    <div class="custom-select-option" data-value="Firmware">Firmware</div>
+            <div class="filter-row">
+                <div class="custom-select" id="program-type-select">
+                    <div class="custom-select-trigger" id="program-type-trigger">All Programs</div>
+                    <div class="custom-select-options" id="program-type-options">
+                        <div class="custom-select-option selected" data-value="all">All Programs</div>
+                        <div class="custom-select-option" data-value="Producer">Producers</div>
+                        <div class="custom-select-option" data-value="Converter">Converters</div>
+                        <div class="custom-select-option" data-value="Storage">Storage</div>
+                        <div class="custom-select-option" data-value="Firmware">Firmware</div>
+                    </div>
                 </div>
+                <button class="clear-btn" onclick="clearProgramSelection()">Clear</button>
             </div>
             <div class="list-container programs" id="program-list"></div>
         </div>
@@ -886,7 +1422,7 @@
         </div>
         <p class="footer-note">Made with ❤️ for the TNI community</p>
         <div class="footer-badges">
-            <span class="version-badge">v1.2.0</span>
+            <span class="version-badge">v1.7.0</span>
             <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/LICENSE" target="_blank" class="license-badge">MIT License — Free to use, modify, and share</a>
         </div>
     </footer>
@@ -896,59 +1432,63 @@
         // === TNI DATA: DEVICES ===
         const devices = {
             servers: [
-                { model: "MacroHard Boulder SRV", cpu: 4, memory: 4, storage: 6, sata_slots: 0, price: 540, power_w: 72, ports: 2 },
-                { model: "MacroHard Boulder+ SRV", cpu: 6, memory: 8, storage: 8, sata_slots: 0, price: 1020, power_w: 161, ports: 2 },
-                { model: "MacroHard Boulder+ SRV (Refurb)", cpu: 6, memory: 8, storage: 8, sata_slots: 0, price: 255, power_w: 161, ports: 2 },
-                { model: "MacroHard Boulder++ SRV", cpu: 6, memory: 10, storage: 10, sata_slots: 0, price: 1750, power_w: 312, ports: 3 },
-                { model: "MacroHard Monolith SRV", cpu: 16, memory: 10, storage: 4, sata_slots: 2, price: 2100, power_w: 429, ports: 2 },
-                { model: "MacroHard Ledge Two SRV", cpu: 24, memory: 14, storage: 4, sata_slots: 2, price: 2625, power_w: 973, ports: 3 },
-                { model: "MacroHard Ledge Three SRV", cpu: 24, memory: 16, storage: 4, sata_slots: 2, price: 4000, power_w: 1125, ports: 4 },
-                { model: "MacroHard Megalith SRV", cpu: 32, memory: 16, storage: 4, sata_slots: 6, price: 4750, power_w: 1223, ports: 5 },
-                { model: "Savannah Meerkat", cpu: 4, memory: 4, storage: 4, sata_slots: 0, price: 950, power_w: 62, ports: 2 },
-                { model: "Savannah Gazelle", cpu: 6, memory: 6, storage: 6, sata_slots: 0, price: 2200, power_w: 108, ports: 2 },
-                { model: "Savannah Aardvark", cpu: 10, memory: 10, storage: 5, sata_slots: 2, price: 4500, power_w: 293, ports: 3 },
-                { model: "Savannah Wildebeest", cpu: 16, memory: 16, storage: 8, sata_slots: 2, price: 6800, power_w: 423, ports: 3 },
-                { model: "MacroHard NLB2", cpu: 2, memory: 1, storage: 1, sata_slots: 0, price: 437, power_w: 83, ports: 3 },
-                { model: "ICC1", cpu: 1, memory: 2, storage: 2, sata_slots: 1, price: 160, power_w: 19, ports: 1 },
-                { model: "Golonys-Cinco", cpu: 1, memory: 1, storage: 1, sata_slots: 5, price: 400, power_w: 13, ports: 1 },
+                { model: "MacroHard Boulder SRV", vendor: "AB compute Ltd.", cpu: 4, memory: 4, storage: 6, sata_slots: 0, price: 540, power_w: 72, ports: 2, warranty_days: 14, traversals_per_tick: 16, cpu_cycle: "1 tick / 2.0s" },
+                { model: "MacroHard Boulder+ SRV", vendor: "AB compute Ltd.", cpu: 6, memory: 8, storage: 8, sata_slots: 0, price: 1020, power_w: 161, ports: 2, warranty_days: 14, traversals_per_tick: 28, cpu_cycle: "1 tick / 2.0s" },
+                { model: "MacroHard Boulder+ SRV (Refurb)", vendor: "Refurb Hut", cpu: 6, memory: 8, storage: 8, sata_slots: 0, price: 255, power_w: 161, ports: 2, warranty_days: 3, traversals_per_tick: 28, cpu_cycle: "1 tick / 2.0s" },
+                { model: "MacroHard Boulder++ SRV", vendor: "The Server Shoppe", cpu: 6, memory: 10, storage: 10, sata_slots: 0, price: 1750, power_w: 312, ports: 3, warranty_days: 14, traversals_per_tick: 48, cpu_cycle: "1 tick / 2.0s" },
+                { model: "MacroHard Monolith SRV", vendor: "The Server Shoppe", cpu: 16, memory: 10, storage: 4, sata_slots: 2, price: 2100, power_w: 429, ports: 2, warranty_days: 14, traversals_per_tick: 52, cpu_cycle: "1 tick / 2.0s" },
+                { model: "MacroHard Ledge Two SRV", vendor: "The Server Shoppe", cpu: 24, memory: 14, storage: 4, sata_slots: 2, price: 2625, power_w: 973, ports: 3, warranty_days: 21, traversals_per_tick: 150, cpu_cycle: "1 tick / 2.0s" },
+                { model: "MacroHard Ledge Three SRV", vendor: "The Server Shoppe", cpu: 24, memory: 16, storage: 4, sata_slots: 2, price: 4000, power_w: 1125, ports: 4, warranty_days: 21, traversals_per_tick: 208, cpu_cycle: "1 tick / 2.0s" },
+                { model: "MacroHard Megalith SRV", vendor: "The Server Shoppe", cpu: 32, memory: 16, storage: 4, sata_slots: 6, price: 4750, power_w: 1223, ports: 5, warranty_days: 24, traversals_per_tick: 240, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Savannah Meerkat", vendor: "Savannah Org.", cpu: 4, memory: 4, storage: 4, sata_slots: 0, price: 950, power_w: 62, ports: 2, warranty_days: 21, traversals_per_tick: 16, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Savannah Gazelle", vendor: "AB compute Ltd.", cpu: 6, memory: 6, storage: 6, sata_slots: 0, price: 2640, power_w: 108, ports: 2, warranty_days: 35, traversals_per_tick: 24, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Savannah Gazelle", vendor: "Savannah Org.", cpu: 6, memory: 6, storage: 6, sata_slots: 0, price: 2200, power_w: 108, ports: 2, warranty_days: 35, traversals_per_tick: 24, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Savannah Aardvark", vendor: "Savannah Org.", cpu: 10, memory: 10, storage: 5, sata_slots: 2, price: 4500, power_w: 293, ports: 3, warranty_days: 42, traversals_per_tick: 65, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Savannah Wildebeest", vendor: "Savannah Org.", cpu: 16, memory: 16, storage: 8, sata_slots: 2, price: 6800, power_w: 423, ports: 3, warranty_days: 49, traversals_per_tick: 104, cpu_cycle: "1 tick / 2.0s" },
+                { model: "MacroHard NLB2", vendor: "The Server Shoppe", cpu: 2, memory: 1, storage: 1, sata_slots: 0, price: 437, power_w: 83, ports: 3, warranty_days: 73, traversals_per_tick: 80, cpu_cycle: "1 tick / 2.0s" },
+                { model: "ICC1", vendor: "Interchange Compute", cpu: 1, memory: 2, storage: 2, sata_slots: 1, price: 160, power_w: 19, ports: 1, warranty_days: 8, traversals_per_tick: 6, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Golonys-Cinco", vendor: "Golonys Ltd.", cpu: 1, memory: 1, storage: 1, sata_slots: 5, price: 400, power_w: 13, ports: 1, warranty_days: 17, traversals_per_tick: 6, cpu_cycle: "1 tick / 2.0s" },
             ],
             network_switches: [
-                { model: "Blade5", cpu: 2, memory: 1, storage: 1, firmware: "bladeos", price: 100, power_w: 22, ports: 5 },
-                { model: "Blade10", cpu: 2, memory: 1, storage: 1, firmware: "bladeos", price: 450, power_w: 41, ports: 10 },
-                { model: "Blade4", cpu: 2, memory: 1, storage: 1, firmware: "bladeos", price: 100, power_w: 30, ports: 4 },
-                { model: "Blade12", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 1000, power_w: 84, ports: 12 },
-                { model: "Blade66", cpu: 2, memory: 1, storage: 1, firmware: "bladeos", price: 950, power_w: 66, ports: 12 },
-                { model: "Blade15", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 900, power_w: 88, ports: 15 },
-                { model: "Blade88", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 1600, power_w: 87, ports: 16 },
-                { model: "Blade88 (Refurb)", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 480, power_w: 87, ports: 16 },
-                { model: "Blade30", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 1650, power_w: 183, ports: 30 },
-                { model: "Blade1515", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 1850, power_w: 208, ports: 30 },
+                { model: "Blade5", vendor: "Blade Networking Inc", cpu: 2, memory: 1, storage: 1, firmware: "bladeos", price: 100, power_w: 22, ports: 5, warranty_days: 7, traversals_per_tick: 25, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Blade10", vendor: "Blade Networking Inc", cpu: 2, memory: 1, storage: 1, firmware: "bladeos", price: 450, power_w: 41, ports: 10, warranty_days: 7, traversals_per_tick: 50, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Blade4", vendor: "Blade Networking Inc", cpu: 2, memory: 1, storage: 1, firmware: "bladeos", price: 100, power_w: 30, ports: 4, warranty_days: 7, traversals_per_tick: 36, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Blade12", vendor: "Blade Networking Inc", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 1000, power_w: 84, ports: 12, warranty_days: 14, traversals_per_tick: 108, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Blade66", vendor: "Blade Networking Inc", cpu: 2, memory: 1, storage: 1, firmware: "bladeos", price: 950, power_w: 66, ports: 12, warranty_days: 14, traversals_per_tick: 84, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Blade15", vendor: "Blade Networking Inc", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 900, power_w: 88, ports: 15, warranty_days: 14, traversals_per_tick: 75, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Blade88", vendor: "Blade Networking Inc", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 1600, power_w: 87, ports: 16, warranty_days: 18, traversals_per_tick: 112, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Blade88 (Refurb)", vendor: "Refurb Hut", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 480, power_w: 87, ports: 16, warranty_days: 3, traversals_per_tick: 112, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Blade30", vendor: "Blade Networking Inc", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 1650, power_w: 183, ports: 30, warranty_days: 21, traversals_per_tick: 150, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Blade1515", vendor: "Blade Networking Inc", cpu: 2, memory: 2, storage: 2, firmware: "vlanfirm", price: 1850, power_w: 208, ports: 30, warranty_days: 21, traversals_per_tick: 210, cpu_cycle: "1 tick / 2.0s" },
             ],
             routers: [
-                { model: "Disco Nano", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 264, power_w: 21, ports: 5 },
-                { model: "Disco Nano 2G", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 180, power_w: 23, ports: 4 },
-                { model: "Disco Nano 3H", cpu: 8, memory: 2, storage: 4, firmware: "hakernel", price: 450, power_w: 26, ports: 4 },
-                { model: "Disco Milli", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 325, power_w: 27, ports: 8 },
-                { model: "Disco Milli 2G", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 500, power_w: 30, ports: 8 },
-                { model: "Disco Milli 3G", cpu: 8, memory: 2, storage: 4, firmware: "hakernel", price: 800, power_w: 41, ports: 8 },
-                { model: "Disco Milli 4G", cpu: 8, memory: 2, storage: 4, firmware: "hakernel", price: 1150, power_w: 60, ports: 8 },
-                { model: "Disco Micro", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 600, power_w: 41, ports: 10 },
-                { model: "Disco Micro 2G", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 950, power_w: 47, ports: 10 },
-                { model: "Disco Micro 2G (Refurb)", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 285, power_w: 47, ports: 10 },
-                { model: "Disco Micro 3G", cpu: 8, memory: 2, storage: 4, firmware: "hakernel", price: 1300, power_w: 50, ports: 10 },
-                { model: "Zodianet Spine Router", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 1200, power_w: 78, ports: 3 },
-                { model: "Zodianet Beam Router", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 3700, power_w: 138, ports: 4 },
+                { model: "Disco Nano", vendor: "AB compute Ltd. / Conduit Systems", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 264, power_w: 21, ports: 5, warranty_days: 17, traversals_per_tick: 60, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Disco Nano 2G", vendor: "Conduit Systems", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 180, power_w: 23, ports: 4, warranty_days: 21, traversals_per_tick: 65, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Disco Nano 3H", vendor: "Conduit Systems", cpu: 8, memory: 2, storage: 4, firmware: "hakernel", price: 450, power_w: 26, ports: 4, warranty_days: 28, traversals_per_tick: 75, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Disco Milli", vendor: "Conduit Systems", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 325, power_w: 27, ports: 8, warranty_days: 16, traversals_per_tick: 80, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Disco Milli 2G", vendor: "Conduit Systems", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 500, power_w: 30, ports: 8, warranty_days: 18, traversals_per_tick: 112, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Disco Milli 3G", vendor: "Conduit Systems", cpu: 8, memory: 2, storage: 4, firmware: "hakernel", price: 800, power_w: 41, ports: 8, warranty_days: 21, traversals_per_tick: 160, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Disco Milli 4G", vendor: "Conduit Systems", cpu: 8, memory: 2, storage: 4, firmware: "hakernel", price: 1150, power_w: 60, ports: 8, warranty_days: 25, traversals_per_tick: 240, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Disco Micro", vendor: "Conduit Systems", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 600, power_w: 41, ports: 10, warranty_days: 14, traversals_per_tick: 125, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Disco Micro 2G", vendor: "Conduit Systems", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 950, power_w: 47, ports: 10, warranty_days: 19, traversals_per_tick: 162, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Disco Micro 2G (Refurb)", vendor: "Refurb Hut", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 285, power_w: 47, ports: 10, warranty_days: 3, traversals_per_tick: 162, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Disco Micro 3G", vendor: "Conduit Systems", cpu: 8, memory: 2, storage: 4, firmware: "hakernel", price: 1300, power_w: 50, ports: 10, warranty_days: 21, traversals_per_tick: 175, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Zodianet Spine Router", vendor: "Zodiac Networks", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 1200, power_w: 78, ports: 3, warranty_days: 14, traversals_per_tick: 250, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Zodianet Beam Router", vendor: "Zodiac Networks", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 3700, power_w: 138, ports: 4, warranty_days: 17, traversals_per_tick: 450, cpu_cycle: "1 tick / 2.0s" },
             ],
             firewalls_and_taps: [
-                { model: "FireWatch ES4A", cpu: 4, memory: 1, storage: 2, firmware: "firewatcher", price: 550, power_w: 55, ports: 3 },
-                { model: "FireWatch CP4E", cpu: 4, memory: 1, storage: 2, firmware: "firewatcher", price: 1500, power_w: 163, ports: 4 },
-                { model: "EthTapper", cpu: 2, memory: 2, storage: 1, firmware: "wirerat", price: 300, power_w: 12, ports: 3 },
-                { model: "Bastion 5E", cpu: 4, memory: 1, storage: 2, firmware: "firewatcher", price: 4000, power_w: 387, ports: 4 },
+                { model: "FireWatch ES4A", vendor: "Fortypoint Security", cpu: 4, memory: 1, storage: 2, firmware: "firewatcher", price: 550, power_w: 55, ports: 3, warranty_days: 19, traversals_per_tick: 52, cpu_cycle: "1 tick / 2.0s" },
+                { model: "FireWatch CP4E", vendor: "Fortypoint Security", cpu: 4, memory: 1, storage: 2, firmware: "firewatcher", price: 1500, power_w: 163, ports: 4, warranty_days: 16, traversals_per_tick: 160, cpu_cycle: "1 tick / 2.0s" },
+                { model: "EthTapper", vendor: "Fortypoint Security", cpu: 2, memory: 2, storage: 1, firmware: "wirerat", price: 300, power_w: 12, ports: 3, warranty_days: 21, traversals_per_tick: 18, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Bastion 5E", vendor: "Fortypoint Security", cpu: 4, memory: 1, storage: 2, firmware: "firewatcher", price: 4000, power_w: 387, ports: 4, warranty_days: 14, traversals_per_tick: 384, cpu_cycle: "1 tick / 2.0s" },
             ],
             debuggers_and_test_devices: [
-                { model: "Debugger Alice", cpu: 1, memory: 1, storage: 1, firmware: "netpeeker", price: 1200, power_w: 72, ports: 2 },
-                { model: "DNS Load Test Box", cpu: 1, memory: 1, storage: 1, firmware: "dnsspam", price: 0, power_w: 112, ports: 1 },
-                { model: "DNS UDP/53 Load Tester", cpu: 1, memory: 1, storage: 1, firmware: "dnsspam", price: 1200, power_w: 202, ports: 1 },
+                { model: "Debugger Alice", vendor: "AB compute Ltd.", cpu: 1, memory: 1, storage: 1, firmware: "netpeeker", price: 1200, power_w: 72, ports: 2, warranty_days: 21, traversals_per_tick: 12, cpu_cycle: "1 tick / 2.0s" },
+                { model: "DNS Load Test Box", vendor: "AB compute Ltd.", cpu: 1, memory: 1, storage: 1, firmware: "dnsspam", price: 0, power_w: 112, ports: 1, warranty_days: 0, traversals_per_tick: 6, cpu_cycle: "5 tick(s) / 1.0s" },
+                { model: "DNS UDP/53 Load Tester", vendor: "AB compute Ltd.", cpu: 1, memory: 1, storage: 1, firmware: "dnsspam", price: 1200, power_w: 202, ports: 1, warranty_days: 7, traversals_per_tick: 6, cpu_cycle: "10 tick(s) / 1.0s" },
+            ],
+            decentro_rigs: [
+                { model: "Dvergar", vendor: "AB compute Ltd.", cpu: 24, memory: 16, storage: 8, sata_slots: 0, price: 1320, power_w: 523, ports: 0, warranty_days: 7, traversals_per_tick: 40, cpu_cycle: "1 tick / 2.0s" },
             ],
         };
 
@@ -957,7 +1497,8 @@
             network_switches: "Switches",
             routers: "Routers",
             firewalls_and_taps: "Firewalls & TAPs",
-            debuggers_and_test_devices: "Debuggers"
+            debuggers_and_test_devices: "Debuggers",
+            decentro_rigs: "Decentro Rigs"
         };
 
         // === TNI DATA: PROGRAMS ===
@@ -1005,6 +1546,91 @@
         let deviceSearch = '';
         let programSearch = '';
 
+        // Config State
+        const config = {
+            showRefurbs: false,
+            showVendor: true,
+            showWarranty: true,
+            showPower: true,
+            showTraversals: true,  // T/s calculated
+            showTPT: false,        // Traversals per tick
+            showTPS: false,        // Ticks per second
+            showTooltip: false,    // Comprehensive tooltip on hover
+            autoSata: true,
+            autoPrune: false
+        };
+
+        // Load config from localStorage
+        function loadConfig() {
+            try {
+                const saved = localStorage.getItem('tni-device-calc-config');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    Object.assign(config, parsed);
+                    // Force autoPrune off until compatibility data is documented
+                    config.autoPrune = false;
+                    // Update checkboxes to match
+                    document.getElementById('config-show-refurbs').checked = config.showRefurbs;
+                    document.getElementById('config-show-vendor').checked = config.showVendor;
+                    document.getElementById('config-show-warranty').checked = config.showWarranty;
+                    document.getElementById('config-show-power').checked = config.showPower;
+                    document.getElementById('config-show-traversals').checked = config.showTraversals;
+                    document.getElementById('config-show-tpt').checked = config.showTPT;
+                    document.getElementById('config-show-tps').checked = config.showTPS;
+                    document.getElementById('config-show-tooltip').checked = config.showTooltip;
+                    document.getElementById('config-auto-sata').checked = config.autoSata;
+                    // config-auto-prune checkbox is disabled, don't update it
+                }
+            } catch (e) {
+                // Ignore localStorage errors
+            }
+        }
+
+        // Save config to localStorage
+        function saveConfig() {
+            try {
+                localStorage.setItem('tni-device-calc-config', JSON.stringify(config));
+            } catch (e) {
+                // Ignore localStorage errors
+            }
+        }
+
+        // Toggle config panel
+        function toggleConfig() {
+            const panel = document.getElementById('config-panel');
+            const btn = document.getElementById('config-toggle');
+            panel.classList.toggle('show');
+            btn.classList.toggle('active');
+        }
+
+        // Close config panel when clicking outside
+        document.addEventListener('click', (e) => {
+            const panel = document.getElementById('config-panel');
+            const btn = document.getElementById('config-toggle');
+            if (panel && !panel.contains(e.target) && !btn.contains(e.target)) {
+                panel.classList.remove('show');
+                btn.classList.remove('active');
+            }
+        });
+
+        // Handle config changes
+        function onConfigChange() {
+            config.showRefurbs = document.getElementById('config-show-refurbs').checked;
+            config.showVendor = document.getElementById('config-show-vendor').checked;
+            config.showWarranty = document.getElementById('config-show-warranty').checked;
+            config.showPower = document.getElementById('config-show-power').checked;
+            config.showTraversals = document.getElementById('config-show-traversals').checked;
+            config.showTPT = document.getElementById('config-show-tpt').checked;
+            config.showTPS = document.getElementById('config-show-tps').checked;
+            config.showTooltip = document.getElementById('config-show-tooltip').checked;
+            config.autoSata = document.getElementById('config-auto-sata').checked;
+            // config.autoPrune is disabled until compatibility data is documented
+            saveConfig();
+            renderDevices();
+            renderPrograms();
+            calculate();
+        }
+
         // DOM Elements
         const deviceListEl = document.getElementById('device-list');
         const deviceSearchEl = document.getElementById('device-search');
@@ -1027,6 +1653,23 @@
         const sharecodeEl = document.getElementById('sharecode');
         const copySharecodeBtn = document.getElementById('copy-sharecode');
         const copyUrlBtn = document.getElementById('copy-url');
+
+        // === CLEAR SELECTION FUNCTIONS ===
+        function clearDeviceSelection() {
+            selectedDevice = null;
+            selectedDeviceCategory = null;
+            sataSelected = 0;
+            sataManualOverride = false;
+            updateToggles();
+            renderDevices();
+            calculate();
+        }
+
+        function clearProgramSelection() {
+            selectedPrograms = [];
+            renderPrograms();
+            calculate();
+        }
 
         // === CUSTOM DROPDOWN LOGIC ===
         deviceTypeTrigger.addEventListener('click', () => {
@@ -1116,6 +1759,7 @@
         function generateSharecode() {
             const data = {
                 d: selectedDevice ? selectedDevice.model : null,
+                v: selectedDevice ? selectedDevice.vendor : null,
                 p: selectedPrograms.map(p => p.name),
                 s: sataSelected
             };
@@ -1126,10 +1770,10 @@
             try {
                 const data = JSON.parse(atob(code));
 
-                // Find device by model
+                // Find device by model and vendor
                 if (data.d) {
                     for (const [category, deviceList] of Object.entries(devices)) {
-                        const device = deviceList.find(d => d.model === data.d);
+                        const device = deviceList.find(d => d.model === data.d && (data.v ? d.vendor === data.v : true));
                         if (device) {
                             selectedDevice = { ...device, _category: category };
                             selectedDeviceCategory = category;
@@ -1182,6 +1826,46 @@
             try { history.replaceState(null, '', '#' + code); } catch(e) {}
         }
 
+        // === CALCULATE PROGRAM NEEDS (for auto-prune) ===
+        function calculateProgramNeeds() {
+            return {
+                cpu: selectedPrograms.reduce((sum, p) => sum + p.cpu, 0),
+                memory: selectedPrograms.reduce((sum, p) => sum + p.memory, 0),
+                storage: selectedPrograms.reduce((sum, p) => sum + p.storage, 0)
+            };
+        }
+
+        // === TRAVERSAL CALCULATION HELPERS ===
+        // Parse cpu_cycle string to get ticks per second
+        // Format 1: "1 tick / 2.0s" → 0.5 ticks/sec
+        // Format 2: "5 tick(s) / 1.0s" → 5 ticks/sec
+        function parseTicksPerSecond(cpuCycle) {
+            if (!cpuCycle) return null;
+            // Match patterns like "1 tick / 2.0s" or "5 tick(s) / 1.0s"
+            const match = cpuCycle.match(/(\d+(?:\.\d+)?)\s*tick(?:\(s\))?\s*\/\s*(\d+(?:\.\d+)?)\s*s/i);
+            if (match) {
+                const ticks = parseFloat(match[1]);
+                const seconds = parseFloat(match[2]);
+                return ticks / seconds;
+            }
+            return null;
+        }
+
+        // Calculate traversals per second
+        function calculateTraversalsPerSec(device) {
+            if (!device.traversals_per_tick || !device.cpu_cycle) return null;
+            const tps = parseTicksPerSecond(device.cpu_cycle);
+            if (tps === null) return null;
+            return device.traversals_per_tick * tps;
+        }
+
+        // Format traversals/sec for display
+        function formatTraversals(value) {
+            if (value === null) return '—';
+            // Show 1 decimal if not a whole number
+            return value % 1 === 0 ? value.toString() : value.toFixed(1);
+        }
+
         // === GET FILTERED DEVICES ===
         function getFilteredDevices() {
             let result = [];
@@ -1194,12 +1878,29 @@
             } else {
                 result = devices[currentFilter].map(d => ({ ...d, _category: currentFilter }));
             }
-            // Exclude refurb devices (identical specs to non-refurb, only price/warranty differs)
-            result = result.filter(d => !d.model.includes('Refurb'));
+            // Exclude refurb devices unless config enabled
+            if (!config.showRefurbs) {
+                result = result.filter(d => !d.model.includes('Refurb'));
+            }
             // Apply search filter
             if (deviceSearch) {
                 const search = deviceSearch.toLowerCase();
                 result = result.filter(d => d.model.toLowerCase().includes(search));
+            }
+            // Auto-prune: filter out devices that can't run selected programs
+            // NOTE: Currently disabled in config. When enabled, this will check
+            // device.compatible_programs array (in tni-store.json) to determine what
+            // software a device can actually run based on firmware compatibility
+            // (e.g., bladeos vs vlanfirm vs rtkernel). "example" and "example2" entries
+            // are ignored as placeholders for partial community data.
+            if (config.autoPrune && selectedPrograms.length > 0) {
+                result = result.filter(device => {
+                    // Check if device.compatible_programs includes all selected program names
+                    // Ignore placeholder entries ("example", "example2")
+                    const validPrograms = (device.compatible_programs || [])
+                        .filter(p => p !== 'example' && p !== 'example2');
+                    return selectedPrograms.every(p => validPrograms.includes(p.name));
+                });
             }
             return result;
         }
@@ -1216,7 +1917,8 @@
                 'network_switches': 'Switches',
                 'routers': 'Routers',
                 'firewalls_and_taps': 'Firewalls & TAPs',
-                'debuggers_and_test_devices': 'Debuggers'
+                'debuggers_and_test_devices': 'Debuggers',
+                'decentro_rigs': 'Decentro Rigs'
             };
 
             filteredDevices.forEach((device, idx) => {
@@ -1226,25 +1928,64 @@
                     lastCategory = device._category;
                 }
 
-                const isSelected = selectedDevice && selectedDevice.model === device.model && selectedDeviceCategory === device._category;
+                const isSelected = selectedDevice && selectedDevice.model === device.model && selectedDevice.vendor === device.vendor && selectedDeviceCategory === device._category;
                 const sataInfo = device.sata_slots > 0 ? ` +${device.sata_slots}SATA` : '';
                 const firmwareInfo = device.firmware ? `<span class="firmware-tag">FW:${device.firmware}</span>` : '';
+                const vendorInfo = config.showVendor ? `<span class="item-vendor">· ${device.vendor}</span>` : '';
+                const warrantyInfo = config.showWarranty ? `<span class="stat stat-warranty"><span class="stat-label">WARRANTY</span> ${device.warranty_days ? device.warranty_days + 'd' : '—'}</span>` : '';
+                
+                // Power display
+                const powerInfo = config.showPower ? `<span class="stat stat-pwr"><span class="stat-label">W</span>${device.power_w}</span>` : '';
+                
+                // Traversal calculations
+                const tps = parseTicksPerSecond(device.cpu_cycle);
+                const traversalsSec = calculateTraversalsPerSec(device);
+                
+                // Traversal stats (inline)
+                let traversalStats = '';
+                if (config.showTPT && device.traversals_per_tick) {
+                    traversalStats += `<span class="stat stat-tpt"><span class="stat-label">TPT</span>${device.traversals_per_tick}</span>`;
+                }
+                if (config.showTPS && tps !== null) {
+                    traversalStats += `<span class="stat stat-tps"><span class="stat-label">TPS</span>${formatTraversals(tps)}</span>`;
+                }
+                if (config.showTraversals && traversalsSec !== null) {
+                    traversalStats += `<span class="stat stat-tsec"><span class="stat-label">T/s</span>${formatTraversals(traversalsSec)}</span>`;
+                }
+                
+                // Tooltip data (for comprehensive hover)
+                const tooltipData = config.showTooltip ? `data-tooltip-model="${device.model}"
+                         data-tooltip-vendor="${device.vendor}"
+                         data-tooltip-cpu="${device.cpu}"
+                         data-tooltip-mem="${device.memory}"
+                         data-tooltip-hdd="${device.storage}"
+                         data-tooltip-power="${device.power_w}"
+                         data-tooltip-warranty="${device.warranty_days || 0}"
+                         data-tooltip-tpt="${device.traversals_per_tick || ''}"
+                         data-tooltip-tps="${tps !== null ? formatTraversals(tps) : ''}"
+                         data-tooltip-tsec="${traversalsSec !== null ? formatTraversals(traversalsSec) : ''}"` : '';
 
                 html += `
-                    <div class="list-item ${isSelected ? 'selected' : ''}"
-                         data-device-idx="${idx}">
+                    <div class="list-item ${isSelected ? 'selected' : ''} ${config.showTooltip ? 'has-tooltip' : ''}"
+                         data-device-idx="${idx}"
+                         ${tooltipData}>
                         <div class="item-header">
-                            <span class="item-name ${isSelected ? 'active' : ''}">
-                                ${device.model}
-                            </span>
+                            <div class="item-header-left">
+                                <span class="item-name ${isSelected ? 'active' : ''}">${device.model}</span>
+                                ${vendorInfo}
+                            </div>
                             <span class="item-price">$${device.price}</span>
                         </div>
                         <div class="item-stats">
-                            <span>C:${device.cpu}</span>
-                            <span>M:${device.memory}</span>
-                            <span>S:${device.storage}${sataInfo}</span>
-                            <span>${device.power_w}W</span>
-                            ${firmwareInfo}
+                            <div class="item-stats-left">
+                                <span class="stat stat-cpu"><span class="stat-label">CPU</span>${device.cpu}</span>
+                                <span class="stat stat-mem"><span class="stat-label">MEM</span>${device.memory}</span>
+                                <span class="stat stat-hdd"><span class="stat-label">HDD</span>${device.storage}${sataInfo}</span>
+                                ${powerInfo}
+                                ${traversalStats}
+                                ${firmwareInfo}
+                            </div>
+                            ${warrantyInfo}
                         </div>
                     </div>
                 `;
@@ -1258,7 +1999,7 @@
                     const idx = parseInt(el.dataset.deviceIdx);
                     const device = filteredDevices[idx];
                     // Toggle selection: click again to deselect
-                    if (selectedDevice && selectedDevice.model === device.model) {
+                    if (selectedDevice && selectedDevice.model === device.model && selectedDevice.vendor === device.vendor) {
                         selectedDevice = null;
                         selectedDeviceCategory = null;
                         sataSelected = 0; // Reset to 0
@@ -1272,6 +2013,119 @@
                     calculate();
                 });
             });
+            
+            // Add tooltip handlers if enabled
+            if (config.showTooltip) {
+                deviceListEl.querySelectorAll('.list-item.has-tooltip').forEach(el => {
+                    el.addEventListener('mouseenter', showDeviceTooltip);
+                    el.addEventListener('mouseleave', hideDeviceTooltip);
+                    el.addEventListener('mousemove', moveDeviceTooltip);
+                });
+            }
+        }
+
+        // === TOOLTIP FUNCTIONS ===
+        let tooltipEl = null;
+        
+        function createTooltipElement() {
+            if (tooltipEl) return tooltipEl;
+            tooltipEl = document.createElement('div');
+            tooltipEl.className = 'device-tooltip';
+            tooltipEl.style.display = 'none';
+            document.body.appendChild(tooltipEl);
+            return tooltipEl;
+        }
+        
+        function showDeviceTooltip(e) {
+            const el = e.currentTarget;
+            const tooltip = createTooltipElement();
+            
+            const model = el.dataset.tooltipModel;
+            const vendor = el.dataset.tooltipVendor;
+            const cpu = el.dataset.tooltipCpu;
+            const mem = el.dataset.tooltipMem;
+            const hdd = el.dataset.tooltipHdd;
+            const power = el.dataset.tooltipPower;
+            const warranty = el.dataset.tooltipWarranty;
+            const tpt = el.dataset.tooltipTpt;
+            const tps = el.dataset.tooltipTps;
+            const tsec = el.dataset.tooltipTsec;
+            
+            let traversalSection = '';
+            if (tsec) {
+                traversalSection = `
+                    <div class="device-tooltip-section">
+                        <div class="device-tooltip-row">
+                            <span class="device-tooltip-label">Traversals</span>
+                            <span class="device-tooltip-value tsec">${tsec}/sec</span>
+                        </div>
+                        ${tpt && tps ? `<div class="device-tooltip-calc">= ${tpt}/tick × ${tps} tick/s</div>` : ''}
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = `
+                <div class="device-tooltip-header">
+                    <div class="device-tooltip-model">${model}</div>
+                    <div class="device-tooltip-vendor">${vendor}</div>
+                </div>
+                <div class="device-tooltip-section">
+                    <div class="device-tooltip-row">
+                        <span class="device-tooltip-label">CPU</span>
+                        <span class="device-tooltip-value cpu">${cpu}</span>
+                    </div>
+                    <div class="device-tooltip-row">
+                        <span class="device-tooltip-label">Memory</span>
+                        <span class="device-tooltip-value mem">${mem}</span>
+                    </div>
+                    <div class="device-tooltip-row">
+                        <span class="device-tooltip-label">Storage</span>
+                        <span class="device-tooltip-value hdd">${hdd}</span>
+                    </div>
+                    <div class="device-tooltip-row">
+                        <span class="device-tooltip-label">Power</span>
+                        <span class="device-tooltip-value pwr">${power}W</span>
+                    </div>
+                    <div class="device-tooltip-row">
+                        <span class="device-tooltip-label">Warranty</span>
+                        <span class="device-tooltip-value">${warranty > 0 ? warranty + ' days' : '—'}</span>
+                    </div>
+                </div>
+                ${traversalSection}
+            `;
+            
+            tooltip.style.display = 'block';
+            positionTooltip(e);
+        }
+        
+        function hideDeviceTooltip() {
+            if (tooltipEl) {
+                tooltipEl.style.display = 'none';
+            }
+        }
+        
+        function moveDeviceTooltip(e) {
+            positionTooltip(e);
+        }
+        
+        function positionTooltip(e) {
+            if (!tooltipEl) return;
+            
+            const padding = 15;
+            const rect = tooltipEl.getBoundingClientRect();
+            let x = e.clientX + padding;
+            let y = e.clientY + padding;
+            
+            // Keep tooltip on screen
+            if (x + rect.width > window.innerWidth) {
+                x = e.clientX - rect.width - padding;
+            }
+            if (y + rect.height > window.innerHeight) {
+                y = e.clientY - rect.height - padding;
+            }
+            
+            tooltipEl.style.left = x + 'px';
+            tooltipEl.style.top = y + 'px';
         }
 
         // === GET FILTERED PROGRAMS ===
@@ -1325,7 +2179,11 @@
                             </span>
                             <div class="program-meta">
                                 <span class="type-badge ${typeClass}">${program.type}</span>
-                                C:${program.cpu} M:${program.memory} S:${program.storage}
+                                <div class="program-stats">
+                                    <span class="stat stat-cpu"><span class="stat-label">CPU</span>${program.cpu}</span>
+                                    <span class="stat stat-mem"><span class="stat-label">MEM</span>${program.memory}</span>
+                                    <span class="stat stat-hdd"><span class="stat-label">HDD</span>${program.storage}</span>
+                                </div>
                             </div>
                         </div>
                         <div class="item-output">
@@ -1409,8 +2267,8 @@
                 ? Math.min(Math.ceil(storageDeficit / SATA_DRIVE_STORAGE), sataSlots)
                 : 0;
             
-            // Only auto-adjust if user hasn't manually overridden
-            if (!sataManualOverride && sataNeeded !== sataSelected) {
+            // Auto-populate SATA if config enabled and user hasn't manually overridden
+            if (config.autoSata && !sataManualOverride && sataNeeded !== sataSelected) {
                 sataSelected = sataNeeded;
                 updateToggles();
             }
@@ -1559,6 +2417,7 @@
         });
 
         // === INITIALIZE ===
+        loadConfig(); // Load saved config from localStorage
         renderDevices();
         renderPrograms();
         updateToggles();

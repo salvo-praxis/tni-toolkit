@@ -8,12 +8,13 @@ Complete styling reference for building TNI Toolkit tools. All tools use a **Net
 
 1. [Design Tokens](#design-tokens)
 2. [Base Template](#base-template)
-3. [Layout Components](#layout-components)
-4. [UI Components](#ui-components)
-5. [Interactive States](#interactive-states)
+3. [Master CSS](#master-css)
+4. [Layout Components](#layout-components)
+5. [UI Components](#ui-components)
 6. [Patterns & Examples](#patterns--examples)
 7. [Responsive Design](#responsive-design)
 8. [Best Practices](#best-practices)
+9. [File Format Standards](#file-format-standards)
 
 ---
 
@@ -118,55 +119,6 @@ font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
 ```css
 --transition-fast: 0.15s ease;
 --transition-base: 0.2s ease;
-```
-
-### Custom Scrollbars
-
-Styled scrollbars that match the NOC terminal aesthetic.
-
-**Firefox (standard):**
-```css
-* {
-    scrollbar-width: thin;
-    scrollbar-color: #30363d #0d1117;  /* thumb track */
-}
-```
-
-**WebKit (Chrome, Safari, Edge):**
-```css
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: #0d1117;
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #30363d;
-    border-radius: 4px;
-    border: 1px solid #0d1117;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #58a6ff;
-}
-
-::-webkit-scrollbar-corner {
-    background: #0d1117;
-}
-```
-
-**Compact version (for inline styles):**
-```css
-* { scrollbar-width: thin; scrollbar-color: #30363d #0d1117; }
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: #0d1117; border-radius: 4px; }
-::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; border: 1px solid #0d1117; }
-::-webkit-scrollbar-thumb:hover { background: #58a6ff; }
-::-webkit-scrollbar-corner { background: #0d1117; }
 ```
 
 ---
@@ -291,6 +243,520 @@ Start every new tool with this template:
     </script>
 </body>
 </html>
+```
+
+---
+
+## Master CSS
+
+Complete, production-ready CSS for all TNI Toolkit components. Copy the entire stylesheet to use in new tools.
+
+```css
+/* ================================================================== */
+/* TNI TOOLKIT - MASTER STYLESHEET                                    */
+/* Version: 1.0.0                                                     */
+/* Updated: 2025-12                                                   */
+/* ================================================================== */
+
+/* === RESET & BASE === */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
+    background: linear-gradient(135deg, #0a0e14 0%, #1a1f2e 50%, #0d1117 100%);
+    color: #c9d1d9;
+    min-height: 100vh;
+    padding: 24px;
+    line-height: 1.6;
+}
+
+/* === LAYOUT === */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+.flex-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* === HEADER === */
+.header {
+    text-align: center;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+}
+
+h1 {
+    color: #00ff88;
+    text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+h1 span { color: #58a6ff; }
+
+.subtitle {
+    color: #8b949e;
+    font-size: 12px;
+    margin: 0;
+}
+
+/* === PANELS === */
+.panel {
+    background: rgba(22, 27, 34, 0.8);
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.panel h2 {
+    margin: 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #30363d;
+    color: #58a6ff;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.3;
+}
+
+.panel h2 + * { margin-top: 12px; }
+.panel > *:last-child { margin-bottom: 0; }
+
+/* === CARDS === */
+.card {
+    background: rgba(22, 27, 34, 0.8);
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.card:hover {
+    border-color: #58a6ff;
+    background: rgba(88, 166, 255, 0.08);
+}
+
+.card.selected {
+    border-color: #00ff88;
+    background: rgba(0, 255, 136, 0.1);
+}
+
+.card.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.card-name {
+    color: #c9d1d9;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.card-meta {
+    color: #7d8590;
+    font-size: 10px;
+    margin-top: 4px;
+}
+
+/* === BUTTONS === */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-family: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: rgba(0, 255, 136, 0.15);
+    border: 1px solid #00ff88;
+    color: #00ff88;
+}
+
+.btn-primary:hover {
+    background: rgba(0, 255, 136, 0.25);
+}
+
+.btn-secondary {
+    background: rgba(88, 166, 255, 0.1);
+    border: 1px solid #30363d;
+    color: #8b949e;
+}
+
+.btn-secondary:hover {
+    border-color: #58a6ff;
+    color: #58a6ff;
+}
+
+.btn-danger {
+    background: rgba(248, 81, 73, 0.15);
+    border: 1px solid #f85149;
+    color: #f85149;
+}
+
+.btn-danger:hover {
+    background: rgba(248, 81, 73, 0.25);
+}
+
+/* === FORM INPUTS === */
+input[type="text"],
+input[type="search"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    background: rgba(22, 27, 34, 0.8);
+    color: #c9d1d9;
+    font-size: 12px;
+    font-family: inherit;
+    transition: border-color 0.15s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #58a6ff;
+}
+
+input::placeholder {
+    color: #8b949e;
+}
+
+/* === CUSTOM DROPDOWN === */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-selected {
+    padding: 10px 12px;
+    padding-right: 32px;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    background: rgba(22, 27, 34, 0.8);
+    color: #c9d1d9;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+}
+
+.dropdown-selected::after {
+    content: "▼";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8px;
+    color: #8b949e;
+    transition: transform 0.15s;
+}
+
+.dropdown-selected:hover {
+    border-color: #58a6ff;
+}
+
+.dropdown.open .dropdown-selected {
+    border-color: #58a6ff;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.dropdown.open .dropdown-selected::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.dropdown-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(22, 27, 34, 0.95);
+    border: 1px solid #58a6ff;
+    border-top: none;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none;
+}
+
+.dropdown.open .dropdown-options {
+    display: block;
+}
+
+.dropdown-option {
+    padding: 10px 12px;
+    font-size: 12px;
+    color: #8b949e;
+    cursor: pointer;
+    transition: all 0.1s;
+}
+
+.dropdown-option:hover {
+    background: rgba(88, 166, 255, 0.15);
+    color: #c9d1d9;
+}
+
+.dropdown-option.selected {
+    background: rgba(0, 255, 136, 0.15);
+    color: #00ff88;
+}
+
+/* === TABLES === */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+.table th {
+    text-align: left;
+    color: #58a6ff;
+    font-weight: 600;
+    padding: 0 12px 10px 12px;
+    border-bottom: 1px solid #30363d;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+    color: #8b949e;
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.table tr:hover td {
+    background: rgba(88, 166, 255, 0.05);
+}
+
+/* === TAGS === */
+.tag {
+    background: rgba(0, 255, 136, 0.15);
+    border: 1px solid #00ff88;
+    color: #00ff88;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tag .remove {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.tag .remove:hover {
+    opacity: 1;
+}
+
+/* === CALLOUTS === */
+.callout {
+    background: rgba(240, 136, 62, 0.08);
+    border: 1px solid #f0883e;
+    border-radius: 6px;
+    padding: 16px;
+}
+
+.callout-header {
+    color: #f0883e;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.callout-success {
+    background: rgba(0, 255, 136, 0.08);
+    border-color: #00ff88;
+}
+
+.callout-success .callout-header {
+    color: #00ff88;
+}
+
+.callout-error {
+    background: rgba(248, 81, 73, 0.08);
+    border-color: #f85149;
+}
+
+.callout-error .callout-header {
+    color: #f85149;
+}
+
+/* === PROGRESS / STAT BARS === */
+.stat-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: #8b949e;
+    min-width: 50px;
+}
+
+.stat-track {
+    flex: 1;
+    height: 8px;
+    background: rgba(22, 27, 34, 0.8);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.stat-fill {
+    height: 100%;
+    background: #00ff88;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.stat-fill.warning { background: #f0883e; }
+.stat-fill.danger { background: #f85149; }
+
+.stat-value {
+    font-size: 11px;
+    color: #c9d1d9;
+    min-width: 40px;
+    text-align: right;
+}
+
+/* === TOOLTIP === */
+.tooltip {
+    position: fixed;
+    background: #238636;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 11px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 1000;
+}
+
+.tooltip.show { opacity: 1; }
+
+/* === EMPTY STATE === */
+.empty-state {
+    text-align: center;
+    color: #8b949e;
+    padding: 40px;
+    font-size: 12px;
+}
+
+.empty-state small {
+    display: block;
+    margin-top: 8px;
+    color: #7d8590;
+}
+
+/* === CODE DISPLAY === */
+code {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    color: #00ff88;
+}
+
+.code-value {
+    font-size: 1.4em;
+    font-weight: 600;
+    color: #00ff88;
+    text-align: center;
+    padding: 10px 20px;
+    background: rgba(0, 255, 136, 0.08);
+    border: 1px solid #238636;
+    border-radius: 4px;
+    letter-spacing: 4px;
+    cursor: pointer;
+}
+
+.code-value:hover {
+    background: rgba(0, 255, 136, 0.15);
+}
+
+/* === CUSTOM SCROLLBAR === */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(22, 27, 34, 0.5);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #58a6ff;
+}
+
+/* === FOOTER === */
+.site-footer {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid #30363d;
+    text-align: center;
+    font-size: 11px;
+    color: #7d8590;
+}
+
+.site-footer a {
+    color: #8b949e;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.site-footer a:hover { color: #58a6ff; }
+.site-footer .sep { margin: 0 8px; color: #30363d; }
+
+/* === RESPONSIVE === */
+@media (max-width: 600px) {
+    body { padding: 16px; }
+    .container { max-width: 100%; }
+    .grid { grid-template-columns: 1fr; }
+    h1 { font-size: 18px; }
+}
 ```
 
 ---
@@ -532,167 +998,7 @@ select:focus {
     outline: none;
     border-color: #58a6ff;
 }
-```
 
-> ⚠️ **Note:** Native `<select>` elements cannot style their `<option>` children consistently across browsers, especially on dark themes. Use the **Custom Dropdown** pattern below for styled dropdowns.
-
-### Custom Dropdown
-
-A fully-styled dropdown replacement for native `<select>`. Use when you need consistent dark theme styling for option lists.
-
-**When to use:**
-- Category/filter dropdowns
-- Any dropdown where options need custom styling
-- When native `<select>` looks jarring on the dark theme
-
-**HTML Structure:**
-```html
-<div class="custom-select" id="my-select">
-    <div class="custom-select-trigger">Select an option</div>
-    <div class="custom-select-options">
-        <div class="custom-select-option selected" data-value="all">All Items</div>
-        <div class="custom-select-option" data-value="category1">Category 1</div>
-        <div class="custom-select-option" data-value="category2">Category 2</div>
-    </div>
-</div>
-```
-
-**CSS:**
-```css
-/* Custom Dropdown Container */
-.custom-select {
-    position: relative;
-}
-
-/* Trigger (visible button) */
-.custom-select-trigger {
-    width: 100%;
-    padding: 10px 12px;
-    padding-right: 36px;
-    border-radius: 6px;
-    border: 1px solid #30363d;
-    background: rgba(22, 27, 34, 0.8);
-    color: #c9d1d9;
-    font-size: 12px;
-    font-family: inherit;
-    cursor: pointer;
-    transition: border-color 0.15s;
-}
-
-.custom-select-trigger:hover {
-    border-color: #58a6ff;
-}
-
-.custom-select-trigger.open {
-    border-color: #58a6ff;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-/* Dropdown arrow */
-.custom-select-trigger::after {
-    content: '▼';
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 10px;
-    color: #8b949e;
-    transition: transform 0.15s;
-}
-
-.custom-select-trigger.open::after {
-    transform: translateY(-50%) rotate(180deg);
-}
-
-/* Options container */
-.custom-select-options {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: rgba(22, 27, 34, 0.98);
-    border: 1px solid #58a6ff;
-    border-top: none;
-    border-radius: 0 0 6px 6px;
-    max-height: 200px;
-    overflow-y: auto;
-    z-index: 100;
-    display: none;
-}
-
-.custom-select-options.open {
-    display: block;
-}
-
-/* Individual options */
-.custom-select-option {
-    padding: 10px 12px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background 0.15s;
-    border-bottom: 1px solid #21262d;
-}
-
-.custom-select-option:last-child {
-    border-bottom: none;
-}
-
-.custom-select-option:hover {
-    background: rgba(88, 166, 255, 0.08);
-}
-
-.custom-select-option.selected {
-    background: rgba(0, 255, 136, 0.1);
-    color: #00ff88;
-}
-```
-
-**JavaScript:**
-```javascript
-const trigger = document.getElementById('my-select').querySelector('.custom-select-trigger');
-const options = document.getElementById('my-select').querySelector('.custom-select-options');
-
-// Toggle dropdown
-trigger.addEventListener('click', () => {
-    trigger.classList.toggle('open');
-    options.classList.toggle('open');
-});
-
-// Close when clicking outside
-document.addEventListener('click', (e) => {
-    if (!e.target.closest('#my-select')) {
-        trigger.classList.remove('open');
-        options.classList.remove('open');
-    }
-});
-
-// Handle selection
-options.querySelectorAll('.custom-select-option').forEach(option => {
-    option.addEventListener('click', () => {
-        const value = option.dataset.value;
-        const text = option.textContent;
-        
-        // Update trigger text
-        trigger.textContent = text;
-        
-        // Update selected state
-        options.querySelectorAll('.custom-select-option').forEach(opt => {
-            opt.classList.remove('selected');
-        });
-        option.classList.add('selected');
-        
-        // Close dropdown
-        trigger.classList.remove('open');
-        options.classList.remove('open');
-        
-        // Do something with the value
-        console.log('Selected:', value);
-    });
-});
-```
-
-```css
 /* Checkbox (styled as card) */
 .checkbox-card {
     display: flex;
@@ -714,6 +1020,89 @@ options.querySelectorAll('.custom-select-option').forEach(option => {
     border-color: #00ff88;
     background: rgba(0, 255, 136, 0.08);
 }
+```
+
+### Custom Dropdown
+
+Native `<select>` elements don't style well on dark themes. Use this custom dropdown pattern instead:
+
+```html
+<div class="dropdown">
+    <div class="dropdown-selected">Select server...</div>
+    <div class="dropdown-options">
+        <div class="dropdown-option">Server 01</div>
+        <div class="dropdown-option selected">Server 02</div>
+        <div class="dropdown-option">Server 03</div>
+    </div>
+</div>
+```
+
+```css
+/* Custom Dropdown Container */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-selected {
+    padding: 10px 32px 10px 12px;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    background: rgba(22, 27, 34, 0.8);
+    color: #c9d1d9;
+    cursor: pointer;
+}
+
+.dropdown-selected::after {
+    content: "▼";
+    position: absolute;
+    right: 12px;
+    color: #8b949e;
+}
+
+.dropdown-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(22, 27, 34, 0.95);
+    border: 1px solid #58a6ff;
+    border-top: none;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none;
+}
+
+.dropdown.open .dropdown-options {
+    display: block;
+}
+
+.dropdown-option {
+    padding: 10px 12px;
+    cursor: pointer;
+}
+
+.dropdown-option:hover {
+    background: rgba(88, 166, 255, 0.15);
+}
+
+.dropdown-option.selected {
+    background: rgba(0, 255, 136, 0.15);
+    color: #00ff88;
+}
+```
+
+```javascript
+// Toggle dropdown on click
+document.querySelectorAll('.dropdown').forEach(dropdown => {
+    dropdown.addEventListener('click', () => dropdown.classList.toggle('open'));
+});
+
+// Close when clicking outside
+document.addEventListener('click', e => {
+    if (!e.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown.open').forEach(d => d.classList.remove('open'));
+    }
+});
 ```
 
 ### Tables
@@ -890,56 +1279,9 @@ options.querySelectorAll('.custom-select-option').forEach(option => {
 }
 ```
 
----
-
-## Interactive States
-
-### Hover States
-
-```css
-/* Card hover - blue highlight */
-.card:hover {
-    border-color: #58a6ff;
-    background: rgba(88, 166, 255, 0.08);
-}
-
-/* Selected state - green highlight */
-.card.selected {
-    border-color: #00ff88;
-    background: rgba(0, 255, 136, 0.1);
-}
-
-/* Link hover */
-a:hover {
-    color: #58a6ff;
-}
-
-/* Row hover */
-tr:hover td {
-    background: rgba(88, 166, 255, 0.05);
-}
-```
-
-### Active/Pressed States
-
-```css
-.btn:active {
-    transform: translateY(1px);
-}
-```
-
-### Disabled States
-
-```css
-.disabled,
-[disabled] {
-    opacity: 0.4;
-    cursor: not-allowed;
-    pointer-events: none;
-}
-```
-
 ### Copy Feedback
+
+For copyable elements that show visual feedback when clicked:
 
 ```css
 .copyable {
@@ -1142,175 +1484,168 @@ Use these consistently in headers:
 
 ---
 
-## Version History
+## File Format Standards
 
-- **v1.1** (2025-12-09) - Added Page Header, Footer, and Back Link patterns
-- **v1.0** (2024-12) - Initial style guide based on seed-finder and server-calculator
+All project files include standardized headers for version tracking, attribution, and changelog. This ensures consistency across all file types and makes contributions traceable.
+
+### JSON Files
+
+JSON data files include a `_meta` object as the first key:
+
+```json
+{
+  "_meta": {
+    "game": "Tower Networking Inc.",
+    "dataset": "dataset-name",
+    "version": "1.0.0",
+    "last_updated": "YYYY-MM-DD",
+    "description": "What this dataset contains",
+    "sources": [...],
+    "contributors": ["Name or Handle"],
+    "corrections": [...],
+    "future_additions": [...]
+  }
+}
+```
+
+See [CONTRIBUTING.md](../CONTRIBUTING.md) for full `_meta` structure with all fields.
+
+### HTML Files
+
+HTML tools include a comment header **before** `<!DOCTYPE html>`:
+
+```html
+<!--
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  Tool Name                                                                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Version: X.Y.Z                                                              ║
+║  Updated: YYYY-MM-DD                                                         ║
+║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Description:                                                                ║
+║    Brief description of what this tool does.                                 ║
+║                                                                              ║
+║  Features:                                                                   ║
+║    - Feature 1                                                               ║
+║    - Feature 2                                                               ║
+║                                                                              ║
+║  Contributors:                                                               ║
+║    - Name (contribution type)                                                ║
+║                                                                              ║
+║  Changelog:                                                                  ║
+║    X.Y.Z - Description of changes                                            ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+-->
+```
+
+### YAML Files
+
+YAML configuration files (GitHub Actions, CI/CD, etc.) use comment headers:
+
+```yaml
+# ============================================================================
+# TNI Toolkit - [File Type/Purpose]
+# File: [path/to/file.yml]
+# Name: [Workflow or Config Name]
+# Version: X.Y.Z
+# Updated: YYYY-MM-DD
+# Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+# Description:
+#   Brief description of what this file does.
+#   Can span multiple lines if needed.
+# Contributors:
+#   - Name (@handle) - contribution type
+#   - Claude - contribution type
+# Changelog:
+#   X.Y.Z - Description of changes
+# ============================================================================
+```
+
+**YAML Header Fields:**
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| File | Yes | Path relative to repo root |
+| Name | Yes | Human-readable name (for workflows: matches `name:` key) |
+| Version | Yes | Semantic version (X.Y.Z) |
+| Updated | Yes | Last modified date (YYYY-MM-DD) |
+| Part of | Yes | Project name and repo URL |
+| Description | Yes | What the file does |
+| Contributors | Yes | List of contributors with roles |
+| Changelog | Yes | Version history with descriptions |
+
+### Python Files
+
+Python scripts use docstring headers:
+
+```python
+#!/usr/bin/env python3
+"""
+TNI Toolkit - [Script Name]
+File: [path/to/script.py]
+Version: X.Y.Z
+Updated: YYYY-MM-DD
+Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+
+Description:
+    Brief description of what this script does.
+    Can span multiple lines if needed.
+
+Contributors:
+    - Name (@handle) - contribution type
+    - Claude - contribution type
+
+Changelog:
+    X.Y.Z - Description of changes
+"""
+```
+
+### Shell Scripts (Bash/PowerShell)
+
+Shell scripts use comment headers:
+
+**Bash:**
+```bash
+#!/bin/bash
+# ============================================================================
+# TNI Toolkit - [Script Name]
+# File: [path/to/script.sh]
+# Version: X.Y.Z
+# Updated: YYYY-MM-DD
+# Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+# Description:
+#   Brief description of what this script does.
+# Contributors:
+#   - Name (@handle) - contribution type
+# Changelog:
+#   X.Y.Z - Description of changes
+# ============================================================================
+```
+
+**PowerShell:**
+```powershell
+<#
+============================================================================
+TNI Toolkit - [Script Name]
+File: [path/to/script.ps1]
+Version: X.Y.Z
+Updated: YYYY-MM-DD
+Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+Description:
+    Brief description of what this script does.
+Contributors:
+    - Name (@handle) - contribution type
+Changelog:
+    X.Y.Z - Description of changes
+============================================================================
+#>
+```
 
 ---
 
-## Page Layout Patterns
+## Version History
 
-### Standardized Header
-
-All pages use consistent header structure and spacing:
-
-```css
-.header {
-    text-align: center;
-    padding: 40px 0 30px;
-    border-bottom: 1px solid #30363d;
-    margin-bottom: 30px;  /* 0 for index */
-}
-
-h1 {
-    color: #00ff88;
-    text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-    margin: 0 0 8px 0;
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-
-h1 span { color: #58a6ff; }
-
-.tagline, .subtitle {
-    color: #8b949e;
-    font-size: 12px;
-    margin: 0;
-}
-```
-
-**Spacing breakdown:**
-```
-40px ─── padding-top
-TITLE
-8px ─── h1 margin-bottom  
-Subtitle
-16px ─── back-link margin-top
-[← Back to Toolkit]
-30px ─── padding-bottom
-─────── border-bottom
-```
-
-**Color scheme:**
-- Pages (index/credits/contributing): TNI (green `#00ff88`) + TOOLKIT (blue `#58a6ff`)
-- Tools: TNI (blue `#58a6ff`) + APP NAME (green `#00ff88`)
-
-### Back Link Button
-
-Styled as secondary button, positioned inside header after subtitle:
-
-```css
-.back-link {
-    display: inline-block;  /* or none for conditional */
-    margin-top: 16px;
-    color: #58a6ff;
-    text-decoration: none;
-    font-size: 11px;
-    padding: 6px 12px;
-    border: 1px solid #30363d;
-    border-radius: 4px;
-    transition: all 0.15s;
-}
-
-.back-link:hover {
-    border-color: #58a6ff;
-    background: rgba(88, 166, 255, 0.1);
-}
-
-/* For conditional display in tools */
-.back-link.visible {
-    display: inline-block;
-}
-```
-
-```html
-<div class="header">
-    <h1><span>TNI</span> APP NAME</h1>
-    <p class="subtitle">Subtitle text</p>
-    <a href="../index.html" class="back-link">← Back to Toolkit</a>
-</div>
-```
-
-### Standardized Footer
-
-Three-row structure: nav links, charm line, badges.
-
-```html
-<footer class="footer">
-    <div class="footer-links">
-        <a href="...">GitHub</a>
-        <span class="footer-sep">|</span>
-        <a href="...">Contributions Log</a>
-        <span class="footer-sep">|</span>
-        <!-- page links, hide current page -->
-        <a href="...">TNI on Steam</a>
-    </div>
-    <p class="footer-note">Charm line here</p>
-    <div class="footer-badges">
-        <span class="version-badge">v1.2.0</span>
-        <a href="..." class="license-badge">MIT License — Free to use, modify, and share</a>
-    </div>
-</footer>
-```
-
-```css
-.footer {
-    text-align: center;
-    padding-top: 24px;
-    margin-top: 40px;
-    border-top: 1px solid #30363d;
-    font-size: 12px;
-}
-
-.footer-links a {
-    color: #8b949e;
-    text-decoration: none;
-    transition: color 0.15s;
-}
-
-.footer-links a:hover { color: #58a6ff; }
-
-.footer-sep {
-    margin: 0 8px;
-    color: #30363d;
-}
-
-.footer-note {
-    color: #7d8590;
-    font-size: 11px;
-    margin: 12px 0;
-}
-
-.footer-badges { margin-top: 12px; }
-
-.version-badge {
-    display: inline-block;
-    background: rgba(0, 255, 136, 0.1);
-    border: 1px solid #30363d;
-    color: #8b949e;
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-size: 10px;
-    margin-right: 8px;
-}
-
-.license-badge {
-    display: inline-block;
-    background: rgba(88, 166, 255, 0.1);
-    border: 1px solid #30363d;
-    color: #8b949e;
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-size: 10px;
-    text-decoration: none;
-    transition: all 0.15s;
-}
-
-.license-badge:hover {
-    border-color: #58a6ff;
-    color: #58a6ff;
-}
-```
+- **v1.2** (2025-12) - Added Master CSS section (complete copy-paste stylesheet); added Custom Dropdown component; consolidated Interactive States into UI Components (Copy Feedback moved, hover/selected/disabled states already in Interactive Card)
+- **v1.1** (2025-12) - Added File Format Standards section (JSON, HTML, YAML, Python, Shell)
+- **v1.0** (2025-12) - Initial style guide based on seed-finder and server-calculator

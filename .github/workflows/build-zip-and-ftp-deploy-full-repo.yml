@@ -1,0 +1,111 @@
+# ============================================================================
+# TNI Toolkit - GitHub Actions Workflow
+# File: .github/workflows/build-zip-and-ftp-deploy.yml
+# Name: Build zip and FTP deploy (tni-toolkit)
+# Version: 1.0.0
+# Updated: 2025-12-11
+# Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+# Description:
+#   Regenerates tni-toolkit.zip from selected files and mirrors the
+#   repository contents to the public FTP host (tni-toolkit.salvo.host).
+# Contributors:
+#   - salvo-praxis (@salvo-praxis) - workflow design & integration
+#   - Claude - YAML scaffolding, comments, and refactors
+# Changelog:
+#   1.0.0 - Initial combined zip-build + FTP deploy workflow.
+# ============================================================================
+
+name: Build zip and FTP deploy (tni-toolkit)
+
+on:
+  # Automatically run on every push to main.
+  push:
+    branches: [ "main" ]
+
+  # Allow maintainers to run the workflow manually from the Actions UI.
+  workflow_dispatch: {}
+
+# This workflow needs to be able to push the updated zip back to the repo.
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ----------------------------------------------------------
+      # Step 1: Check out the repository at the current commit.
+      # ----------------------------------------------------------
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      # ----------------------------------------------------------
+      # Step 2: Build tni-toolkit.zip from the selected files.
+      # ----------------------------------------------------------
+      - name: Build tni-toolkit.zip
+        run: |
+          set -e
+
+          # Remove any existing archive so we always produce a fresh one.
+          rm -f tni-toolkit.zip
+
+          # Create a new zip containing ONLY the intended distribution files.
+          # Paths are relative to the repository root.
+          zip -r tni-toolkit.zip \
+            index.html \
+            credits.html \
+            contributing.html \
+            contributions.html \
+            docs/style-guide.html \
+            tools/device-calculator.html \
+            tools/seed-finder.html \
+            data/tni-cli-commands.json \
+            data/tni-programs.json \
+            data/tni-store.json \
+            data/tni-traffic-types.json \
+            LICENSE
+
+      # ----------------------------------------------------------
+      # Step 3: Commit the updated zip back to the repository.
+      # ----------------------------------------------------------
+      - name: Commit updated zip
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          # Commit message for automated archive updates.
+          commit_message: "chore: auto-build tni-toolkit.zip"
+
+          # Only stage and commit this file; other changes are untouched.
+          file_pattern: "tni-toolkit.zip"
+
+      # ----------------------------------------------------------
+      # Step 4: Sync the repo (including new zip) to the FTP server.
+      # ----------------------------------------------------------
+      - name: Deploy entire repo over FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4
+        with:
+          # FTP hostname (e.g. ftp.yourhost.com).
+          server:   ${{ secrets.FTP_SERVER }}
+
+          # FTP user.
+          username: ${{ secrets.FTP_USERNAME }}
+
+          # FTP password (stored as a GitHub secret).
+          password: ${{ secrets.FTP_PASSWORD }}
+
+          # Use FTPS for encrypted transfer (recommended).
+          # Change to "ftp" only if your host doesn't support FTPS.
+          protocol: ftps
+
+          # Local directory to deploy: root of the checked-out repository.
+          # This includes the freshly generated tni-toolkit.zip.
+          local-dir: ./
+
+          # Target directory on the FTP server, relative to the FTP user's root.
+          server-dir: /
+
+          # Exclude internal metadata and CI configuration from the public web root.
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
