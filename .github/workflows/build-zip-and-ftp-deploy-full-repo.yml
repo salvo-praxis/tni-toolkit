@@ -2,7 +2,7 @@
 # TNI Toolkit - GitHub Actions Workflow
 # File: .github/workflows/build-zip-and-ftp-deploy.yml
 # Name: Build zip and FTP deploy (tni-toolkit)
-# Version: 1.0.2
+# Version: 1.0.3
 # Updated: 2025-12-12
 # Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
 # Description:
@@ -12,6 +12,7 @@
 #   - salvo-praxis (@salvo-praxis) - workflow design & integration
 #   - Claude - YAML scaffolding, comments, and refactors
 # Changelog:
+#   1.0.3 - Fixed sync step: temp copy approach for handling concurrent pushes
 #   1.0.2 - Added git pull --rebase step to handle concurrent pushes
 #   1.0.1 - Fixed FTP-Deploy-Action version tag (v4 → v4.3.5)
 #   1.0.0 - Initial combined zip-build + FTP deploy workflow.
@@ -69,11 +70,19 @@ jobs:
             LICENSE
 
       # ----------------------------------------------------------
-      # Step 3: Pull any changes that occurred during the build.
+      # Step 3: Sync with origin before commit (handle concurrent pushes)
       # ----------------------------------------------------------
-      - name: Pull latest changes
+      - name: Sync with latest origin/main
         run: |
-          git pull --rebase origin main || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Save our built zip
+          cp tni-toolkit.zip /tmp/tni-toolkit.zip
+          # Reset to whatever origin has now
+          git fetch origin main
+          git reset --hard origin/main
+          # Restore our built zip
+          cp /tmp/tni-toolkit.zip tni-toolkit.zip
 
       # ----------------------------------------------------------
       # Step 4: Commit the updated zip back to the repository.
