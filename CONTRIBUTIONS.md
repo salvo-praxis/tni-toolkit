@@ -6,10 +6,20 @@ Running log of all contributions to the TNI Toolkit. For guidelines on contribut
 
 ## 2025-12-13
 
+### AlinaNova
+- `tni-proposals.json` v1.0.0 — Created comprehensive proposals reference documentation (PROPOSALS_REFERENCE.md) with all 30 in-game proposals, prerequisites, costs, and effects
+
 ### Salvo Praxis
+- `tni-proposals.json` v1.0.0 — Converted AlinaNova's proposals reference to JSON format with _meta headers
+- `docs/proposals-reference.html` v1.0.0 — HTML proposals reference with ToC and navigation
+- `docs/programs-reference.html` v1.0.0 — HTML programs reference (25 programs, 10 categories)
+- `docs/cli-reference.html` v1.0.0 — HTML CLI commands reference (24 commands with syntax/examples)
+- `docs/traffic-types-reference.html` v1.0.0 — HTML traffic types reference (14 types, firewall presets)
+- `docs/store-reference.html` v1.0.0 — HTML store reference (101 items, 16 categories)
+- `index.html` v1.5.0 — Expanded Quick Reference with all HTML reference pages
 - `device-calculator.html` v1.8.0 — Program throughput metrics (output_uses, input_uses), Throughput Summary panel (Input/Output/Dynamic Capacity), dynamic capacity calculations, SATA behavior split (minimum vs maximize), config menu two-column layout, results panel visibility improvements
 - `CLAUDE.md` — Restructured with volatile SESSION STATE section, preserved permanent documentation
-- `README.md` — Updated Device Calculator description with v1.8 features
+- `README.md` — Updated Device Calculator description with v1.8 features, simplified JSON Structure section
 
 ---
 
@@ -64,7 +74,7 @@ Running log of all contributions to the TNI Toolkit. For guidelines on contribut
 
 ## 2025-12-08
 
-### AlinaNova21
+### AlinaNova
 - `device-calculator.html` v1.2.0 — Device category filter, search boxes, sharecode system, file table display
 - `tni-store.json` v1.1.0 — Added cpu, memory, storage, firmware fields to all network devices
 - `tni-programs.json` v1.1.1 — Whitespace cleanup

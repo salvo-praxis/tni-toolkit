@@ -2,8 +2,8 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║  TNI Toolkit - Landing Page                                                  ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║  Version: 1.3.0                                                              ║
-║  Updated: 2025-12-09                                                         ║
+║  Version: 1.5.0                                                              ║
+║  Updated: 2025-12-14                                                         ║
 ║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Description:                                                                ║
@@ -15,6 +15,9 @@
 ║    - Claude (Anthropic)                                                      ║
 ║                                                                              ║
 ║  Changelog:                                                                  ║
+║    1.5.0 - Expanded Quick Reference with all 5 reference pages; moved Quick  ║
+║            Reference above Data Files; unicorn seed moved to seed-finder     ║
+║    1.4.0 - Added tni-proposals.json to data files, Quick Reference section   ║
 ║    1.3.0 - Header/footer standardization, launch same tab, download buttons  ║
 ║    1.2.0 - Download buttons, toolkit releases support                        ║
 ║    1.1.0 - Renamed Server Calculator to Device Compatibility Calculator      ║
@@ -258,39 +261,6 @@
         .btn-secondary:hover {
             border-color: #58a6ff;
             color: #58a6ff;
-        }
-        
-        /* Unicorn callout */
-        .callout {
-            background: rgba(240, 136, 62, 0.08);
-            border: 1px solid #f0883e;
-            border-radius: 6px;
-            padding: 16px;
-            margin-top: 20px;
-        }
-        
-        .callout-header {
-            color: #f0883e;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .callout p {
-            color: #8b949e;
-            font-size: 11px;
-            margin-bottom: 8px;
-        }
-        
-        .callout code {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 2px 6px;
-            border-radius: 3px;
-            color: #00ff88;
-            font-size: 12px;
         }
         
         /* Data files table */
@@ -575,12 +545,49 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="callout">
-                <div class="callout-header">🦄 Unicorn Seed</div>
-                <p>This combination exists exactly once in our database:</p>
-                <p><code>JNLRY</code> — Scanning Exploit + Second Monitor + Undervoltage Directive — Total Cost: 3900</p>
+        </section>
+        
+        <!-- Quick Reference Section -->
+        <section id="quick-reference" class="section">
+            <div class="section-header">
+                <span class="section-icon">📖</span>
+                <h2>Quick Reference</h2>
             </div>
+            
+            <p style="color: #8b949e; font-size: 12px; margin-bottom: 16px;">
+                Human-readable guides for quick lookup — no JSON parsing required.
+            </p>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Reference</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="docs/store-reference.html">Store Reference</a></td>
+                        <td class="desc">Complete equipment catalog — 101 items across 16 categories with sortable tables</td>
+                    </tr>
+                    <tr>
+                        <td><a href="docs/programs-reference.html">Programs Reference</a></td>
+                        <td class="desc">All 25 installable programs across 10 categories with resource requirements</td>
+                    </tr>
+                    <tr>
+                        <td><a href="docs/proposals-reference.html">Proposals Reference</a></td>
+                        <td class="desc">All 30 in-game proposals with prerequisites, costs, effects, and unlock conditions</td>
+                    </tr>
+                    <tr>
+                        <td><a href="docs/cli-reference.html">CLI Reference</a></td>
+                        <td class="desc">All 24 NetShell commands with syntax, arguments, and examples</td>
+                    </tr>
+                    <tr>
+                        <td><a href="docs/traffic-types-reference.html">Traffic Types Reference</a></td>
+                        <td class="desc">14 traffic types for firewall rules and router configuration</td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
         
         <!-- Data Files Section -->
@@ -607,6 +614,10 @@
                         <td class="desc">All installable programs with resource requirements, inputs/outputs, and dependencies</td>
                     </tr>
                     <tr>
+                        <td><a href="data/tni-proposals.json" target="_blank">tni-proposals.json</a></td>
+                        <td class="desc">Complete proposals catalog with prerequisites, costs, effects, and unlock conditions</td>
+                    </tr>
+                    <tr>
                         <td><a href="data/tni-cli-commands.json" target="_blank">tni-cli-commands.json</a></td>
                         <td class="desc">Terminal command reference with syntax and examples</td>
                     </tr>
@@ -620,6 +631,8 @@
                 Note: Some warranty values may be inaccurate (recorded during a LAB session). Corrections welcome via PR.
             </p>
         </section>
+        
+        <!-- Quick Reference Section -->
         
         <!-- Roadmap Section -->
         <section id="roadmap" class="section">

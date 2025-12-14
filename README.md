@@ -84,6 +84,7 @@ Search a database of 3,794 verified seeds by selecting up to 3 starting proposal
 |------|-------------|
 | [`data/tni-store.json`](https://tni-toolkit.salvo.host/data/tni-store.json) | Complete catalog of purchasable items (servers, switches, routers, cables, racks, etc.) |
 | [`data/tni-programs.json`](https://tni-toolkit.salvo.host/data/tni-programs.json) | All installable programs with resource requirements, inputs/outputs, and dependencies |
+| [`data/tni-proposals.json`](https://tni-toolkit.salvo.host/data/tni-proposals.json) | Complete proposals catalog with prerequisites, costs, effects, and unlock conditions |
 | [`data/tni-cli-commands.json`](https://tni-toolkit.salvo.host/data/tni-cli-commands.json) | Terminal command reference with syntax and examples |
 | [`data/tni-traffic-types.json`](https://tni-toolkit.salvo.host/data/tni-traffic-types.json) | Network traffic types for firewall rules and router configuration |
 
@@ -109,6 +110,7 @@ tni-toolkit/
 ├── data/
 │   ├── tni-store.json          # Equipment & store catalog
 │   ├── tni-programs.json       # Server programs
+│   ├── tni-proposals.json      # Proposals catalog
 │   ├── tni-cli-commands.json   # Terminal command reference
 │   └── tni-traffic-types.json  # Network traffic types
 ├── tools/
@@ -117,6 +119,11 @@ tni-toolkit/
 └── docs/
     ├── STYLE_GUIDE.md          # Complete CSS reference
     ├── style-guide.html        # Style guide (styled)
+    ├── proposals-reference.html     # Proposals quick reference
+    ├── programs-reference.html      # Programs quick reference
+    ├── cli-reference.html           # CLI commands quick reference
+    ├── traffic-types-reference.html # Traffic types quick reference
+    ├── store-reference.html         # Store catalog quick reference
     └── screenshots/
 ```
 
@@ -126,102 +133,25 @@ tni-toolkit/
 
 ## 📐 JSON Structure
 
-All data files share a consistent header format with attribution:
+All data files share a consistent `_meta` header for version tracking and attribution:
 
 ```json
 {
   "_meta": {
     "game": "Tower Networking Inc.",
-    "dataset": "store | programs | cli-commands | traffic-types",
+    "dataset": "store | programs | proposals | cli-commands | traffic-types",
     "version": "1.0.0",
     "last_updated": "2025-12-07",
     "description": "...",
-    "notes": "...",
-    "sources": [
-      { "name": "In-game observation", "notes": "..." },
-      { "name": "Discord Community", "notes": "..." }
-    ],
+    "sources": [ { "name": "...", "notes": "..." } ],
     "contributors": [ "Salvo Praxis", "Claude (Anthropic)", "..." ],
-    "corrections": [
-      { "version": "1.0.1", "correction": "...", "reported_by": "...", "corrected_by": "..." }
-    ],
-    "future_additions": [
-      { "suggestion": "...", "details": "...", "suggested_by": "..." }
-    ]
+    "corrections": [ { "version": "...", "correction": "...", "reported_by": "..." } ],
+    "future_additions": [ { "suggestion": "...", "suggested_by": "..." } ]
   }
 }
 ```
 
-### tni-store.json
-
-Equipment organized by category with consistent fields per device type:
-
-```json
-{
-  "_meta": { ... },
-  "network_switches": [ { "model", "vendor", "ports", "media", "managed", "vlan_support", "traversals_per_tick", "power_w", "price" } ],
-  "servers": [ { "model", "vendor", "ports", "cpu", "memory", "storage", "sata_slots", "traversals_per_tick", "power_w", "price" } ],
-  "routers": [ ... ],
-  "firewalls_and_taps": [ ... ],
-  "media_converters_and_repeaters": [ ... ],
-  "decentro_rigs": [ ... ],
-  "peripherals": [ ... ],
-  "ups_and_surge_protection": [ ... ],
-  "power_expanders": [ ... ],
-  "power_cables": [ ... ],
-  "network_cables": { ... },
-  "cabling_tools": [ ... ],
-  "racks_and_shelving": [ ... ],
-  "tower_link_sockets": [ ... ],
-  "debuggers_and_test_devices": [ ... ],
-  "monitoring_displays": [ ... ]
-}
-```
-
-### tni-programs.json
-
-Programs with structured input/output definitions:
-
-```json
-{
-  "_meta": { ... },
-  "programs": [
-    {
-      "name": "dns-server",
-      "type": "converter",
-      "cpu": 4,
-      "memory": 3,
-      "storage": 3,
-      "input": { "uses": ["store-text"], "amount": 1, "rate": "per tick" },
-      "output": { "uses": ["reply-dns-queries"], "amount": 20, "rate": "per tick", "target": "source" },
-      "requires": "Running text storage program",
-      "stack_limit": 20,
-      "description": "..."
-    }
-  ],
-  "program_categories": { "dns": [...], "dhcp": [...], "storage": [...] },
-  "use_types": { "storage": [...], "dns": [...] }
-}
-```
-
-### tni-cli-commands.json
-
-Terminal commands with subcommands, syntax, and examples:
-
-```json
-{
-  "_meta": { ... },
-  "shell_shortcuts": { "up_arrow": "...", "tab": "..." },
-  "commands": {
-    "firewall": {
-      "description": "...",
-      "subcommands": { "show": "...", "allow": "...", "deny": "..." },
-      "syntax": "firewall <action> [traffic_type] [from <src>] [to <dst>] on <fw_addr> using <debugger_addr>",
-      "examples": [ "firewall allow udp/53 to @dns on 123 using 456" ]
-    }
-  }
-}
-```
+For detailed data schemas, see the [Quick Reference guides](https://tni-toolkit.salvo.host/index.html#quick-reference) or browse the raw JSON files in `data/`.
 
 [⬆️ Back to top](#tni-toolkit)
 
@@ -247,7 +177,7 @@ When editing JSON files, please:
 
 **Created by:** Salvo Praxis and Claude (Anthropic)
 
-**Community Contributors:** Chaotic Crumb, Singing Pot Beast, gamers2000, Crona, AlinaNova21, Блинчик
+**Community Contributors:** Chaotic Crumb, Singing Pot Beast, gamers2000, Crona, AlinaNova, Блинчик
 
 **Data Sources:** [HackMD @tower-network](https://hackmd.io/@tower-network), [TNI Discord Community](https://discord.com/invite/nNKRMjDhf2)
 

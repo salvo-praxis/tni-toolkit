@@ -2,7 +2,7 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║  TNI Device Compatibility Calculator                                         ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║  Version: 1.8.0                                                              ║
+║  Version: 1.8.1                                                              ║
 ║  Updated: 2025-12-13                                                         ║
 ║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -27,11 +27,14 @@
 ║  Contributors:                                                               ║
 ║    - Salvo Praxis (original author, style guide compliance)                  ║
 ║    - Claude (Anthropic)                                                      ║
-║    - AlinaNova21 (device categories, search, sharecode, file table)          ║
+║    - AlinaNova (device categories, search, sharecode, file table)          ║
 ║    - gamers2000 (warranty display, refurb devices suggestions)               ║
 ║    - Singing Pot Beast (auto-prune/config menu suggestion)                   ║
 ║                                                                              ║
 ║  Changelog:                                                                  ║
+║    1.8.1 - Firewall specs corrected: 4/1/2 → 6/3/3; firmware field now       ║
+║            supports arrays for multiple pre-installed programs; reported by  ║
+║            gamers2000                                                        ║
 ║    1.8.0 - Program throughput metrics: output/tick (O/t), input/tick (I/t),  ║
 ║            stack limit, output/sec (O/s) with config toggles; Throughput     ║
 ║            Summary panel with Input (needs) / Output / Dynamic Capacity      ║
@@ -56,7 +59,7 @@
 ║            click-to-deselect, sharecode fixes, excluded refurbs              ║
 ║    1.3.0 - Header/footer standardization, container max-width, back button   ║
 ║    1.2.0 - Added all device types, category filter, search, sharecode,       ║
-║            file table display (AlinaNova21); renamed from server-calculator; ║
+║            file table display (AlinaNova); renamed from server-calculator; ║
 ║            style guide alignment                                             ║
 ║    1.1.0 - Added firmware programs support, ICC1 sata_slots fix              ║
 ║    1.0.0 - Initial release with server/program compatibility                 ║
@@ -1713,10 +1716,10 @@
                 { model: "Zodianet Beam Router", vendor: "Zodiac Networks", cpu: 4, memory: 1, storage: 2, firmware: "rtkernel", price: 3700, power_w: 138, ports: 4, warranty_days: 17, traversals_per_tick: 450, cpu_cycle: "1 tick / 2.0s" },
             ],
             firewalls_and_taps: [
-                { model: "FireWatch ES4A", vendor: "Fortypoint Security", cpu: 4, memory: 1, storage: 2, firmware: "firewatcher", price: 550, power_w: 55, ports: 3, warranty_days: 19, traversals_per_tick: 52, cpu_cycle: "1 tick / 2.0s" },
-                { model: "FireWatch CP4E", vendor: "Fortypoint Security", cpu: 4, memory: 1, storage: 2, firmware: "firewatcher", price: 1500, power_w: 163, ports: 4, warranty_days: 16, traversals_per_tick: 160, cpu_cycle: "1 tick / 2.0s" },
+                { model: "FireWatch ES4A", vendor: "Fortypoint Security", cpu: 6, memory: 3, storage: 3, firmware: ["firewatcher", "wirerat"], price: 550, power_w: 55, ports: 3, warranty_days: 19, traversals_per_tick: 52, cpu_cycle: "1 tick / 2.0s" },
+                { model: "FireWatch CP4E", vendor: "Fortypoint Security", cpu: 6, memory: 3, storage: 3, firmware: ["firewatcher", "wirerat"], price: 1500, power_w: 163, ports: 4, warranty_days: 16, traversals_per_tick: 160, cpu_cycle: "1 tick / 2.0s" },
                 { model: "EthTapper", vendor: "Fortypoint Security", cpu: 2, memory: 2, storage: 1, firmware: "wirerat", price: 300, power_w: 12, ports: 3, warranty_days: 21, traversals_per_tick: 18, cpu_cycle: "1 tick / 2.0s" },
-                { model: "Bastion 5E", vendor: "Fortypoint Security", cpu: 4, memory: 1, storage: 2, firmware: "firewatcher", price: 4000, power_w: 387, ports: 4, warranty_days: 14, traversals_per_tick: 384, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Bastion 5E", vendor: "Fortypoint Security", cpu: 6, memory: 3, storage: 3, firmware: ["firewatcher", "wirerat"], price: 4000, power_w: 387, ports: 4, warranty_days: 14, traversals_per_tick: 384, cpu_cycle: "1 tick / 2.0s" },
             ],
             debuggers_and_test_devices: [
                 { model: "Debugger Alice", vendor: "AB compute Ltd.", cpu: 1, memory: 1, storage: 1, firmware: "netpeeker", price: 1200, power_w: 72, ports: 2, warranty_days: 21, traversals_per_tick: 12, cpu_cycle: "1 tick / 2.0s" },
@@ -2189,7 +2192,7 @@
 
                 const isSelected = selectedDevice && selectedDevice.model === device.model && selectedDevice.vendor === device.vendor && selectedDeviceCategory === device._category;
                 const sataInfo = device.sata_slots > 0 ? ` +${device.sata_slots}SATA` : '';
-                const firmwareInfo = device.firmware ? `<span class="firmware-tag">FW:${device.firmware}</span>` : '';
+                const firmwareInfo = device.firmware ? `<span class="firmware-tag">FW:${Array.isArray(device.firmware) ? device.firmware.join(', ') : device.firmware}</span>` : '';
                 const vendorInfo = config.showVendor ? `<span class="item-vendor">· ${device.vendor}</span>` : '';
                 const warrantyInfo = config.showWarranty ? `<span class="stat stat-warranty"><span class="stat-label">WARRANTY</span> ${device.warranty_days ? device.warranty_days + 'd' : '—'}</span>` : '';
                 

@@ -2,8 +2,8 @@
   "_meta": {
     "game": "Tower Networking Inc.",
     "dataset": "store",
-    "version": "1.2.0",
-    "last_updated": "2025-12-12",
+    "version": "1.2.1",
+    "last_updated": "2025-12-14",
     "description": "Nearly complete catalog of purchasable items from D-Market2, Barracks and Sons, and other in-game vendors.",
     "notes": "Some warranty values may be inaccurate (recorded during LAB session). Other apps still need documentation. Corrections welcome.",
     "sources": [
@@ -22,7 +22,8 @@
       "Chaotic Crumb",
       "Singing Pot Beast",
       "AlinaNova21",
-      "\u0411\u043b\u0438\u043d\u0447\u0438\u043a"
+      "Блинчик",
+      "gamers2000"
     ],
     "corrections": [
       {
@@ -34,13 +35,19 @@
       {
         "version": "1.1.0",
         "correction": "Added cpu, memory, storage, and firmware fields to all network devices (switches, routers, firewalls, TAPs, debuggers)",
-        "suggested_by": "\u0411\u043b\u0438\u043d\u0447\u0438\u043a",
+        "suggested_by": "Блинчик",
         "contributor": "AlinaNova21"
       },
       {
         "version": "1.2.0",
         "correction": "Added compatible_programs field to all 47 devices with placeholder examples for community contribution",
         "contributor": "Salvo Praxis"
+      },
+      {
+        "version": "1.2.1",
+        "correction": "Firewalls CPU/MEM/HDD corrected from 4/1/2 to 6/3/3; firmware field expanded to array for multiple pre-installed programs",
+        "reported_by": "gamers2000",
+        "corrected_by": "Salvo Praxis"
       }
     ]
   },
@@ -880,10 +887,10 @@
       "device_type": "firewall",
       "ports": 3,
       "media": "mixed",
-      "cpu": 4,
-      "memory": 1,
-      "storage": 2,
-      "firmware": "firewatcher",
+      "cpu": 6,
+      "memory": 3,
+      "storage": 3,
+      "firmware": ["firewatcher", "wirerat"],
       "traversals_per_tick": 52,
       "cpu_cycle": "1 tick / 2.0s",
       "power_w": 55,
@@ -902,10 +909,10 @@
       "device_type": "firewall",
       "ports": 4,
       "media": "ethernet",
-      "cpu": 4,
-      "memory": 1,
-      "storage": 2,
-      "firmware": "firewatcher",
+      "cpu": 6,
+      "memory": 3,
+      "storage": 3,
+      "firmware": ["firewatcher", "wirerat"],
       "traversals_per_tick": 160,
       "cpu_cycle": "1 tick / 2.0s",
       "power_w": 163,
@@ -946,10 +953,10 @@
       "device_type": "firewall",
       "ports": 4,
       "media": "ethernet",
-      "cpu": 4,
-      "memory": 1,
-      "storage": 2,
-      "firmware": "firewatcher",
+      "cpu": 6,
+      "memory": 3,
+      "storage": 3,
+      "firmware": ["firewatcher", "wirerat"],
       "traversals_per_tick": 384,
       "cpu_cycle": "1 tick / 2.0s",
       "power_w": 387,

@@ -1,0 +1,1208 @@
+<!--
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  TNI Toolkit - Proposals Reference                                           ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Version: 1.1.0                                                              ║
+║  Updated: 2025-12-14                                                         ║
+║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Description:                                                                ║
+║    Human-readable reference guide for all in-game proposals. Includes        ║
+║    prerequisites, costs, effects, and unlock conditions for 30 proposals     ║
+║    across 7 categories.                                                      ║
+║                                                                              ║
+║  Contributors:                                                               ║
+║    - AlinaNova (original documentation)                                      ║
+║    - Salvo Praxis (HTML conversion)                                          ║
+║    - Claude (Anthropic)                                                      ║
+║                                                                              ║
+║  Changelog:                                                                  ║
+║    1.1.0 - Header updated to TNI Proposals REFERENCE format; container       ║
+║            width reduced to 900px; ToC redesigned with vertical list format  ║
+║    1.0.0 - Initial release with all 30 proposals                             ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TNI Toolkit - Proposals Reference</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        /* Custom Scrollbars */
+        * { scrollbar-width: thin; scrollbar-color: #30363d #0d1117; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0d1117; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; border: 1px solid #0d1117; }
+        ::-webkit-scrollbar-thumb:hover { background: #58a6ff; }
+        ::-webkit-scrollbar-corner { background: #0d1117; }
+        
+        body {
+            font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
+            background: linear-gradient(135deg, #0a0e14 0%, #1a1f2e 50%, #0d1117 100%);
+            color: #c9d1d9;
+            min-height: 100vh;
+            padding: 24px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 600px) {
+            .container { max-width: 100%; padding: 0 12px; }
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 0 30px;
+            border-bottom: 1px solid #30363d;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            margin: 0 0 8px 0;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        h1 span { color: #58a6ff; }
+        
+        .tagline {
+            color: #8b949e;
+            font-size: 12px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 16px;
+            color: #58a6ff;
+            text-decoration: none;
+            font-size: 11px;
+            padding: 6px 12px;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            transition: all 0.15s;
+        }
+        
+        .back-link:hover {
+            border-color: #58a6ff;
+            background: rgba(88, 166, 255, 0.1);
+        }
+        
+        /* Table of Contents - Vertical List Format */
+        .toc {
+            background: rgba(22, 27, 34, 0.8);
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .toc h2 {
+            color: #58a6ff;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #21262d;
+        }
+        
+        .toc-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px 24px;
+        }
+        
+        .toc-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 0;
+        }
+        
+        .toc-list li::before {
+            content: "›";
+            color: #30363d;
+            font-weight: bold;
+        }
+        
+        .toc-list a {
+            color: #c9d1d9;
+            text-decoration: none;
+            font-size: 12px;
+            transition: color 0.15s;
+            flex: 1;
+        }
+        
+        .toc-list a:hover {
+            color: #00ff88;
+        }
+        
+        .toc-list .toc-icon {
+            font-size: 14px;
+            width: 22px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        
+        .toc-list .toc-count {
+            color: #7d8590;
+            font-size: 10px;
+            white-space: nowrap;
+            margin-left: auto;
+        }
+        
+        @media (max-width: 600px) {
+            .toc-list { grid-template-columns: 1fr; }
+        }
+        
+        /* Sections */
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #30363d;
+        }
+        
+        .section-header h2 {
+            color: #58a6ff;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        
+        .back-to-toc {
+            margin-left: auto;
+            color: #7d8590;
+            text-decoration: none;
+            font-size: 10px;
+            padding: 4px 8px;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            transition: all 0.15s;
+        }
+        
+        .back-to-toc:hover {
+            color: #58a6ff;
+            border-color: #58a6ff;
+        }
+        
+        /* Proposal Cards */
+        .proposal-card {
+            background: rgba(22, 27, 34, 0.8);
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: border-color 0.2s;
+        }
+        
+        .proposal-card:hover {
+            border-color: #58a6ff;
+        }
+        
+        .proposal-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .proposal-name {
+            color: #00ff88;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .proposal-cost {
+            background: rgba(240, 136, 62, 0.2);
+            color: #f0883e;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .proposal-cost.free {
+            background: rgba(35, 134, 54, 0.2);
+            color: #3fb950;
+        }
+        
+        .proposal-cost.repeatable {
+            background: rgba(136, 46, 224, 0.2);
+            color: #a371f7;
+        }
+        
+        .proposal-lore {
+            color: #8b949e;
+            font-size: 11px;
+            font-style: italic;
+            margin-bottom: 12px;
+            padding-left: 12px;
+            border-left: 2px solid #30363d;
+        }
+        
+        .proposal-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 12px;
+            font-size: 11px;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .meta-label {
+            color: #7d8590;
+        }
+        
+        .meta-value {
+            color: #c9d1d9;
+        }
+        
+        .proposal-desc {
+            color: #c9d1d9;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .proposal-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        
+        .detail-box {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            padding: 10px 12px;
+        }
+        
+        .detail-label {
+            color: #58a6ff;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        
+        .detail-content {
+            color: #c9d1d9;
+            font-size: 11px;
+        }
+        
+        .detail-content ul {
+            margin: 0;
+            padding-left: 16px;
+        }
+        
+        .detail-content li {
+            margin-bottom: 2px;
+        }
+        
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+            color: #00ff88;
+        }
+        
+        .warning-box {
+            background: rgba(248, 81, 73, 0.1);
+            border: 1px solid rgba(248, 81, 73, 0.3);
+            border-radius: 4px;
+            padding: 10px 12px;
+            margin-top: 12px;
+        }
+        
+        .warning-box .detail-label {
+            color: #f85149;
+        }
+        
+        .wip-badge {
+            background: rgba(248, 81, 73, 0.2);
+            color: #f85149;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 40px;
+            border-top: 1px solid #30363d;
+        }
+        
+        .footer-links {
+            margin-bottom: 16px;
+        }
+        
+        .footer-links a {
+            color: #58a6ff;
+            text-decoration: none;
+            font-size: 11px;
+            margin: 0 8px;
+            transition: color 0.15s;
+        }
+        
+        .footer-links a:hover {
+            color: #00ff88;
+        }
+        
+        .footer-sep {
+            color: #30363d;
+        }
+        
+        .footer-note {
+            color: #7d8590;
+            font-size: 10px;
+        }
+        
+        .footer-badges {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .version-badge {
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        
+        .license-badge {
+            background: rgba(88, 166, 255, 0.1);
+            color: #58a6ff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+        
+        .license-badge:hover {
+            background: rgba(88, 166, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1><span>TNI</span> Proposals <span>Reference</span></h1>
+            <p class="tagline">Complete guide to all in-game proposals — 30 proposals across 7 categories</p>
+            <a href="../index.html" class="back-link">← Back to TNI Toolkit</a>
+        </header>
+        
+        <!-- Table of Contents -->
+        <nav id="toc" class="toc">
+            <h2>📋 Table of Contents</h2>
+            <ul class="toc-list">
+                <li><span class="toc-icon">🔬</span> <a href="#technology">Technology & Research</a> <span class="toc-count">(9)</span></li>
+                <li><span class="toc-icon">🏗️</span> <a href="#infrastructure">Infrastructure</a> <span class="toc-count">(4)</span></li>
+                <li><span class="toc-icon">💰</span> <a href="#financial">Financial</a> <span class="toc-count">(2)</span></li>
+                <li><span class="toc-icon">🏪</span> <a href="#merchant">Merchant</a> <span class="toc-count">(4)</span></li>
+                <li><span class="toc-icon">⚡</span> <a href="#tenabolt">Tenabolt Corporation</a> <span class="toc-count">(4)</span></li>
+                <li><span class="toc-icon">🔌</span> <a href="#power-grid">Power Grid Directives</a> <span class="toc-count">(2)</span></li>
+                <li><span class="toc-icon">💾</span> <a href="#software">Software Funding</a> <span class="toc-count">(4)</span></li>
+            </ul>
+        </nav>
+        
+        <!-- Technology & Research -->
+        <section id="technology" class="section">
+            <div class="section-header">
+                <span>🔬</span>
+                <h2>Technology & Research</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Remote Backups</span>
+                    <span class="proposal-cost">💵 450</span>
+                </div>
+                <p class="proposal-lore">"3-2-1, let's back it up!"</p>
+                <p class="proposal-desc">Adds a new "sftp" routine to netshell. Allows backup of configs/files on remote devices. The routine can also be used to remove malware when regular program uninstalls do not work.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content"><code>sftp</code> routine</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">Technology must not already be acquired</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Botnets Research</span>
+                    <span class="proposal-cost">💵 665</span>
+                </div>
+                <p class="proposal-lore">"Not enough users?"</p>
+                <p class="proposal-desc">Adds a new "botconf" routine to netshell. Allow configuration of bots that can generate visitor traffic to enterprises.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content"><code>botconf</code> routine</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>Technology not acquired</li>
+                                <li>5+ compute servers (increases chance)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">High Availability Research</span>
+                    <span class="proposal-cost">💵 600</span>
+                </div>
+                <p class="proposal-lore">"HA HA HA, no DR!"</p>
+                <p class="proposal-desc">Adds a new "haconf" routine to netshell. Allow configuration of high-availability setup on ha-enabled routers.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content"><code>haconf</code> routine</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>Technology not acquired</li>
+                                <li>7+ network routers (increases chance)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Jailbreaker</span>
+                    <span class="proposal-cost">💵 1,000</span>
+                </div>
+                <p class="proposal-lore">"Hardware liberation day"</p>
+                <p class="proposal-desc">The "sftp" routine can now be used to install programs extracted from devices.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content">sftp can install extracted programs</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>Technology not acquired</li>
+                                <li><strong>Remote Backups</strong> must be submitted</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">NetOps Research</span>
+                    <span class="proposal-cost">💵 330</span>
+                </div>
+                <p class="proposal-lore">"Improvise, adapt, overcome"</p>
+                <p class="proposal-desc">Adds automation utility for managing and monitoring your network.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content"><code>cron</code>, <code>try</code>, <code>notify</code> routines</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">Technology must not already be acquired</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Power Management Research</span>
+                    <span class="proposal-cost">💵 225</span>
+                </div>
+                <p class="proposal-lore">"Keep bills low and reliability high."</p>
+                <p class="proposal-desc">Adds power management utility for managing device power state.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content"><code>power</code> routines</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">Technology must not already be acquired</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Route Discovery Protocol v1 (RIP)</span>
+                    <span class="proposal-cost">💵 1,500</span>
+                </div>
+                <p class="proposal-lore">"State of the art in 1988"</p>
+                <p class="proposal-desc">Adds a new "rip" routine to netshell. Allow configuration of automated route discoveries on routers.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content"><code>rip</code> routine</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>Technology not acquired</li>
+                                <li>7+ network routers (increases chance)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Scanning Exploit</span>
+                    <span class="proposal-cost">💵 1,200</span>
+                </div>
+                <p class="proposal-lore">"Scans too shall pass."</p>
+                <p class="proposal-desc">Allows netsh and autograph scans to bypass all router rules. The exploit can be optionally turned on/off.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content">Scans bypass router rules (toggleable)</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">Technology must not already be acquired</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Virtual Machines Research</span>
+                    <span class="proposal-cost">💵 999</span>
+                </div>
+                <p class="proposal-lore">"carrier has arrived."</p>
+                <p class="proposal-desc">Adds a new "vmconf" routine to netshell. Allow configuration of virtual machines on servers.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content"><code>vmconf</code> routine</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>Technology not acquired</li>
+                                <li>5+ compute servers (increases chance)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Infrastructure -->
+        <section id="infrastructure" class="section">
+            <div class="section-header">
+                <span>🏗️</span>
+                <h2>Infrastructure</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Elevator Upgrade</span>
+                    <span class="proposal-cost repeatable">💵 1,250 → 5,000 (8 levels)</span>
+                </div>
+                <p class="proposal-lore">"Faster travels for those emergencies"</p>
+                <p class="proposal-desc">Decrease elevator wait time by 50.0%. Each level provides the same benefit and requires the previous level.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Cost per Level</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>Level 1: 1,250</li>
+                                <li>Level 2: 2,000</li>
+                                <li>Level 3: 2,500</li>
+                                <li>Level 4: 3,000</li>
+                                <li>Level 5: 3,500</li>
+                                <li>Level 6: 4,000</li>
+                                <li>Level 7: 4,500</li>
+                                <li>Level 8: 5,000</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>Level 1 guaranteed on day 9</li>
+                                <li>Each level requires previous</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Second Monitor</span>
+                    <span class="proposal-cost">💵 2,500</span>
+                </div>
+                <p class="proposal-lore">"Screen too small?"</p>
+                <p class="proposal-desc">Allows use of a second monitor by pressing right-alt.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content">Second monitor (right-alt to toggle)</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">Technology must not already be acquired</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">New Data Center</span>
+                    <span class="proposal-cost free">FREE (+10% admin fees)</span>
+                </div>
+                <p class="proposal-lore">"It's free (?) real-estate baby!"</p>
+                <p class="proposal-desc">Request for a new data center. Adds new location and expands available space. Increases administrative fees by 10.0%.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content">New data center floor</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">Guaranteed on days 6, 15, 24, and 30 (4 instances total)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Internet Exchange Point One</span>
+                    <span class="wip-badge">⚠️ Work in Progress</span>
+                </div>
+                <p class="proposal-lore">"Now the whole world had one language and a common speech."</p>
+                <p class="proposal-desc">Request an internet exchange point with another tower. Allowing cross-tower internet pays handsomely but is risky due to the strict SLA requirements.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content">Internet exchange point floor, cross-tower connectivity</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Cost</div>
+                        <div class="detail-content">TBD</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Financial -->
+        <section id="financial" class="section">
+            <div class="section-header">
+                <span>💰</span>
+                <h2>Financial</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Liability Insurance</span>
+                    <span class="proposal-cost">💵 300/day premium</span>
+                </div>
+                <p class="proposal-lore">"Money solves problems"</p>
+                <p class="proposal-desc">SLA breaches no longer ends the game, but comes with a financial penalty of 3000 per breach. Adds a recurring premium cost of 300 per day.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Effects</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>SLA breaches don't end game</li>
+                                <li>3,000 penalty per breach</li>
+                                <li>300/day recurring premium</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">Available from day 5</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Lean Administration</span>
+                    <span class="proposal-cost repeatable">💵 600 → 1,100 (6 levels)</span>
+                </div>
+                <p class="proposal-lore">"Pain now for gain later"</p>
+                <p class="proposal-desc">Permanently reduce daily admin expenses by 30.0% at the cost of upfront payment. Each level provides the same 30% reduction benefit.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Cost per Level</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>Level 1: 600</li>
+                                <li>Level 2: 700</li>
+                                <li>Level 3: 800</li>
+                                <li>Level 4: 900</li>
+                                <li>Level 5: 1,000</li>
+                                <li>Level 6: 1,100</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Effect</div>
+                        <div class="detail-content">-30% admin expenses per level</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Merchant -->
+        <section id="merchant" class="section">
+            <div class="section-header">
+                <span>🏪</span>
+                <h2>Merchant</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Refurbhut Investment</span>
+                    <span class="proposal-cost">💵 555</span>
+                </div>
+                <p class="proposal-lore">"As long as it works..."</p>
+                <p class="proposal-desc">Fund 555 to support the opening of the RefurbHut merchant, which provides cheap refurbished (no warranty) devices.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content">RefurbHut merchant</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">Merchant must not already exist</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Support the Cabler's Union (Basic)</span>
+                    <span class="proposal-cost">💵 300</span>
+                </div>
+                <p class="proposal-lore">"R&D - Rewire and Distribute equally"</p>
+                <p class="proposal-desc">Fund 300 to support the Cabler's Union, an R&D institute for the benefit of cabling workers. This unlocks more proposals for the Cabler's Union (merchant and discounts).</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content">Cabler's Union Discounts and Merchant proposals</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">None</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Support the Cabler's Union (Discounts)</span>
+                    <span class="proposal-cost">💵 300</span>
+                </div>
+                <p class="proposal-lore">"R&D - Rewire and Distribute equally"</p>
+                <p class="proposal-desc">Fund 300 to support the Cabler's Union. In return, they promise to lobby for cheaper cable prices (discount %) from the merchants on the DMarket.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content">Cable price discounts on D-Market</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content"><strong>Support the Cabler's Union (Basic)</strong> must be submitted</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Support the Cabler's Union (Merchant)</span>
+                    <span class="proposal-cost">💵 300</span>
+                </div>
+                <p class="proposal-lore">"R&D - Rewire and Distribute equally"</p>
+                <p class="proposal-desc">Fund 300 to support the Cabler's Union. This lets them sell their prototypes on the D-Market.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content">Cabler's Union Prototypes on D-Market</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li><strong>Support the Cabler's Union (Basic)</strong> submitted</li>
+                                <li>Merchant must not already exist</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Tenabolt Corporation -->
+        <section id="tenabolt" class="section">
+            <div class="section-header">
+                <span>⚡</span>
+                <h2>Tenabolt Corporation</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Fusion Plant Funding (Phase 1)</span>
+                    <span class="proposal-cost">💵 1,000</span>
+                </div>
+                <p class="proposal-lore">"Let's make a Sun."</p>
+                <p class="proposal-desc">Support Tenabolt Corporation's effort in building a fusion power plant. Reduce all Data Center power cost by 20.0%.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Effects</div>
+                        <div class="detail-content">-20% Data Center power cost</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">Must NOT have chosen Legal Retaliation or Lobby Against</div>
+                    </div>
+                </div>
+                <div class="warning-box">
+                    <div class="detail-label">⚠️ Mutual Exclusivity</div>
+                    <div class="detail-content">Choosing Legal Retaliation or Lobby Against blocks this proposal</div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Fusion Plant Funding (Phase 2)</span>
+                    <span class="proposal-cost">💵 2,000</span>
+                </div>
+                <p class="proposal-lore">"Let's make it brighter."</p>
+                <p class="proposal-desc">Support Tenabolt Corporation's effort in building a fusion power plant. Reduce all Data Center power cost by 50.0%. Reduces probability of power outage/surge by 10.0%.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Effects</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>-50% Data Center power cost</li>
+                                <li>-10% outage/surge probability</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li><strong>Fusion Plant Phase 1</strong> submitted</li>
+                                <li>NOT Legal Retaliation or Lobby Against</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Legal Retaliation</span>
+                    <span class="proposal-cost free">FREE (pricing increase)</span>
+                </div>
+                <p class="proposal-lore">"Another power outage? See you in court!"</p>
+                <p class="proposal-desc">Lawyer up against Tenabolt Corporation. This proposal eliminates future collaboration with Tenabolt Corporation. Tenabolt Corporation now pays penalties per outage/surge events. All items sold by Tenabolt reseller become more expensive.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Effects</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>Tenabolt pays you per outage/surge</li>
+                                <li>Tenabolt items more expensive</li>
+                                <li>No future Tenabolt collaboration</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">None</div>
+                    </div>
+                </div>
+                <div class="warning-box">
+                    <div class="detail-label">⚠️ Bug Note</div>
+                    <div class="detail-content">Blocks Fusion Plant proposals. Does NOT prevent Lobby Against from appearing (appears to be a bug).</div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Lobby Against Tenabolt Corporation</span>
+                    <span class="proposal-cost free">FREE (pricing increase)</span>
+                </div>
+                <p class="proposal-lore">"Power to the people."</p>
+                <p class="proposal-desc">Lobby for new law against Tenabolt Corporation. This proposal eliminates future collaboration with Tenabolt Corporation. Tenabolt Corporation can no longer issue fines against non Data Center power use. All items sold by Tenabolt reseller become more expensive.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Effects</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>No non-DC power use fines</li>
+                                <li>Tenabolt items more expensive</li>
+                                <li>No future Tenabolt collaboration</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">None</div>
+                    </div>
+                </div>
+                <div class="warning-box">
+                    <div class="detail-label">⚠️ Bug Note</div>
+                    <div class="detail-content">Blocks Fusion Plant proposals. Does NOT prevent Legal Retaliation from appearing (appears to be a bug).</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Power Grid Directives -->
+        <section id="power-grid" class="section">
+            <div class="section-header">
+                <span>🔌</span>
+                <h2>Power Grid Directives</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Overvoltage Directive</span>
+                    <span class="proposal-cost repeatable">💵 200 → 300 stamp duty (3 levels)</span>
+                </div>
+                <p class="proposal-lore">"POWER OVERWHELMING!"</p>
+                <p class="proposal-desc">+30.0% of power surge occurring, -30.0% of power outage occurring. Trade-off: More surges (damage risk) but fewer blackouts.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Effect per Level</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>+30% power surge ⚡</li>
+                                <li>-30% power outage 🔋</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>Power surge controller configured</li>
+                                <li>Power outage controller configured</li>
+                                <li>Each level requires previous</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Undervoltage Directive</span>
+                    <span class="proposal-cost repeatable">💵 200 → 300 stamp duty (3 levels)</span>
+                </div>
+                <p class="proposal-lore">"Better dark than magic smoke"</p>
+                <p class="proposal-desc">-30.0% of power surge occurring, +30.0% of power outage occurring. Trade-off: More blackouts (downtime) but fewer surges (less hardware damage).</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Effect per Level</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>-30% power surge ⚡</li>
+                                <li>+30% power outage 🔋</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>Power surge controller configured</li>
+                                <li>Power outage controller configured</li>
+                                <li>Each level requires previous</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Software Funding -->
+        <section id="software" class="section">
+            <div class="section-header">
+                <span>💾</span>
+                <h2>Software Funding</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">PADU Development Funding</span>
+                    <span class="proposal-cost">💵 300</span>
+                </div>
+                <p class="proposal-lore">"Everyone's favorite database."</p>
+                <p class="proposal-desc">Fund the development of PADU v3 database software.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content">PADU v3 database program</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">Program not already unlocked</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Poems DB</span>
+                    <span class="proposal-cost">💵 200</span>
+                </div>
+                <p class="proposal-lore">"A DB just for the text chads."</p>
+                <p class="proposal-desc">Fund the development of Poems DB database software.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content">Poems DB database program</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">Program not already unlocked</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">Sun DNS</span>
+                    <span class="proposal-cost">💵 400</span>
+                </div>
+                <p class="proposal-lore">"We've got names for everyone."</p>
+                <p class="proposal-desc">Fund the development of Sun DNS server software.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content">Sun DNS server program</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>Program not already unlocked</li>
+                                <li>Available from day 5</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-card">
+                <div class="proposal-header">
+                    <span class="proposal-name">KEA DHCP Server</span>
+                    <span class="proposal-cost">💵 200</span>
+                </div>
+                <p class="proposal-lore">"Mass host configurations, made easy."</p>
+                <p class="proposal-desc">Fund the development of KEA DHCP Server software.</p>
+                <div class="proposal-details">
+                    <div class="detail-box">
+                        <div class="detail-label">Unlocks</div>
+                        <div class="detail-content">KEA DHCP server program</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-label">Prerequisites</div>
+                        <div class="detail-content">
+                            <ul>
+                                <li>Program not already unlocked</li>
+                                <li>Available from day 5</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="../index.html">Home</a>
+                <span class="footer-sep">|</span>
+                <a href="../credits.html">Credits</a>
+                <span class="footer-sep">|</span>
+                <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub</a>
+                <span class="footer-sep">|</span>
+                <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">TNI on Steam</a>
+            </div>
+            <p class="footer-note">Data compiled by AlinaNova • Styled by Salvo Praxis & Claude</p>
+            <div class="footer-badges">
+                <span class="version-badge">v1.1.0</span>
+                <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/LICENSE" target="_blank" class="license-badge">MIT License</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

@@ -15,39 +15,50 @@ Community-built data files and planning tools for **Tower Networking Inc.** by P
 
 ### Current Work
 
-**File:** device-calculator.html  
-**Starting Version:** v1.7.0  
-**Target Version:** v1.8.0  
-**Last Commit:** YAML workflow fix (build-zip-and-ftp-deploy-full-repo.yml v1.0.3)
+**Status:** READY FOR MEGA-COMMIT  
+**Last Commit:** *(uncommitted — ready for commit)*
 
 ### Changes This Session
 
-- Program throughput metrics (output_uses array, input_uses field)
-- Throughput Summary panel (Input/Output/Dynamic Capacity boxes)
-- Dynamic capacity calculations (decentro-wallet, decentro-collector)
-- SATA behavior split (minimum vs maximize toggles)
-- Config menu two-column layout
-- Results panel visibility improvements
-- File table headers: CPU MEM HDD
-- Formula labels: "free mem" / "free hdd"
-- Column alignment (42px tick, 16px sep, 40px sec)
+**New files:**
+- data/tni-proposals.json (v1.0.0) — 30 proposals, 7 categories
+- data/tni-traffic-types.json (v1.0.0) — 14 traffic types, 10 categories
+- docs/proposals-reference.html (v1.0.0)
+- docs/programs-reference.html (v1.0.0)
+- docs/cli-reference.html (v1.0.0)
+- docs/traffic-types-reference.html (v1.0.0)
+- docs/store-reference.html (v1.8.2) — major layout restructure
+
+**Updated files:**
+- index.html (v1.5.0) — Quick Reference section
+- credits.html (v1.6.4) — AlinaNova name fix, greetz 3→4
+- contributions.html (v1.2.4) — new entries
+- CONTRIBUTIONS.md — new entries
+- README.md — updated structure
+- device-calculator.html — AlinaNova name fix
+- style-guide.html — back-link text consistency fix
 
 ### Files Ready for Commit
 
-- `device-calculator.html` (v1.8.0)
-- `CLAUDE.md`
+All in /mnt/user-data/outputs/:
+- cli-reference.html
+- programs-reference.html
+- proposals-reference.html
+- store-reference.html (v1.8.2)
+- traffic-types-reference.html
+- tni-traffic-types.json
+- style-guide.html
+- index.html
+- credits.html
+- contributions.html
+- contributing.html
+- README.md
+- CLAUDE.md
 
-### Pending Attributions
-
-| Who | Context | Status |
-|-----|---------|--------|
-| *(None this session)* | | |
-
-### Next Steps
-
-1. Version bump device-calculator header → v1.8.0
-2. Update CONTRIBUTIONS.md
-3. Commit: `tool: add program throughput metrics (device-calculator v1.8.0)`
+**Still needed from local repo:**
+- data/tni-proposals.json
+- CONTRIBUTIONS.md (check if in uploads)
+- device-calculator.html (AlinaNova name fix)
 
 ---
 
@@ -71,6 +82,7 @@ tni-toolkit/
 ├── data/                  # Source JSON datasets
 │   ├── tni-store.json     # Equipment catalog
 │   ├── tni-programs.json  # Server programs
+│   ├── tni-proposals.json # Proposals catalog
 │   ├── tni-cli-commands.json
 │   └── tni-traffic-types.json
 ├── tools/                 # Standalone HTML tools
@@ -78,7 +90,12 @@ tni-toolkit/
 │   └── seed-finder.html
 └── docs/
     ├── STYLE_GUIDE.md     # Detailed styling reference
-    └── style-guide.html   # HTML version of style guide
+    ├── style-guide.html   # HTML version of style guide
+    ├── proposals-reference.html      # Proposals quick reference
+    ├── programs-reference.html       # Programs quick reference
+    ├── cli-reference.html            # CLI commands quick reference
+    ├── traffic-types-reference.html  # Traffic types quick reference
+    └── store-reference.html          # Store catalog quick reference
 ```
 
 ### When Building New Tools
@@ -206,19 +223,6 @@ YAML configuration files (GitHub Actions, CI/CD) use comment headers:
 # ============================================================================
 ```
 
-**YAML Header Fields:**
-
-| Field | Required | Description |
-|-------|----------|-------------|
-| File | Yes | Path relative to repo root |
-| Name | Yes | Human-readable name (for workflows: matches `name:` key) |
-| Version | Yes | Semantic version (X.Y.Z) |
-| Updated | Yes | Last modified date (YYYY-MM-DD) |
-| Part of | Yes | Project name and repo URL |
-| Description | Yes | What the file does |
-| Contributors | Yes | List of contributors with roles |
-| Changelog | Yes | Version history with descriptions |
-
 ### Python Files
 
 Python scripts use docstring headers:
@@ -255,6 +259,7 @@ Tools should embed data directly. Source files in `data/`:
 |------|---------|
 | `tni-store.json` | Equipment specs, prices, power draw |
 | `tni-programs.json` | Program requirements, I/O, dependencies |
+| `tni-proposals.json` | Proposal prerequisites, costs, effects, unlocks |
 | `tni-cli-commands.json` | Terminal commands, syntax, examples |
 | `tni-traffic-types.json` | Network traffic types for firewall/router rules |
 
@@ -263,184 +268,73 @@ Tools should embed data directly. Source files in `data/`:
 ## Asset Strategy (Images)
 
 ### Problem
-Some tools (like Store Browser) need item images. Embedding all images as base64 would bloat files to megabytes.
+HTML tools are standalone and work offline, but images require external files or embedding.
 
-### Solution: Category Placeholders with Graceful Fallback
+### Options
 
-1. **Create 16 SVG placeholder images** — one per store category, NOC-styled (dark, glowy, minimal)
-2. **Embed placeholders as base64** — ~2-3KB each, ~48KB total (acceptable)
-3. **Real images in external folder** — `images/store/item-name.png`
-4. **Graceful fallback** — if real image fails, show category placeholder
+1. **No images** (current) — Text-only, minimal footprint
+2. **Base64 embedded** — Self-contained but bloated file size
+3. **External `/assets/`** — Clean separation but requires file management
+4. **CDN/external URL** — Works online only, defeats offline goal
 
-### Store Categories (16 total)
-
-| Category | Placeholder Style |
-|----------|------------------|
-| `network_switches` | Switch icon with ports |
-| `servers` | Server/rack unit |
-| `routers` | Globe/routing icon |
-| `firewalls_and_taps` | Shield icon |
-| `media_converters_and_repeaters` | Converter/arrows |
-| `decentro_rigs` | Mining rig |
-| `peripherals` | Generic device |
-| `ups_and_surge_protection` | Battery/power |
-| `power_expanders` | Lightning bolt |
-| `power_cables` | Power plug |
-| `network_cables` | Cable/connector |
-| `cabling_tools` | Wrench/tool |
-| `racks_and_shelving` | Rack frame |
-| `tower_link_sockets` | Tower/signal |
-| `debuggers_and_test_devices` | Magnifier/probe |
-| `monitoring_displays` | Monitor/screen |
-
-### Implementation Pattern
-
-```javascript
-// Embedded category placeholders (base64 SVG)
-const PLACEHOLDERS = {
-    network_switches: "data:image/svg+xml;base64,PHN2Zy...",
-    servers: "data:image/svg+xml;base64,PHN2Zy...",
-    routers: "data:image/svg+xml;base64,PHN2Zy...",
-    // ... all 16 categories
-};
-
-// Fallback handler
-function handleImageError(img) {
-    const category = img.dataset.category;
-    img.src = PLACEHOLDERS[category] || PLACEHOLDERS.peripherals;
-}
-```
-
-```html
-<img src="../images/store/blade5.png" 
-     alt="Blade5"
-     data-category="network_switches"
-     onerror="handleImageError(this)">
-```
-
-### Placeholder SVG Style
-
-- 64×64px viewBox
-- Dark background: `#161b22` or transparent
-- Stroke color: `#58a6ff` (blue) or `#00ff88` (green)
-- Minimal, iconic, NOC aesthetic
-- No fine detail (looks good at small sizes)
-
-### File Structure for Image-Dependent Tools
-
-```
-tni-toolkit/
-├── tools/
-│   └── store-browser.html    # Placeholders embedded, refs external images
-└── images/
-    └── store/
-        ├── blade5.png
-        ├── blade10.png
-        └── ... (added over time)
-```
-
-Tools work fully without images — placeholders provide visual structure. Real images are progressive enhancement.
+### Current Decision
+Text-only for now. Consider Base64 for small icons if needed. Revisit when game provides official asset pack.
 
 ---
 
-## Tool Sources & Pipelines
+## Tool External Sources
 
-Some tools in this toolkit are **outputs** of external projects with their own development pipelines. These should be traceable to their source repos.
+Some tools have companion repositories with build pipelines:
 
 | Tool | Source Repo | Pipeline |
 |------|-------------|----------|
-| `seed-finder.html` | [tni-seed-harvester](https://github.com/salvo-praxis/tni-seed-harvester) | AHK automation → Tesseract OCR → Python processing → HTML generation |
+| `seed-finder.html` | [tni-seed-harvester](https://github.com/salvo-praxis/tni-seed-harvester) | AHK → OCR → Python → HTML |
 
-### Pattern for Pipeline-Generated Tools
-
-If a tool requires its own repo/pipeline:
-
-1. **Create a separate repo** for the pipeline (e.g., `tni-seed-harvester`)
-2. **Pipeline produces** the final HTML artifact
-3. **Artifact gets copied** to `tni-toolkit/tools/`
-4. **Document the source** in this table above
-5. **Link back** from the tool's source repo to tni-toolkit
-
-This keeps complex tooling isolated while the toolkit remains a clean collection of standalone HTML files.
+The pipeline produces the final HTML artifact which gets copied to `tni-toolkit/tools/`.
 
 ---
 
-## Versioning & Attribution Workflow
+## Versioning Guidelines
 
-This section defines how Claude and contributors manage versions, attributions, and file synchronization across work sessions.
+### Semantic Versioning (X.Y.Z)
 
-### Version Bump Rules
+| Change Type | Bump | Example |
+|-------------|------|---------|
+| Bug fix, typo | PATCH (Z) | 1.0.0 → 1.0.1 |
+| New feature, UI change | MINOR (Y) | 1.0.1 → 1.1.0 |
+| Breaking change, redesign | MAJOR (X) | 1.1.0 → 2.0.0 |
 
-Semantic versioning: `MAJOR.MINOR.PATCH`
+### Session Discipline
 
-| Bump | When | Examples |
-|------|------|----------|
-| **PATCH** (x.y.Z) | Bug fixes, typos, small corrections, config tweaks | "Fixed SATA value", "Typo in label" |
-| **MINOR** (x.Y.0) | New features, significant UI changes, new data fields | "Added config menu", "New device category" |
-| **MAJOR** (X.0.0) | Breaking changes, complete rewrites, architecture changes | "Redesigned from scratch" |
+**During a session:** Make changes without bumping version (all work is "in progress")  
+**End of session:** Bump version ONCE based on total scope of changes
 
-**Session consolidation**: Multiple changes in one session = one version bump at the highest applicable level.
+### File Dependencies
 
-### Session Management
+When updating one file, others may need updates:
 
-#### Starting a Session
+| Changed | Also Update |
+|---------|-------------|
+| Any tool HTML | CONTRIBUTIONS.md, contributions.html |
+| Data JSON | Any tool that embeds it |
+| Style patterns | docs/STYLE_GUIDE.md, style-guide.html |
+| Credits/attribution | credits.html, CONTRIBUTIONS.md |
 
-1. **Declare working version**: State current version from file header (e.g., "Starting from device-calculator v1.5.0")
-2. **Review TODO**: Check for pending attributions or work items
-3. **Set session scope**: What features/fixes are we targeting?
+---
 
-#### During a Session
+## Attribution & Contribution Tracking
 
-- **DO NOT bump version on every edit** — All work is "in progress" on the starting version
-- **Track changes** — Update SESSION STATE section as you go
-- **Intermediate downloads** — Files downloaded mid-session keep the starting version
-- **Note attributions** — If implementing a community suggestion, add to Pending Attributions
+### Files Involved
 
-#### Ending a Session (Publishing)
+- **CONTRIBUTIONS.md** — Markdown log of all contributions (source of truth)
+- **contributions.html** — Styled HTML version (mirrors CONTRIBUTIONS.md)
+- **credits.html** — Public credits page with Greetz counts
 
-When session ends (context limit, natural stopping point, or explicit wrap-up):
+### When to Update
 
-1. **Bump version ONCE** based on total scope of changes
-2. **Update ALL required files** (see File Update Checklist)
-3. **Move attributions** from SESSION STATE → CONTRIBUTIONS.md/credits.html
-4. **Generate commit message** following standard format
-5. **Clear SESSION STATE** after successful commit
-
-### Attribution Pipeline
-
-#### Stage 1: Suggestion Received
-Add to `SESSION STATE > Pending Attributions`:
-```markdown
-| **@username** | Brief context of what they suggested | Pending |
-```
-
-#### Stage 2: Suggestion Implemented  
-Update status:
-```markdown
-| **@username** | Brief context | ✓ Implemented |
-```
-
-#### Stage 3: Attribution Applied (End of Session)
-Update files in this order:
-1. **Source file header** — Add to Contributors, update changelog
-2. **CONTRIBUTIONS.md** — Add entry under date/contributor  
-3. **contributions.html** — Mirror the MD entry
-4. **credits.html** — Update Greetz count + Recent Contributions table
-
-#### Stage 4: Cleanup
-After confirming commit, clear completed rows from SESSION STATE.
-
-### File Update Checklist
-
-#### For Bug Fixes (reported by community)
-- [ ] Source file: Fix bug, bump PATCH, add reporter to Contributors, update changelog
-- [ ] CONTRIBUTIONS.md: Add "Reported: @name / Fixed: Salvo Praxis"
-- [ ] contributions.html: Mirror entry
-- [ ] credits.html: Update Greetz count, add to Recent Contributions
-
-#### For Feature Suggestions (implemented)
-- [ ] Source file: Implement feature, bump MINOR, add suggester to Contributors, update changelog
-- [ ] CONTRIBUTIONS.md: Add "Suggested: @name"
+#### For Community Suggestions/Bug Reports
+- [ ] Source file: Implement fix/feature, bump version, update changelog
+- [ ] CONTRIBUTIONS.md: Add entry under reporter's name
 - [ ] contributions.html: Mirror entry
 - [ ] credits.html: Update Greetz count, add to Recent Contributions
 
@@ -487,27 +381,6 @@ Files updated:
 - CONTRIBUTIONS.md
 - contributions.html (vX.Y.Z)
 - credits.html (vX.Y.Z)
-```
-
-**Example:**
-```
-tool: add config menu with warranty/refurbs display (device-calculator v1.7.0)
-
-Changes:
-- Config menu with localStorage persistence
-- Clear buttons for device/program selection
-- Colorized stats (CPU/MEM/HDD/W)
-- Warranty and vendor display
-
-Attribution:
-- Suggested by @gamers2000 (warranty, refurbs)
-- Suggested by @SingingPotBeast (config menu)
-
-Files updated:
-- device-calculator.html (v1.7.0)
-- CONTRIBUTIONS.md
-- contributions.html (v1.2.1)
-- credits.html (v1.6.1)
 ```
 
 ### Context Recovery Protocol
@@ -599,20 +472,27 @@ SESSION END:   Bump once → Update all files → Commit message → Handoff
 
 ### Data Files
 
-- [ ] **tni-proposals.json** — Proposal prerequisites data:
-  - `rip` command: 7 routers before chance of proposal
-  - `vmconf` command: 5 servers before chance of proposal
+- [x] **tni-proposals.json** — Complete proposals catalog (30 proposals, 7 categories)
+  - Added by AlinaNova (PROPOSALS_REFERENCE.md), converted to JSON by Salvo Praxis
+
+### Device Calculator
+
+- [x] Config menu: auto-prune, refurb toggle, warranty/traversals/power display *(completed & committed)*
 
 ### Seed Finder
 
-- [ ] Paginate results
-- [ ] Config menu: seeds per page (increments of 25)
+- [x] Paginate results *(completed & committed)*
+- [x] Config menu: seeds per page *(completed & committed)*
 
 ### General
 
-- [ ] Relative links where applicable
-- [ ] HTML counterparts should link to HTML versions (not GitHub MD)
-- [ ] `tni-toolkit.zip` download link should be relative
+- [x] Relative links where applicable *(completed & committed)*
+- [x] HTML counterparts should link to HTML versions *(completed & committed)*
+- [x] `tni-toolkit.zip` download link should be relative *(completed & committed)*
+
+### Automation
+
+- [x] YAML workflow: Build ZIP and FTP deploy *(completed & committed)*
 
 ---
 
@@ -636,6 +516,7 @@ SESSION END:   Bump once → Update all files → Commit message → Handoff
 ### Completed
 - [x] Server/Program Compatibility Calculator
 - [x] Starting Proposal Seed Finder
+- [x] Reference Pages (store, programs, CLI, traffic types, proposals)
 
 ---
 

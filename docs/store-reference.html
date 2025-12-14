@@ -1,0 +1,800 @@
+<!--
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  TNI Toolkit - Store Reference                                               ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Version: 1.9.0                                                              ║
+║  Updated: 2025-12-14                                                         ║
+║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Description:                                                                ║
+║    Comprehensive reference showing ALL device specs for comparison and       ║
+║    hacking/conversion planning. All fields from tni-store.json included.     ║
+║                                                                              ║
+║  Contributors:                                                               ║
+║    - Salvo Praxis (data collection, HTML conversion)                         ║
+║    - Claude (Anthropic)                                                      ║
+║    - Chaotic Crumb, Singing Pot Beast, AlinaNova, Блинчик                    ║
+║                                                                              ║
+║  Changelog:                                                                  ║
+║    1.9.0 - Header updated to TNI Store REFERENCE format; container width     ║
+║            reduced to 900px; ToC redesigned with vertical list format        ║
+║    1.8.3 - Firewalls CPU/MEM/HDD corrected from 4/1/2 to 6/3/3; firmware      ║
+║            column shows all pre-installed programs (reported by @gamers2000) ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TNI Toolkit - Store Reference</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { scrollbar-width: thin; scrollbar-color: #30363d #0d1117; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0d1117; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; border: 1px solid #0d1117; }
+        ::-webkit-scrollbar-thumb:hover { background: #58a6ff; }
+        ::-webkit-scrollbar-corner { background: #0d1117; }
+        
+        body {
+            font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
+            background: linear-gradient(135deg, #0a0e14 0%, #1a1f2e 50%, #0d1117 100%);
+            color: #c9d1d9;
+            min-height: 100vh;
+            padding: 24px;
+            line-height: 1.6;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        /* Mobile responsive */
+        @media (max-width: 600px) {
+            .container { max-width: 100%; padding: 0 12px; }
+            .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        }
+        .header { text-align: center; padding: 40px 0 30px; border-bottom: 1px solid #30363d; margin-bottom: 30px; }
+        h1 { color: #00ff88; text-shadow: 0 0 20px rgba(0, 255, 136, 0.3); margin: 0 0 8px 0; font-size: 20px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+        h1 span { color: #58a6ff; }
+        .tagline { color: #8b949e; font-size: 12px; }
+        .back-link { display: inline-block; margin-top: 16px; color: #58a6ff; text-decoration: none; font-size: 11px; padding: 6px 12px; border: 1px solid #30363d; border-radius: 4px; transition: all 0.15s; }
+        .back-link:hover { border-color: #58a6ff; background: rgba(88, 166, 255, 0.1); }
+        
+        /* Table of Contents - Vertical List Format */
+        .toc { background: rgba(22, 27, 34, 0.8); border: 1px solid #30363d; border-radius: 8px; padding: 20px; margin-bottom: 30px; }
+        .toc h2 { color: #58a6ff; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #21262d; }
+        .toc-list { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 24px; }
+        .toc-list li { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+        .toc-list li::before { content: "›"; color: #30363d; font-weight: bold; }
+        .toc-list a { color: #c9d1d9; text-decoration: none; font-size: 12px; transition: color 0.15s; flex: 1; }
+        .toc-list a:hover { color: #00ff88; }
+        .toc-list .toc-icon { font-size: 14px; width: 22px; text-align: center; flex-shrink: 0; }
+        .toc-list .toc-count { color: #7d8590; font-size: 10px; white-space: nowrap; margin-left: auto; }
+        @media (max-width: 600px) { .toc-list { grid-template-columns: 1fr; } }
+        
+        .section { margin-bottom: 40px; }
+        .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #30363d; }
+        .section-header h2 { color: #58a6ff; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; }
+        .back-to-toc { margin-left: auto; color: #7d8590; text-decoration: none; font-size: 10px; padding: 4px 8px; border: 1px solid #30363d; border-radius: 4px; transition: all 0.15s; }
+        .back-to-toc:hover { color: #58a6ff; border-color: #58a6ff; }
+        
+        .data-table { width: 100%; border-collapse: collapse; font-size: 10px; background: rgba(22, 27, 34, 0.6); border-radius: 8px; overflow: hidden; }
+        .data-table th { background: rgba(0, 0, 0, 0.3); color: #58a6ff; text-align: left; padding: 8px 6px; font-weight: 600; text-transform: uppercase; font-size: 9px; letter-spacing: 0.5px; white-space: nowrap; cursor: pointer; user-select: none; transition: all 0.15s; position: relative; width: 1px; }
+        .data-table th:first-child { width: 100%; }
+        .data-table th.right { text-align: right; }
+        .data-table th.center { text-align: center; }
+        .data-table th:hover { background: rgba(88, 166, 255, 0.15); color: #00ff88; }
+        .data-table th.sort-asc::after { content: " ▲"; color: #00ff88; font-size: 8px; }
+        .data-table th.sort-desc::after { content: " ▼"; color: #00ff88; font-size: 8px; }
+        .data-table th .sort-hint { color: #7d8590; font-size: 7px; opacity: 0; transition: opacity 0.15s; margin-left: 4px; }
+        .data-table th:hover .sort-hint { opacity: 1; }
+        .data-table td { padding: 6px; border-top: 1px solid #21262d; vertical-align: top; white-space: nowrap; width: 1px; }
+        .data-table td:first-child { width: 100%; white-space: normal; }
+        .data-table tr:hover td { background: rgba(88, 166, 255, 0.05); }
+        .data-table .model { color: #00ff88; font-weight: 600; }
+        .data-table .vendor { color: #8b949e; font-size: 9px; }
+        .data-table .price { color: #f0883e; font-weight: 600; text-align: right; white-space: nowrap; }
+        .data-table .power { text-align: left; }
+        .data-table .notes { color: #7d8590; font-size: 9px; white-space: normal; width: auto; min-width: 150px; }
+        .data-table .num { text-align: right; font-family: inherit; }
+        .data-table .firmware { color: #a371f7; }
+        .data-table .yes { color: #3fb950; text-align: center; }
+        .data-table .no { color: #7d8590; text-align: center; }
+        .data-table .center { text-align: center; }
+        .data-table .center { text-align: center; }
+        
+        /* Table-specific Notes column expansion */
+        #servers .notes { min-width: 200px; }
+        #decentro .notes { min-width: 200px; }
+        #debuggers .notes { min-width: 220px; }
+        #peripherals .notes { min-width: 280px; }
+        
+        .table-wrapper { overflow-x: auto; margin-bottom: 20px; border-radius: 8px; border: 1px solid #30363d; }
+        
+        /* Side-by-side table groups for sparse tables */
+        .table-group { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; align-items: flex-start; }
+        .table-group .section { flex: 1; min-width: 300px; margin-bottom: 0; }
+        .table-group .table-wrapper { margin-bottom: 0; }
+        
+        /* Stacked column for multiple small tables */
+        .stacked-column { display: flex; flex-direction: column; gap: 20px; flex: 1; min-width: 300px; }
+        .stacked-column .section { margin-bottom: 0; }
+        
+        .note-box { background: rgba(88, 166, 255, 0.1); border: 1px solid rgba(88, 166, 255, 0.3); border-radius: 4px; padding: 10px 14px; margin-bottom: 20px; font-size: 11px; color: #8b949e; }
+        
+        .footer { text-align: center; padding-top: 30px; margin-top: 40px; border-top: 1px solid #30363d; }
+        .footer-links { margin-bottom: 16px; }
+        .footer-links a { color: #58a6ff; text-decoration: none; font-size: 11px; margin: 0 8px; transition: color 0.15s; }
+        .footer-links a:hover { color: #00ff88; }
+        .footer-sep { color: #30363d; }
+        .footer-note { color: #7d8590; font-size: 10px; }
+        .footer-badges { margin-top: 12px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .version-badge { background: rgba(0, 255, 136, 0.1); color: #00ff88; padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+        .license-badge { background: rgba(88, 166, 255, 0.1); color: #58a6ff; padding: 4px 10px; border-radius: 4px; font-size: 10px; text-decoration: none; transition: background 0.15s; }
+        .license-badge:hover { background: rgba(88, 166, 255, 0.2); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><span>TNI</span> Store <span>Reference</span></h1>
+            <p class="tagline">Complete equipment specs for comparison & hacking — Click column headers to sort</p>
+            <a href="../index.html" class="back-link">← Back to TNI Toolkit</a>
+        </header>
+        
+        <nav id="toc" class="toc">
+            <h2>📋 Table of Contents</h2>
+            <ul class="toc-list">
+                <li><span class="toc-icon">🔌</span> <a href="#switches">Network Switches</a> <span class="toc-count">(10)</span></li>
+                <li><span class="toc-icon">🔀</span> <a href="#routers">Routers</a> <span class="toc-count">(13)</span></li>
+                <li><span class="toc-icon">🖥️</span> <a href="#servers">Servers</a> <span class="toc-count">(16)</span></li>
+                <li><span class="toc-icon">💰</span> <a href="#decentro">Decentro Rigs</a> <span class="toc-count">(1)</span></li>
+                <li><span class="toc-icon">🛡️</span> <a href="#firewalls">Firewalls & TAPs</a> <span class="toc-count">(4)</span></li>
+                <li><span class="toc-icon">🔍</span> <a href="#debuggers">Debuggers & Test</a> <span class="toc-count">(3)</span></li>
+                <li><span class="toc-icon">🔄</span> <a href="#converters">Converters & Repeaters</a> <span class="toc-count">(14)</span></li>
+                <li><span class="toc-icon">🔋</span> <a href="#ups">UPS & Surge Protection</a> <span class="toc-count">(5)</span></li>
+                <li><span class="toc-icon">⚡</span> <a href="#power-expanders">Power Expanders</a> <span class="toc-count">(6)</span></li>
+                <li><span class="toc-icon">🔌</span> <a href="#power-cables">Power Cables</a> <span class="toc-count">(5)</span></li>
+                <li><span class="toc-icon">📱</span> <a href="#peripherals">Peripherals</a> <span class="toc-count">(3)</span></li>
+                <li><span class="toc-icon">📺</span> <a href="#monitors">Monitoring Displays</a> <span class="toc-count">(3)</span></li>
+                <li><span class="toc-icon">🔗</span> <a href="#tower-links">Tower Link Sockets</a> <span class="toc-count">(2)</span></li>
+                <li><span class="toc-icon">🔧</span> <a href="#cabling-tools">Cabling Tools</a> <span class="toc-count">(2)</span></li>
+                <li><span class="toc-icon">🔗</span> <a href="#network-cables">Network Cables</a> <span class="toc-count">(2)</span></li>
+                <li><span class="toc-icon">🗄️</span> <a href="#racks">Racks & Shelving</a> <span class="toc-count">(13)</span></li>
+            </ul>
+        </nav>
+        
+        <div class="note-box">
+            ⚠️ Some warranty values may be inaccurate (recorded during LAB session). Corrections welcome via PR.
+        </div>
+        
+        <!-- Network Switches -->
+        <section id="switches" class="section">
+            <div class="section-header">
+                <span>🔌</span>
+                <h2>Network Switches</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th class="center">Ports</th>
+                            <th>Media</th>
+                            <th class="center">VLAN</th>
+                            <th class="center">CPU</th>
+                            <th class="center">MEM</th>
+                            <th class="center">HDD</th>
+                            <th>Firmware</th>
+                            <th class="center">Trav/tick</th>
+                            <th>CPU Cycle</th>
+                            <th>Power</th>
+                            <th class="center">Warranty</th>
+                            <th>Notes</th>
+                            <th class="right">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="model">Blade5</span><br><span class="vendor">Blade Networking Inc</span></td><td class="center">5</td><td>Ethernet</td><td class="no"></td><td class="center">2</td><td class="center">1</td><td class="center">1</td><td class="firmware">bladeos</td><td class="center">25</td><td>1 tick / 2.0s</td><td class="power">22W</td><td class="center">7d</td><td class="notes">Entry-level L2 switch</td><td class="price">$100</td></tr>
+                        <tr><td><span class="model">Blade10</span><br><span class="vendor">Blade Networking Inc</span></td><td class="center">10</td><td>Ethernet</td><td class="no"></td><td class="center">2</td><td class="center">1</td><td class="center">1</td><td class="firmware">bladeos</td><td class="center">50</td><td>1 tick / 2.0s</td><td class="power">41W</td><td class="center">7d</td><td class="notes">Unmanaged mid switch</td><td class="price">$450</td></tr>
+                        <tr><td><span class="model">Blade4</span><br><span class="vendor">Blade Networking Inc</span></td><td class="center">4</td><td>Fiber</td><td class="no"></td><td class="center">2</td><td class="center">1</td><td class="center">1</td><td class="firmware">bladeos</td><td class="center">36</td><td>1 tick / 2.0s</td><td class="power">30W</td><td class="center">7d</td><td class="notes">Small fiber switch</td><td class="price">$100</td></tr>
+                        <tr><td><span class="model">Blade12</span><br><span class="vendor">Blade Networking Inc</span></td><td class="center">12</td><td>Fiber</td><td class="yes">✓</td><td class="center">2</td><td class="center">2</td><td class="center">2</td><td class="firmware">vlanfirm</td><td class="center">108</td><td>1 tick / 2.0s</td><td class="power">84W</td><td class="center">14d</td><td class="notes">Managed; VLAN tagging</td><td class="price">$1,000</td></tr>
+                        <tr><td><span class="model">Blade66</span><br><span class="vendor">Blade Networking Inc</span></td><td class="center">12</td><td>Mixed</td><td class="no"></td><td class="center">2</td><td class="center">1</td><td class="center">1</td><td class="firmware">bladeos</td><td class="center">84</td><td>1 tick / 2.0s</td><td class="power">66W</td><td class="center">14d</td><td class="notes">Hybrid media L2</td><td class="price">$950</td></tr>
+                        <tr><td><span class="model">Blade15</span><br><span class="vendor">Blade Networking Inc</span></td><td class="center">15</td><td>Ethernet</td><td class="yes">✓</td><td class="center">2</td><td class="center">2</td><td class="center">2</td><td class="firmware">vlanfirm</td><td class="center">75</td><td>1 tick / 2.0s</td><td class="power">88W</td><td class="center">14d</td><td class="notes">Managed; VLAN tagging</td><td class="price">$900</td></tr>
+                        <tr><td><span class="model">Blade88</span><br><span class="vendor">Blade Networking Inc</span></td><td class="center">16</td><td>Mixed</td><td class="yes">✓</td><td class="center">2</td><td class="center">2</td><td class="center">2</td><td class="firmware">vlanfirm</td><td class="center">112</td><td>1 tick / 2.0s</td><td class="power">87W</td><td class="center">18d</td><td class="notes">High-end mixed media</td><td class="price">$1,600</td></tr>
+                        <tr><td><span class="model">Blade88 (Refurb)</span><br><span class="vendor">Refurb Hut</span></td><td class="center">16</td><td>Mixed</td><td class="yes">✓</td><td class="center">2</td><td class="center">2</td><td class="center">2</td><td class="firmware">vlanfirm</td><td class="center">112</td><td>1 tick / 2.0s</td><td class="power">87W</td><td class="center">3d</td><td class="notes">Refurbished; great value</td><td class="price">$480</td></tr>
+                        <tr><td><span class="model">Blade30</span><br><span class="vendor">Blade Networking Inc</span></td><td class="center">30</td><td>Ethernet</td><td class="yes">✓</td><td class="center">2</td><td class="center">2</td><td class="center">2</td><td class="firmware">vlanfirm</td><td class="center">150</td><td>1 tick / 2.0s</td><td class="power">183W</td><td class="center">21d</td><td class="notes">Enterprise managed</td><td class="price">$1,650</td></tr>
+                        <tr><td><span class="model">Blade1515</span><br><span class="vendor">Blade Networking Inc</span></td><td class="center">30</td><td>Mixed</td><td class="yes">✓</td><td class="center">2</td><td class="center">2</td><td class="center">2</td><td class="firmware">vlanfirm</td><td class="center">210</td><td>1 tick / 2.0s</td><td class="power">208W</td><td class="center">21d</td><td class="notes">Enterprise mixed-media</td><td class="price">$1,850</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Routers -->
+        <section id="routers" class="section">
+            <div class="section-header">
+                <span>🔀</span>
+                <h2>Routers</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th class="center">Ports</th>
+                            <th>Media</th>
+                            <th class="center">CPU</th>
+                            <th class="center">MEM</th>
+                            <th class="center">HDD</th>
+                            <th>Firmware</th>
+                            <th class="center">HA</th>
+                            <th class="center">Trav/tick</th>
+                            <th>CPU Cycle</th>
+                            <th>Power</th>
+                            <th class="center">Warranty</th>
+                            <th>Notes</th>
+                            <th class="right">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="model">Disco Nano 2G</span><br><span class="vendor">Conduit Systems</span></td><td class="center">4</td><td>Mixed</td><td class="center">4</td><td class="center">1</td><td class="center">2</td><td class="firmware">rtkernel</td><td class="no"></td><td class="center">65</td><td>1 tick / 2.0s</td><td class="power">23W</td><td class="center">21d</td><td class="notes">2nd generation edge</td><td class="price">$180</td></tr>
+                        <tr><td><span class="model">Disco Nano</span><br><span class="vendor">AB compute Ltd. / Conduit</span></td><td class="center">5</td><td>Mixed</td><td class="center">4</td><td class="center">1</td><td class="center">2</td><td class="firmware">rtkernel</td><td class="no"></td><td class="center">60</td><td>1 tick / 2.0s</td><td class="power">21W</td><td class="center">17d</td><td class="notes">Edge router; DC power</td><td class="price">$264</td></tr>
+                        <tr><td><span class="model">Disco Milli</span><br><span class="vendor">Conduit Systems</span></td><td class="center">8</td><td>Ethernet</td><td class="center">4</td><td class="center">1</td><td class="center">2</td><td class="firmware">rtkernel</td><td class="no"></td><td class="center">80</td><td>1 tick / 2.0s</td><td class="power">27W</td><td class="center">16d</td><td class="notes">Economical medium enterprise</td><td class="price">$325</td></tr>
+                        <tr><td><span class="model">Disco Nano 3H</span><br><span class="vendor">Conduit Systems</span></td><td class="center">4</td><td>Mixed</td><td class="center">8</td><td class="center">2</td><td class="center">4</td><td class="firmware">hakernel</td><td class="yes">✓</td><td class="center">75</td><td>1 tick / 2.0s</td><td class="power">26W</td><td class="center">28d</td><td class="notes">High-availability support</td><td class="price">$450</td></tr>
+                        <tr><td><span class="model">Disco Milli 2G</span><br><span class="vendor">Conduit Systems</span></td><td class="center">8</td><td>Ethernet</td><td class="center">4</td><td class="center">1</td><td class="center">2</td><td class="firmware">rtkernel</td><td class="no"></td><td class="center">112</td><td>1 tick / 2.0s</td><td class="power">30W</td><td class="center">18d</td><td class="notes">Improved performance</td><td class="price">$500</td></tr>
+                        <tr><td><span class="model">Disco Micro</span><br><span class="vendor">Conduit Systems</span></td><td class="center">10</td><td>Mixed</td><td class="center">4</td><td class="center">1</td><td class="center">2</td><td class="firmware">rtkernel</td><td class="no"></td><td class="center">125</td><td>1 tick / 2.0s</td><td class="power">41W</td><td class="center">14d</td><td class="notes">Small business mixed</td><td class="price">$600</td></tr>
+                        <tr><td><span class="model">Disco Milli 3G</span><br><span class="vendor">Conduit Systems</span></td><td class="center">8</td><td>Ethernet</td><td class="center">8</td><td class="center">2</td><td class="center">4</td><td class="firmware">hakernel</td><td class="yes">✓</td><td class="center">160</td><td>1 tick / 2.0s</td><td class="power">41W</td><td class="center">21d</td><td class="notes">HA support; 3rd gen</td><td class="price">$800</td></tr>
+                        <tr><td><span class="model">Disco Micro 2G</span><br><span class="vendor">Conduit Systems</span></td><td class="center">10</td><td>Mixed</td><td class="center">4</td><td class="center">1</td><td class="center">2</td><td class="firmware">rtkernel</td><td class="no"></td><td class="center">162</td><td>1 tick / 2.0s</td><td class="power">47W</td><td class="center">19d</td><td class="notes">Improved performance</td><td class="price">$950</td></tr>
+                        <tr><td><span class="model">Disco Micro 2G (Refurb)</span><br><span class="vendor">Refurb Hut</span></td><td class="center">10</td><td>Mixed</td><td class="center">4</td><td class="center">1</td><td class="center">2</td><td class="firmware">rtkernel</td><td class="no"></td><td class="center">162</td><td>1 tick / 2.0s</td><td class="power">47W</td><td class="center">3d</td><td class="notes">Refurbished</td><td class="price">$285</td></tr>
+                        <tr><td><span class="model">Disco Milli 4G</span><br><span class="vendor">Conduit Systems</span></td><td class="center">8</td><td>Ethernet</td><td class="center">8</td><td class="center">2</td><td class="center">4</td><td class="firmware">hakernel</td><td class="yes">✓</td><td class="center">240</td><td>1 tick / 2.0s</td><td class="power">60W</td><td class="center">25d</td><td class="notes">4th gen; very high capacity</td><td class="price">$1,150</td></tr>
+                        <tr><td><span class="model">Zodianet Spine Router</span><br><span class="vendor">Zodiac Networks</span></td><td class="center">3</td><td>Fiber</td><td class="center">4</td><td class="center">1</td><td class="center">2</td><td class="firmware">rtkernel</td><td class="no"></td><td class="center">250</td><td>1 tick / 2.0s</td><td class="power">78W</td><td class="center">14d</td><td class="notes">High-bandwidth core</td><td class="price">$1,200</td></tr>
+                        <tr><td><span class="model">Disco Micro 3G</span><br><span class="vendor">Conduit Systems</span></td><td class="center">10</td><td>Mixed</td><td class="center">8</td><td class="center">2</td><td class="center">4</td><td class="firmware">hakernel</td><td class="yes">✓</td><td class="center">175</td><td>1 tick / 2.0s</td><td class="power">50W</td><td class="center">21d</td><td class="notes">3rd gen; HA support</td><td class="price">$1,300</td></tr>
+                        <tr><td><span class="model">Zodianet Beam Router</span><br><span class="vendor">Zodiac Networks</span></td><td class="center">4</td><td>Fiber</td><td class="center">4</td><td class="center">1</td><td class="center">2</td><td class="firmware">rtkernel</td><td class="no"></td><td class="center">450</td><td>1 tick / 2.0s</td><td class="power">138W</td><td class="center">17d</td><td class="notes">High-bandwidth core</td><td class="price">$3,700</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Servers -->
+        <section id="servers" class="section">
+            <div class="section-header">
+                <span>🖥️</span>
+                <h2>Servers</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th class="center">Ports</th>
+                            <th class="center">CPU</th>
+                            <th class="center">MEM</th>
+                            <th class="center">HDD</th>
+                            <th class="center">SATA</th>
+                            <th class="center">Trav/tick</th>
+                            <th>CPU Cycle</th>
+                            <th>Power</th>
+                            <th class="center">Warranty</th>
+                            <th>Notes</th>
+                            <th class="right">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="model">ICC1</span><br><span class="vendor">Interchange Compute</span></td><td class="center">1</td><td class="center">1</td><td class="center">2</td><td class="center">2</td><td class="center">1</td><td class="center">6</td><td>1 tick / 2.0s</td><td class="power">19W</td><td class="center">8d</td><td class="notes">Modular homelab unit</td><td class="price">$160</td></tr>
+                        <tr><td><span class="model">Golonys-Cinco</span><br><span class="vendor">Golonys Ltd.</span></td><td class="center">1</td><td class="center">1</td><td class="center">1</td><td class="center">1</td><td class="center">5</td><td class="center">6</td><td>1 tick / 2.0s</td><td class="power">13W</td><td class="center">17d</td><td class="notes">NAS; 5 SATA slots</td><td class="price">$400</td></tr>
+                        <tr><td><span class="model">MacroHard NLB2</span><br><span class="vendor">The Server Shoppe</span></td><td class="center">3</td><td class="center">2</td><td class="center">1</td><td class="center">1</td><td class="center">0</td><td class="center">80</td><td>1 tick / 2.0s</td><td class="power">83W</td><td class="center">73d</td><td class="notes">2-2 hardware load balancer</td><td class="price">$437</td></tr>
+                        <tr><td><span class="model">MacroHard Boulder SRV</span><br><span class="vendor">AB compute Ltd.</span></td><td class="center">2</td><td class="center">4</td><td class="center">4</td><td class="center">6</td><td class="center">0</td><td class="center">16</td><td>1 tick / 2.0s</td><td class="power">72W</td><td class="center">14d</td><td class="notes">Small business server</td><td class="price">$540</td></tr>
+                        <tr><td><span class="model">MacroHard Boulder+ SRV</span><br><span class="vendor">AB compute Ltd.</span></td><td class="center">2</td><td class="center">6</td><td class="center">8</td><td class="center">8</td><td class="center">0</td><td class="center">28</td><td>1 tick / 2.0s</td><td class="power">161W</td><td class="center">14d</td><td class="notes">High performance model</td><td class="price">$1,020</td></tr>
+                        <tr><td><span class="model">MacroHard Boulder+ SRV (Refurb)</span><br><span class="vendor">Refurb Hut</span></td><td class="center">2</td><td class="center">6</td><td class="center">8</td><td class="center">8</td><td class="center">0</td><td class="center">28</td><td>1 tick / 2.0s</td><td class="power">161W</td><td class="center">3d</td><td class="notes">Refurbished</td><td class="price">$255</td></tr>
+                        <tr><td><span class="model">MacroHard Boulder++ SRV</span><br><span class="vendor">The Server Shoppe</span></td><td class="center">3</td><td class="center">6</td><td class="center">10</td><td class="center">10</td><td class="center">0</td><td class="center">48</td><td>1 tick / 2.0s</td><td class="power">312W</td><td class="center">14d</td><td class="notes">Extra port; more bandwidth</td><td class="price">$1,750</td></tr>
+                        <tr><td><span class="model">Savannah Meerkat</span><br><span class="vendor">Savannah Org.</span></td><td class="center">2</td><td class="center">4</td><td class="center">4</td><td class="center">4</td><td class="center">0</td><td class="center">16</td><td>1 tick / 2.0s</td><td class="power">62W</td><td class="center">21d</td><td class="notes">Scalable; efficient</td><td class="price">$950</td></tr>
+                        <tr><td><span class="model">MacroHard Monolith SRV</span><br><span class="vendor">The Server Shoppe</span></td><td class="center">2</td><td class="center">16</td><td class="center">10</td><td class="center">4</td><td class="center">2</td><td class="center">52</td><td>1 tick / 2.0s</td><td class="power">429W</td><td class="center">14d</td><td class="notes">Includes 2 SATA bays</td><td class="price">$2,100</td></tr>
+                        <tr><td><span class="model">Savannah Gazelle</span><br><span class="vendor">Savannah Org.</span></td><td class="center">2</td><td class="center">6</td><td class="center">6</td><td class="center">6</td><td class="center">0</td><td class="center">24</td><td>1 tick / 2.0s</td><td class="power">108W</td><td class="center">35d</td><td class="notes">Durable; long-life</td><td class="price">$2,200</td></tr>
+                        <tr><td><span class="model">Savannah Gazelle</span><br><span class="vendor">AB compute Ltd.</span></td><td class="center">2</td><td class="center">6</td><td class="center">6</td><td class="center">6</td><td class="center">0</td><td class="center">24</td><td>1 tick / 2.0s</td><td class="power">108W</td><td class="center">35d</td><td class="notes">Same spec; alternate listing</td><td class="price">$2,640</td></tr>
+                        <tr><td><span class="model">MacroHard Ledge Two SRV</span><br><span class="vendor">The Server Shoppe</span></td><td class="center">3</td><td class="center">24</td><td class="center">14</td><td class="center">4</td><td class="center">2</td><td class="center">150</td><td>1 tick / 2.0s</td><td class="power">973W</td><td class="center">21d</td><td class="notes">Fiber-enabled compute</td><td class="price">$2,625</td></tr>
+                        <tr><td><span class="model">MacroHard Ledge Three SRV</span><br><span class="vendor">The Server Shoppe</span></td><td class="center">4</td><td class="center">24</td><td class="center">16</td><td class="center">4</td><td class="center">2</td><td class="center">208</td><td>1 tick / 2.0s</td><td class="power">1,125W</td><td class="center">21d</td><td class="notes">Fiber; very high bandwidth</td><td class="price">$4,000</td></tr>
+                        <tr><td><span class="model">Savannah Aardvark</span><br><span class="vendor">Savannah Org.</span></td><td class="center">3</td><td class="center">10</td><td class="center">10</td><td class="center">5</td><td class="center">2</td><td class="center">65</td><td>1 tick / 2.0s</td><td class="power">293W</td><td class="center">42d</td><td class="notes">2 SATA slots</td><td class="price">$4,500</td></tr>
+                        <tr><td><span class="model">MacroHard Megalith SRV</span><br><span class="vendor">The Server Shoppe</span></td><td class="center">5</td><td class="center">32</td><td class="center">16</td><td class="center">4</td><td class="center">6</td><td class="center">240</td><td>1 tick / 2.0s</td><td class="power">1,223W</td><td class="center">24d</td><td class="notes">6 SATA expansion slots</td><td class="price">$4,750</td></tr>
+                        <tr><td><span class="model">Savannah Wildebeest</span><br><span class="vendor">Savannah Org.</span></td><td class="center">3</td><td class="center">16</td><td class="center">16</td><td class="center">8</td><td class="center">2</td><td class="center">104</td><td>1 tick / 2.0s</td><td class="power">423W</td><td class="center">49d</td><td class="notes">High-end enterprise</td><td class="price">$6,800</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Decentro Rigs -->
+        <section id="decentro" class="section">
+            <div class="section-header">
+                <span>💰</span>
+                <h2>Decentro Rigs</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th class="center">Ports</th>
+                            <th class="center">CPU</th>
+                            <th class="center">MEM</th>
+                            <th class="center">HDD</th>
+                            <th class="center">SATA</th>
+                            <th>Software</th>
+                            <th class="center">Trav/tick</th>
+                            <th>CPU Cycle</th>
+                            <th>Power</th>
+                            <th class="center">Warranty</th>
+                            <th>Notes</th>
+                            <th class="right">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="model">Dvergar</span><br><span class="vendor">AB compute Ltd.</span></td><td class="center">0</td><td class="center">24</td><td class="center">16</td><td class="center">8</td><td class="center">0</td><td class="firmware">decentro-node</td><td class="center">40</td><td>1 tick / 2.0s</td><td class="power">523W</td><td class="center">7d</td><td class="notes">Decentro mining; p2p verification</td><td class="price">$1,320</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Firewalls & TAPs -->
+        <section id="firewalls" class="section">
+            <div class="section-header">
+                <span>🛡️</span>
+                <h2>Firewalls & TAPs</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Type</th>
+                            <th class="center">Ports</th>
+                            <th>Media</th>
+                            <th class="center">CPU</th>
+                            <th class="center">MEM</th>
+                            <th class="center">HDD</th>
+                            <th>Firmware</th>
+                            <th class="center">Trav/tick</th>
+                            <th>CPU Cycle</th>
+                            <th>Power</th>
+                            <th class="center">Warranty</th>
+                            <th>Notes</th>
+                            <th class="right">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="model">EthTapper</span><br><span class="vendor">Fortypoint Security</span></td><td>TAP</td><td class="center">3</td><td>Ethernet</td><td class="center">2</td><td class="center">2</td><td class="center">1</td><td class="firmware">wirerat</td><td class="center">18</td><td>1 tick / 2.0s</td><td class="power">12W</td><td class="center">21d</td><td class="notes">Inline tap; port mirroring</td><td class="price">$300</td></tr>
+                        <tr><td><span class="model">FireWatch ES4A</span><br><span class="vendor">Fortypoint Security</span></td><td>Firewall</td><td class="center">3</td><td>Mixed</td><td class="center">6</td><td class="center">3</td><td class="center">3</td><td class="firmware">firewatcher<br>wirerat</td><td class="center">52</td><td>1 tick / 2.0s</td><td class="power">55W</td><td class="center">19d</td><td class="notes">Inline monitoring/filtering</td><td class="price">$550</td></tr>
+                        <tr><td><span class="model">FireWatch CP4E</span><br><span class="vendor">Fortypoint Security</span></td><td>Firewall</td><td class="center">4</td><td>Ethernet</td><td class="center">6</td><td class="center">3</td><td class="center">3</td><td class="firmware">firewatcher<br>wirerat</td><td class="center">160</td><td>1 tick / 2.0s</td><td class="power">163W</td><td class="center">16d</td><td class="notes">Ethernet firewall</td><td class="price">$1,500</td></tr>
+                        <tr><td><span class="model">Bastion 5E</span><br><span class="vendor">Fortypoint Security</span></td><td>Firewall</td><td class="center">4</td><td>Ethernet</td><td class="center">6</td><td class="center">3</td><td class="center">3</td><td class="firmware">firewatcher<br>wirerat</td><td class="center">384</td><td>1 tick / 2.0s</td><td class="power">387W</td><td class="center">14d</td><td class="notes">Top-tier enterprise</td><td class="price">$4,000</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Debuggers & Test Devices -->
+        <section id="debuggers" class="section">
+            <div class="section-header">
+                <span>🔍</span>
+                <h2>Debuggers & Test Devices</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th class="center">Ports</th>
+                            <th class="center">CPU</th>
+                            <th class="center">MEM</th>
+                            <th class="center">HDD</th>
+                            <th>Firmware</th>
+                            <th class="center">Trav/tick</th>
+                            <th>CPU Cycle</th>
+                            <th>Power</th>
+                            <th class="center">Warranty</th>
+                            <th>Notes</th>
+                            <th class="right">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="model">DNS Load Test Box</span><br><span class="vendor">AB compute Ltd.</span></td><td class="center">1</td><td class="center">1</td><td class="center">1</td><td class="center">1</td><td class="firmware">dnsspam</td><td class="center">6</td><td>5 tick(s) / 1.0s</td><td class="power">112W</td><td class="center">0d</td><td class="notes">LAB Mode only; pre-purchased</td><td class="price">$0</td></tr>
+                        <tr><td><span class="model">Debugger Alice</span><br><span class="vendor">AB compute Ltd.</span></td><td class="center">2</td><td class="center">1</td><td class="center">1</td><td class="center">1</td><td class="firmware">netpeeker</td><td class="center">12</td><td>1 tick / 2.0s</td><td class="power">72W</td><td class="center">21d</td><td class="notes">2-port ethernet remote debugger</td><td class="price">$1,200</td></tr>
+                        <tr><td><span class="model">DNS UDP/53 Load Tester</span><br><span class="vendor">AB compute Ltd.</span></td><td class="center">1</td><td class="center">1</td><td class="center">1</td><td class="center">1</td><td class="firmware">dnsspam</td><td class="center">6</td><td>10 tick(s) / 1.0s</td><td class="power">202W</td><td class="center">7d</td><td class="notes">Commercial; 2× tick rate of LAB</td><td class="price">$1,200</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Media Converters & Repeaters -->
+        <section id="converters" class="section">
+            <div class="section-header">
+                <span>🔄</span>
+                <h2>Media Converters & Repeaters</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Type</th>
+                            <th>Direction</th>
+                            <th>Media In</th>
+                            <th>Media Out</th>
+                            <th class="center">Trav/tick</th>
+                            <th>CPU Cycle</th>
+                            <th>Power</th>
+                            <th class="center">Warranty</th>
+                            <th class="right">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="model">Simplex RJ45 1R</span><br><span class="vendor">Data Liner Corp.</span></td><td>Repeater</td><td>Unidirectional</td><td>RJ45</td><td>RJ45</td><td class="center">20</td><td>1 tick / 2.0s</td><td class="power">7W</td><td class="center">21d</td><td class="price">$30</td></tr>
+                        <tr><td><span class="model">Simplex SC 1R</span><br><span class="vendor">Data Liner Corp.</span></td><td>Repeater</td><td>Unidirectional</td><td>SC</td><td>SC</td><td class="center">40</td><td>1 tick / 2.0s</td><td class="power">11W</td><td class="center">21d</td><td class="price">$30</td></tr>
+                        <tr><td><span class="model">Simplex 452F 1C</span><br><span class="vendor">Data Liner Corp.</span></td><td>Converter</td><td>Unidirectional</td><td>RJ45</td><td>SC</td><td class="center">30</td><td>1 tick / 2.0s</td><td class="power">9W</td><td class="center">21d</td><td class="price">$40</td></tr>
+                        <tr><td><span class="model">Simplex SC245 1C</span><br><span class="vendor">Data Liner Corp.</span></td><td>Converter</td><td>Unidirectional</td><td>SC</td><td>RJ45</td><td class="center">30</td><td>1 tick / 2.0s</td><td class="power">9W</td><td class="center">21d</td><td class="price">$40</td></tr>
+                        <tr><td><span class="model">Duplex RJ45 1R</span><br><span class="vendor">Data Liner Corp.</span></td><td>Repeater</td><td>Bidirectional</td><td>RJ45</td><td>RJ45</td><td class="center">12</td><td>1 tick / 2.0s</td><td class="power">6W</td><td class="center">21d</td><td class="price">$50</td></tr>
+                        <tr><td><span class="model">Duplex SC 1R</span><br><span class="vendor">Data Liner Corp.</span></td><td>Repeater</td><td>Bidirectional</td><td>SC</td><td>SC</td><td class="center">24</td><td>1 tick / 2.0s</td><td class="power">8W</td><td class="center">21d</td><td class="price">$50</td></tr>
+                        <tr><td><span class="model">Duplex 1C</span><br><span class="vendor">Data Liner Corp.</span></td><td>Converter</td><td>Bidirectional</td><td>RJ45</td><td>SC</td><td class="center">18</td><td>1 tick / 2.0s</td><td class="power">7W</td><td class="center">21d</td><td class="price">$60</td></tr>
+                        <tr><td><span class="model">Simplex RJ45 3R</span><br><span class="vendor">Data Liner Corp.</span></td><td>Repeater</td><td>Unidirectional</td><td>RJ45</td><td>RJ45</td><td class="center">60</td><td>1 tick / 2.0s</td><td class="power">9W</td><td class="center">28d</td><td class="price">$120</td></tr>
+                        <tr><td><span class="model">Simplex SC 3R</span><br><span class="vendor">Data Liner Corp.</span></td><td>Repeater</td><td>Unidirectional</td><td>SC</td><td>SC</td><td class="center">120</td><td>1 tick / 2.0s</td><td class="power">15W</td><td class="center">28d</td><td class="price">$120</td></tr>
+                        <tr><td><span class="model">Simplex 452F 3C</span><br><span class="vendor">Data Liner Corp.</span></td><td>Converter</td><td>Unidirectional</td><td>RJ45</td><td>SC</td><td class="center">90</td><td>1 tick / 2.0s</td><td class="power">12W</td><td class="center">21d</td><td class="price">$160</td></tr>
+                        <tr><td><span class="model">Simplex SC245 3C</span><br><span class="vendor">Data Liner Corp.</span></td><td>Converter</td><td>Unidirectional</td><td>SC</td><td>RJ45</td><td class="center">90</td><td>1 tick / 2.0s</td><td class="power">12W</td><td class="center">21d</td><td class="price">$160</td></tr>
+                        <tr><td><span class="model">Duplex RJ45 3R</span><br><span class="vendor">Data Liner Corp.</span></td><td>Repeater</td><td>Bidirectional</td><td>RJ45</td><td>RJ45</td><td class="center">36</td><td>1 tick / 2.0s</td><td class="power">7W</td><td class="center">28d</td><td class="price">$200</td></tr>
+                        <tr><td><span class="model">Duplex SC 3R</span><br><span class="vendor">Data Liner Corp.</span></td><td>Repeater</td><td>Bidirectional</td><td>SC</td><td>SC</td><td class="center">72</td><td>1 tick / 2.0s</td><td class="power">10W</td><td class="center">28d</td><td class="price">$200</td></tr>
+                        <tr><td><span class="model">Duplex 3C</span><br><span class="vendor">Data Liner Corp.</span></td><td>Converter</td><td>Bidirectional</td><td>RJ45</td><td>SC</td><td class="center">54</td><td>1 tick / 2.0s</td><td class="power">8W</td><td class="center">21d</td><td class="price">$240</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Debuggers & Test Devices -->
+        <!-- Two-column layout for smaller tables -->
+        <div class="table-group">
+        
+        <!-- Left Column: Power & Peripherals -->
+        <div class="stacked-column">
+        
+        <!-- UPS & Surge Protection -->
+        <section id="ups" class="section">
+            <div class="section-header">
+                <span>🔋</span>
+                <h2>UPS & Surge Protection</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Model</th><th>Capacity</th><th class="center">Warranty</th><th>Notes</th><th class="right">Price</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="model">Tenabolt AVR2</span><br><span class="vendor">Tenabolt Retail</span></td><td>400W</td><td class="center">28d</td><td class="notes">AVR (surge protection)</td><td class="price">$150</td></tr>
+                        <tr><td><span class="model">Tenabolt UPS2</span><br><span class="vendor">Tenabolt Retail</span></td><td>200W</td><td class="center">24d</td><td class="notes">UPS base unit</td><td class="price">$750</td></tr>
+                        <tr><td><span class="model">Tenabolt UPS2E</span><br><span class="vendor">Tenabolt Retail</span></td><td>800W</td><td class="center">28d</td><td class="notes">Expanded load UPS</td><td class="price">$2,000</td></tr>
+                        <tr><td><span class="model">Mountable Tenabolt UPS2E</span><br><span class="vendor">Tenabolt Retail</span></td><td>800W</td><td class="center">28d</td><td class="notes">Mountable UPS</td><td class="price">$2,200</td></tr>
+                        <tr><td><span class="model">Tenabolt UPS2X</span><br><span class="vendor">Tenabolt Retail</span></td><td>1500W</td><td class="center">28d</td><td class="notes">Extra-expanded load UPS</td><td class="price">$5,000</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Power Expanders -->
+        <section id="power-expanders" class="section">
+            <div class="section-header">
+                <span>⚡</span>
+                <h2>Power Expanders</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Model</th><th class="center">Outlets</th><th>Notes</th><th class="right">Price</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="model">Tenabolt Expander 1-2</span><br><span class="vendor">Tenabolt Retail / Mr Cable</span></td><td class="center">2</td><td class="notes">Power distribution strip</td><td class="price">$20</td></tr>
+                        <tr><td><span class="model">Tenabolt Expander 1-5</span><br><span class="vendor">Tenabolt Retail</span></td><td class="center">5</td><td class="notes">Power distribution strip</td><td class="price">$100</td></tr>
+                        <tr><td><span class="model">Mountable Tenabolt Expander 1-3</span><br><span class="vendor">Tenabolt Retail</span></td><td class="center">3</td><td class="notes">Mountable strip</td><td class="price">$100</td></tr>
+                        <tr><td><span class="model">Mountable Tenabolt Expander 1-6</span><br><span class="vendor">Tenabolt Retail</span></td><td class="center">6</td><td class="notes">Mountable strip</td><td class="price">$180</td></tr>
+                        <tr><td><span class="model">Mountable Tenabolt Expander 1-7</span><br><span class="vendor">Tenabolt Retail</span></td><td class="center">7</td><td class="notes">Mountable strip</td><td class="price">$200</td></tr>
+                        <tr><td><span class="model">Tenabolt Expander 1-10</span><br><span class="vendor">Tenabolt Retail</span></td><td class="center">10</td><td class="notes">Power distribution strip</td><td class="price">$280</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Power Cables -->
+        <section id="power-cables" class="section">
+            <div class="section-header">
+                <span>🔌</span>
+                <h2>Power Cables</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Model</th><th class="center">Type</th><th>Length</th><th class="right">Price</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="model">Power UK-B 500</span><br><span class="vendor">Mr Cable</span></td><td class="center">AC</td><td>500px</td><td class="price">$15</td></tr>
+                        <tr><td><span class="model">Power UK-B 1000</span><br><span class="vendor">Tenabolt Retail</span></td><td class="center">AC</td><td>1000px</td><td class="price">$40</td></tr>
+                        <tr><td><span class="model">DC Adapter 200p</span><br><span class="vendor">Mr Cable</span></td><td class="center">DC</td><td>200px</td><td class="price">$50</td></tr>
+                        <tr><td><span class="model">Power UK-B 1500</span><br><span class="vendor">Mr Cable</span></td><td class="center">AC</td><td>1500px</td><td class="price">$80</td></tr>
+                        <tr><td><span class="model">DC Adapter 500p</span><br><span class="vendor">Mr Cable</span></td><td class="center">DC</td><td>500px</td><td class="price">$120</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Peripherals -->
+        <section id="peripherals" class="section">
+            <div class="section-header">
+                <span>📱</span>
+                <h2>Peripherals</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Model</th><th>Notes</th><th class="right">Price</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="model">Cardboard Box</span><br><span class="vendor">Mr Cable</span></td><td class="notes">8 storage slots; cable/peripheral organization</td><td class="price">$10</td></tr>
+                        <tr><td><span class="model">Storage Extension</span><br><span class="vendor">Interchange Compute</span></td><td class="notes">SATA 3.5"; +4 storage to attached device</td><td class="price">$75</td></tr>
+                        <tr><td><span class="model">Data Wiper</span><br><span class="vendor">Fortypoint Security</span></td><td class="notes">Factory reset; wipes all data when plugged in</td><td class="price">$399</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Monitoring Displays -->
+        <section id="monitors" class="section">
+            <div class="section-header">
+                <span>📺</span>
+                <h2>Monitoring Displays</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Model</th><th>Power</th><th class="center">Warranty</th><th>Notes</th><th class="right">Price</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="model">Top Issue Monitor</span><br><span class="vendor">Vision Grid</span></td><td class="power">13W</td><td class="center">14d</td><td class="notes">Displays top floor issues</td><td class="price">$300</td></tr>
+                        <tr><td><span class="model">Visitor Status Monitor</span><br><span class="vendor">Vision Grid</span></td><td class="power">13W</td><td class="center">14d</td><td class="notes">Visitor count by domain name</td><td class="price">$300</td></tr>
+                        <tr><td><span class="model">Satiety Stats Monitor</span><br><span class="vendor">Vision Grid</span></td><td class="power">13W</td><td class="center">14d</td><td class="notes">Resident satiety levels</td><td class="price">$500</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        </div>
+        <!-- End Left Column -->
+        
+        <!-- Right Column: Cabling & Infrastructure -->
+        <div class="stacked-column">
+        
+        <!-- Tower Link Sockets -->
+        <section id="tower-links" class="section">
+            <div class="section-header">
+                <span>🔗</span>
+                <h2>Tower Link Sockets</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Model</th><th>Media</th><th>Requires</th><th class="right">Price</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="model">RJ45 Copper Socket</span></td><td>Ethernet</td><td>Socketeer</td><td class="price">$100</td></tr>
+                        <tr><td><span class="model">SC Fiber</span></td><td>Fiber</td><td>Socketeer</td><td class="price">$100</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Cabling Tools -->
+        <section id="cabling-tools" class="section">
+            <div class="section-header">
+                <span>🔧</span>
+                <h2>Cabling Tools</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Model</th><th>Cable Type</th><th>Capacity</th><th class="right">Price</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="model">Cable-O-Matic RJ45 20kPx</span><br><span class="vendor">Cabler's Union</span></td><td>Ethernet RJ45 Cat5</td><td>20,000px</td><td class="price">$1,500</td></tr>
+                        <tr><td><span class="model">Cable-O-Matic Fiber SC 20kPx</span><br><span class="vendor">Cabler's Union</span></td><td>Fiber SC Double Core</td><td>20,000px</td><td class="price">$1,500</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Network Cables -->
+        <section id="network-cables" class="section">
+            <div class="section-header">
+                <span>🔗</span>
+                <h2>Network Cables</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            <div class="note-box">
+                Available colors: Original, Yellow, Blue, Purple, Orange, Green, Red, Grey
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Type</th><th>Length</th><th class="right">Price</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="model">RJ45 Cat5</span><br><span class="vendor">Mr Cable</span></td><td>200px</td><td class="price">$5</td></tr>
+                        <tr><td><span class="model">RJ45 Cat5</span><br><span class="vendor">Mr Cable</span></td><td>500px</td><td class="price">$15</td></tr>
+                        <tr><td><span class="model">RJ45 Cat5</span><br><span class="vendor">Mr Cable</span></td><td>1000px</td><td class="price">$40</td></tr>
+                        <tr><td><span class="model">RJ45 Cat5</span><br><span class="vendor">Mr Cable</span></td><td>1500px</td><td class="price">$75</td></tr>
+                        <tr><td><span class="model">RJ45 Cat5</span><br><span class="vendor">Mr Cable</span></td><td>2000px</td><td class="price">$150</td></tr>
+                        <tr><td><span class="model">Fiber SC</span><br><span class="vendor">Mr Cable</span></td><td>200px</td><td class="price">$1</td></tr>
+                        <tr><td><span class="model">Fiber SC</span><br><span class="vendor">Mr Cable</span></td><td>500px</td><td class="price">$5</td></tr>
+                        <tr><td><span class="model">Fiber SC</span><br><span class="vendor">Mr Cable</span></td><td>1500px</td><td class="price">$25</td></tr>
+                        <tr><td><span class="model">Fiber SC</span><br><span class="vendor">Mr Cable</span></td><td>3000px</td><td class="price">$60</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Racks & Shelving -->
+        <section id="racks" class="section">
+            <div class="section-header">
+                <span>🗄️</span>
+                <h2>Racks & Shelving</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Model</th><th class="center">Size</th><th>Requires</th><th class="right">Price</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="model">Wall Shelf (single)</span><br><span class="vendor">Barracks and Sons</span></td><td class="center"></td><td>Barracks and Sons</td><td class="price">$10</td></tr>
+                        <tr><td><span class="model">Mounting Shelf Piece R500</span><br><span class="vendor">Barracks and Sons</span></td><td class="center">Narrow</td><td>D-Market2</td><td class="price">$10</td></tr>
+                        <tr><td><span class="model">Mounting Shelf Piece R930</span><br><span class="vendor">Barracks and Sons</span></td><td class="center">Wide</td><td>D-Market2</td><td class="price">$20</td></tr>
+                        <tr><td><span class="model">Pipe Shelf (3-tier)</span><br><span class="vendor">Barracks and Sons</span></td><td class="center"></td><td>Barracks and Sons</td><td class="price">$35</td></tr>
+                        <tr><td><span class="model">Narrow Rack</span><br><span class="vendor">Barracks and Sons</span></td><td class="center">Short</td><td>Barracks and Sons</td><td class="price">$40</td></tr>
+                        <tr><td><span class="model">Wide Rack</span><br><span class="vendor">Barracks and Sons</span></td><td class="center">Short</td><td>Barracks and Sons</td><td class="price">$45</td></tr>
+                        <tr><td><span class="model">Narrow Rack</span><br><span class="vendor">Barracks and Sons</span></td><td class="center">Medium</td><td>Barracks and Sons</td><td class="price">$60</td></tr>
+                        <tr><td><span class="model">Wide Rack</span><br><span class="vendor">Barracks and Sons</span></td><td class="center">Medium</td><td>Barracks and Sons</td><td class="price">$65</td></tr>
+                        <tr><td><span class="model">Narrow Rack</span><br><span class="vendor">Barracks and Sons</span></td><td class="center">Tall</td><td>Barracks and Sons</td><td class="price">$80</td></tr>
+                        <tr><td><span class="model">Wide Rack</span><br><span class="vendor">Barracks and Sons</span></td><td class="center">Tall</td><td>Barracks and Sons</td><td class="price">$85</td></tr>
+                        <tr><td><span class="model">Narrow Rack</span><br><span class="vendor">Barracks and Sons</span></td><td class="center">X-Tall</td><td>Barracks and Sons</td><td class="price">$95</td></tr>
+                        <tr><td><span class="model">Wide Rack</span><br><span class="vendor">Barracks and Sons</span></td><td class="center">X-Tall</td><td>Barracks and Sons</td><td class="price">$100</td></tr>
+                        <tr><td><span class="model">Trolley 2C</span><br><span class="vendor">Barracks and Sons</span></td><td class="center"></td><td>D-Market2</td><td class="price">$800</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        </div>
+        <!-- End Right Column -->
+        
+        </div>
+        <!-- End Two-column layout -->
+        
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="../index.html">Home</a>
+                <span class="footer-sep">|</span>
+                <a href="../credits.html">Credits</a>
+                <span class="footer-sep">|</span>
+                <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub</a>
+                <span class="footer-sep">|</span>
+                <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">TNI on Steam</a>
+            </div>
+            <p class="footer-note">Data from tni-store.json v1.2.1</p>
+            <div class="footer-badges">
+                <span class="version-badge">v1.9.0</span>
+                <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/LICENSE" target="_blank" class="license-badge">MIT License</a>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+    // Sortable Tables
+    document.addEventListener('DOMContentLoaded', function() {
+        const tables = document.querySelectorAll('.data-table');
+        
+        tables.forEach(table => {
+            const headers = table.querySelectorAll('th');
+            const tbody = table.querySelector('tbody');
+            if (!tbody) return;
+            
+            headers.forEach((header, columnIndex) => {
+                // Skip headers that span multiple columns (like section headers)
+                if (header.colSpan > 1) return;
+                
+                header.addEventListener('click', function() {
+                    const isAscending = header.classList.contains('sort-asc');
+                    
+                    // Remove sort classes from all headers in this table
+                    headers.forEach(h => h.classList.remove('sort-asc', 'sort-desc'));
+                    
+                    // Toggle sort direction
+                    const newDirection = isAscending ? 'desc' : 'asc';
+                    header.classList.add('sort-' + newDirection);
+                    
+                    // Get all rows (skip rows with colspan - they're section headers)
+                    const rows = Array.from(tbody.querySelectorAll('tr')).filter(row => {
+                        const firstCell = row.querySelector('td');
+                        return firstCell && firstCell.colSpan === 1;
+                    });
+                    
+                    // Sort rows
+                    rows.sort((a, b) => {
+                        const aCell = a.querySelectorAll('td')[columnIndex];
+                        const bCell = b.querySelectorAll('td')[columnIndex];
+                        
+                        if (!aCell || !bCell) return 0;
+                        
+                        let aVal = aCell.textContent.trim();
+                        let bVal = bCell.textContent.trim();
+                        
+                        // Handle boolean/special values (✓ and —)
+                        const boolMap = { '✓': 1, '—': 0, '': -1 };
+                        const aIsBool = aVal in boolMap;
+                        const bIsBool = bVal in boolMap;
+                        
+                        let comparison;
+                        
+                        if (aIsBool && bIsBool) {
+                            // Both are boolean values
+                            comparison = boolMap[aVal] - boolMap[bVal];
+                        } else if (aIsBool) {
+                            comparison = 1; // Booleans sort after regular values
+                        } else if (bIsBool) {
+                            comparison = -1;
+                        } else {
+                            // Try to parse as numbers (handle commas, W, d, px suffixes)
+                            const aNum = parseFloat(aVal.replace(/[,Wdpx]/g, ''));
+                            const bNum = parseFloat(bVal.replace(/[,Wdpx]/g, ''));
+                            
+                            if (!isNaN(aNum) && !isNaN(bNum)) {
+                                comparison = aNum - bNum;
+                            } else {
+                                // String comparison (case-insensitive)
+                                comparison = aVal.toLowerCase().localeCompare(bVal.toLowerCase());
+                            }
+                        }
+                        
+                        // Apply sort direction
+                        return newDirection === 'asc' ? comparison : -comparison;
+                    });
+                    
+                    // Re-append sorted rows (preserves section header rows)
+                    const allRows = Array.from(tbody.querySelectorAll('tr'));
+                    const sectionRows = allRows.filter(row => {
+                        const firstCell = row.querySelector('td');
+                        return firstCell && firstCell.colSpan > 1;
+                    });
+                    
+                    // Clear tbody
+                    while (tbody.firstChild) {
+                        tbody.removeChild(tbody.firstChild);
+                    }
+                    
+                    // If there are section headers (like in network cables), keep them at top
+                    if (sectionRows.length > 0) {
+                        // For tables with section headers, just append everything back
+                        allRows.forEach(row => tbody.appendChild(row));
+                    } else {
+                        // Simple table - append sorted rows
+                        rows.forEach(row => tbody.appendChild(row));
+                    }
+                });
+            });
+        });
+    });
+    </script>
+</body>
+</html>

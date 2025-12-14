@@ -1,0 +1,735 @@
+<!--
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  TNI Toolkit - Programs Reference                                            ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Version: 1.1.0                                                              ║
+║  Updated: 2025-12-14                                                         ║
+║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  Description:                                                                ║
+║    Human-readable reference guide for all installable server programs.       ║
+║    Includes resource requirements, I/O specs, and program categories.        ║
+║                                                                              ║
+║  Contributors:                                                               ║
+║    - Salvo Praxis (data collection, HTML conversion)                         ║
+║    - Claude (Anthropic)                                                      ║
+║    - Chaotic Crumb (firmware programs)                                       ║
+║    - gamers2000 (firmware suggestion)                                        ║
+║                                                                              ║
+║  Changelog:                                                                  ║
+║    1.1.0 - Header updated to TNI Programs REFERENCE format; container        ║
+║            width reduced to 900px; ToC redesigned with vertical list format  ║
+║    1.0.0 - Initial release with all 25 programs                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TNI Toolkit - Programs Reference</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { scrollbar-width: thin; scrollbar-color: #30363d #0d1117; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0d1117; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; border: 1px solid #0d1117; }
+        ::-webkit-scrollbar-thumb:hover { background: #58a6ff; }
+        ::-webkit-scrollbar-corner { background: #0d1117; }
+        
+        body {
+            font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
+            background: linear-gradient(135deg, #0a0e14 0%, #1a1f2e 50%, #0d1117 100%);
+            color: #c9d1d9;
+            min-height: 100vh;
+            padding: 24px;
+            line-height: 1.6;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        /* Mobile responsive */
+        @media (max-width: 600px) {
+            .container { max-width: 100%; padding: 0 12px; }
+        }
+        
+        .header { text-align: center; padding: 40px 0 30px; border-bottom: 1px solid #30363d; margin-bottom: 30px; }
+        h1 { color: #00ff88; text-shadow: 0 0 20px rgba(0, 255, 136, 0.3); margin: 0 0 8px 0; font-size: 20px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+        h1 span { color: #58a6ff; }
+        .tagline { color: #8b949e; font-size: 12px; }
+        .back-link { display: inline-block; margin-top: 16px; color: #58a6ff; text-decoration: none; font-size: 11px; padding: 6px 12px; border: 1px solid #30363d; border-radius: 4px; transition: all 0.15s; }
+        .back-link:hover { border-color: #58a6ff; background: rgba(88, 166, 255, 0.1); }
+        
+        /* Table of Contents - Vertical List Format */
+        .toc { background: rgba(22, 27, 34, 0.8); border: 1px solid #30363d; border-radius: 8px; padding: 20px; margin-bottom: 30px; }
+        .toc h2 { color: #58a6ff; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #21262d; }
+        .toc-list { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 24px; }
+        .toc-list li { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+        .toc-list li::before { content: "›"; color: #30363d; font-weight: bold; }
+        .toc-list a { color: #c9d1d9; text-decoration: none; font-size: 12px; transition: color 0.15s; flex: 1; }
+        .toc-list a:hover { color: #00ff88; }
+        .toc-list .toc-icon { font-size: 14px; width: 22px; text-align: center; flex-shrink: 0; }
+        .toc-list .toc-count { color: #7d8590; font-size: 10px; white-space: nowrap; margin-left: auto; }
+        @media (max-width: 600px) { .toc-list { grid-template-columns: 1fr; } }
+        
+        .section { margin-bottom: 40px; }
+        .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #30363d; }
+        .section-header h2 { color: #58a6ff; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; }
+        .back-to-toc { margin-left: auto; color: #7d8590; text-decoration: none; font-size: 10px; padding: 4px 8px; border: 1px solid #30363d; border-radius: 4px; transition: all 0.15s; }
+        .back-to-toc:hover { color: #58a6ff; border-color: #58a6ff; }
+        
+        .program-card { background: rgba(22, 27, 34, 0.8); border: 1px solid #30363d; border-radius: 8px; padding: 20px; margin-bottom: 16px; transition: border-color 0.2s; }
+        .program-card:hover { border-color: #58a6ff; }
+        .program-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+        .program-name { color: #00ff88; font-size: 14px; font-weight: 600; }
+        .program-type { padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+        .type-producer { background: rgba(63, 185, 80, 0.2); color: #3fb950; }
+        .type-converter { background: rgba(136, 46, 224, 0.2); color: #a371f7; }
+        .type-storage { background: rgba(88, 166, 255, 0.2); color: #58a6ff; }
+        .type-firmware { background: rgba(240, 136, 62, 0.2); color: #f0883e; }
+        
+        .program-desc { color: #8b949e; font-size: 12px; margin-bottom: 12px; }
+        .program-stats { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .stat { display: flex; align-items: center; gap: 6px; font-size: 11px; }
+        .stat-label { color: #7d8590; }
+        .stat-value { color: #c9d1d9; font-weight: 600; }
+        .stat-cpu { color: #f0883e; }
+        .stat-mem { color: #a371f7; }
+        .stat-hdd { color: #58a6ff; }
+        
+        .program-io { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+        .io-box { background: rgba(0, 0, 0, 0.2); border-radius: 4px; padding: 10px 12px; }
+        .io-label { color: #58a6ff; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .io-label.input { color: #f85149; }
+        .io-label.output { color: #3fb950; }
+        .io-label.stores { color: #a371f7; }
+        .io-content { color: #c9d1d9; font-size: 11px; }
+        .io-content code { background: rgba(0, 0, 0, 0.3); padding: 2px 6px; border-radius: 3px; font-size: 10px; color: #00ff88; }
+        
+        .footer { text-align: center; padding-top: 30px; margin-top: 40px; border-top: 1px solid #30363d; }
+        .footer-links { margin-bottom: 16px; }
+        .footer-links a { color: #58a6ff; text-decoration: none; font-size: 11px; margin: 0 8px; transition: color 0.15s; }
+        .footer-links a:hover { color: #00ff88; }
+        .footer-sep { color: #30363d; }
+        .footer-note { color: #7d8590; font-size: 10px; }
+        .footer-badges { margin-top: 12px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .version-badge { background: rgba(0, 255, 136, 0.1); color: #00ff88; padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+        .license-badge { background: rgba(88, 166, 255, 0.1); color: #58a6ff; padding: 4px 10px; border-radius: 4px; font-size: 10px; text-decoration: none; transition: background 0.15s; }
+        .license-badge:hover { background: rgba(88, 166, 255, 0.2); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><span>TNI</span> Programs <span>Reference</span></h1>
+            <p class="tagline">Complete guide to all installable programs — 25 programs across 10 categories</p>
+            <a href="../index.html" class="back-link">← Back to TNI Toolkit</a>
+        </header>
+        
+        <nav id="toc" class="toc">
+            <h2>📋 Table of Contents</h2>
+            <ul class="toc-list">
+                <li><span class="toc-icon">🌐</span> <a href="#dns">DNS</a> <span class="toc-count">(3)</span></li>
+                <li><span class="toc-icon">📡</span> <a href="#dhcp">DHCP</a> <span class="toc-count">(2)</span></li>
+                <li><span class="toc-icon">💾</span> <a href="#storage">Storage</a> <span class="toc-count">(4)</span></li>
+                <li><span class="toc-icon">🔧</span> <a href="#services">Services</a> <span class="toc-count">(4)</span></li>
+                <li><span class="toc-icon">💰</span> <a href="#decentro">Decentro</a> <span class="toc-count">(3)</span></li>
+                <li><span class="toc-icon">🤖</span> <a href="#botnet">Botnet</a> <span class="toc-count">(1)</span></li>
+                <li><span class="toc-icon">🔀</span> <a href="#router">Router Firmware</a> <span class="toc-count">(2)</span></li>
+                <li><span class="toc-icon">🔌</span> <a href="#switch">Switch Firmware</a> <span class="toc-count">(2)</span></li>
+                <li><span class="toc-icon">🛡️</span> <a href="#firewall">Firewall Firmware</a> <span class="toc-count">(1)</span></li>
+                <li><span class="toc-icon">🔍</span> <a href="#debugging">Debugging Firmware</a> <span class="toc-count">(3)</span></li>
+            </ul>
+        </nav>
+        
+        <!-- DNS -->
+        <section id="dns" class="section">
+            <div class="section-header">
+                <span>🌐</span>
+                <h2>DNS Programs</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">dns-lite</span>
+                    <span class="program-type type-producer">Producer</span>
+                </div>
+                <p class="program-desc">Replies network-addresses to DNS queries. Production is limited to 3 compatible uses on the device's use stack.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">1</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">1</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">2</span></div>
+                    <div class="stat"><span class="stat-label">Stack:</span> <span class="stat-value">3</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label output">Output</div>
+                        <div class="io-content"><code>reply-dns-queries</code> × 3/tick</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">dns-server</span>
+                    <span class="program-type type-converter">Converter</span>
+                </div>
+                <p class="program-desc">Replies network-addresses to DNS queries. Requires access to a running text storage program.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">4</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">3</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">3</span></div>
+                    <div class="stat"><span class="stat-label">Stack:</span> <span class="stat-value">20</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label input">Input</div>
+                        <div class="io-content"><code>store-text</code> × 1/tick</div>
+                    </div>
+                    <div class="io-box">
+                        <div class="io-label output">Output</div>
+                        <div class="io-content"><code>reply-dns-queries</code> × 20/tick</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">sun-dns</span>
+                    <span class="program-type type-converter">Converter</span>
+                </div>
+                <p class="program-desc">Enterprise grade DNS server. Requires access to a running text storage program.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">10</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">6</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">9</span></div>
+                    <div class="stat"><span class="stat-label">Stack:</span> <span class="stat-value">40</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label input">Input</div>
+                        <div class="io-content"><code>store-text</code> × 3/tick</div>
+                    </div>
+                    <div class="io-box">
+                        <div class="io-label output">Output</div>
+                        <div class="io-content"><code>reply-dns-queries</code> × 40/tick</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- DHCP -->
+        <section id="dhcp" class="section">
+            <div class="section-header">
+                <span>📡</span>
+                <h2>DHCP Programs</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">dnsmasq</span>
+                    <span class="program-type type-producer">Producer</span>
+                </div>
+                <p class="program-desc">Automatically assigns network addresses and designated DNS server to network devices.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">1</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">1</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">2</span></div>
+                    <div class="stat"><span class="stat-label">Stack:</span> <span class="stat-value">3</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label output">Output</div>
+                        <div class="io-content"><code>reply-dhcp-request</code> × 3/tick</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">kea</span>
+                    <span class="program-type type-converter">Converter</span>
+                </div>
+                <p class="program-desc">Automatically assigns network addresses and designated DNS server to network devices. Requires access to a running text storage program.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">6</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">5</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">7</span></div>
+                    <div class="stat"><span class="stat-label">Stack:</span> <span class="stat-value">15</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label input">Input</div>
+                        <div class="io-content"><code>store-text</code> × 1/tick</div>
+                    </div>
+                    <div class="io-box">
+                        <div class="io-label output">Output</div>
+                        <div class="io-content"><code>reply-dhcp-request</code> × 15/tick</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Storage -->
+        <section id="storage" class="section">
+            <div class="section-header">
+                <span>💾</span>
+                <h2>Storage Programs</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">padu_v1</span>
+                    <span class="program-type type-producer">Producer</span>
+                </div>
+                <p class="program-desc">Primary aggregation data unit. Supports text and image storage. Production is limited to 2 compatible uses on the device's use stack.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">1</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">2</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">4</span></div>
+                    <div class="stat"><span class="stat-label">Stack:</span> <span class="stat-value">2</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label output">Output</div>
+                        <div class="io-content"><code>store-text</code> <code>store-image</code> × 1/tick</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">padu_v2</span>
+                    <span class="program-type type-producer">Producer</span>
+                </div>
+                <p class="program-desc">Primary aggregation data unit. Supports text, image and audio storage. Improved disk handling algorithm.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">2</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">4</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">8</span></div>
+                    <div class="stat"><span class="stat-label">Stack:</span> <span class="stat-value">2</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label output">Output</div>
+                        <div class="io-content"><code>store-text</code> <code>store-image</code> <code>store-audio</code> × 2/tick</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">padu_v3</span>
+                    <span class="program-type type-producer">Producer</span>
+                </div>
+                <p class="program-desc">Primary aggregation data unit. Supports text, image, audio and video storage. Improved disk handling algorithm.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">4</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">6</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">12</span></div>
+                    <div class="stat"><span class="stat-label">Stack:</span> <span class="stat-value">4</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label output">Output</div>
+                        <div class="io-content"><code>store-text</code> <code>store-image</code> <code>store-audio</code> <code>store-video</code> × 4/tick</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">poems-db</span>
+                    <span class="program-type type-producer">Producer</span>
+                </div>
+                <p class="program-desc">Text-based database. Supports text storage usage.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">4</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">4</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">6</span></div>
+                    <div class="stat"><span class="stat-label">Stack:</span> <span class="stat-value">4</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label output">Output</div>
+                        <div class="io-content"><code>store-text</code> × 4/tick</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Services -->
+        <section id="services" class="section">
+            <div class="section-header">
+                <span>🔧</span>
+                <h2>Service Programs</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">gitcoffee</span>
+                    <span class="program-type type-converter">Converter</span>
+                </div>
+                <p class="program-desc">Open-source software repository. Supports software-updates requests.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">4</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">2</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">4</span></div>
+                    <div class="stat"><span class="stat-label">Stack:</span> <span class="stat-value">16</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label input">Input</div>
+                        <div class="io-content"><code>store-text</code> × 2/tick</div>
+                    </div>
+                    <div class="io-box">
+                        <div class="io-label output">Output</div>
+                        <div class="io-content"><code>read-text</code> <code>update-software</code> × 16/tick</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">mailer</span>
+                    <span class="program-type type-converter">Converter</span>
+                </div>
+                <p class="program-desc">Provides exchange email usages to users.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">5</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">6</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">3</span></div>
+                    <div class="stat"><span class="stat-label">Stack:</span> <span class="stat-value">15</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label input">Input (AND logic)</div>
+                        <div class="io-content"><code>store-text</code> AND <code>store-image</code> × 3/tick</div>
+                    </div>
+                    <div class="io-box">
+                        <div class="io-label output">Output</div>
+                        <div class="io-content"><code>read-text</code> <code>post-text</code> <code>verify-user</code> × 15/tick</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">voip-server</span>
+                    <span class="program-type type-producer">Producer</span>
+                </div>
+                <p class="program-desc">Supports Voice over Internet Protocol for streaming voice messages to phones. Allows voip phones to be connected to produce stream-voice uses.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">5</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">2</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">5</span></div>
+                    <div class="stat"><span class="stat-label">Stack:</span> <span class="stat-value">10</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label output">Output</div>
+                        <div class="io-content"><code>accept-voip-phone-connection</code> × 10/tick</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">rtsp-diva-r</span>
+                    <span class="program-type type-producer">Producer</span>
+                </div>
+                <p class="program-desc">Support surveillance monitoring services. Allows surveillance accessories to be connected to produce stream-live-video uses.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">6</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">4</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">10</span></div>
+                    <div class="stat"><span class="stat-label">Stack:</span> <span class="stat-value">13</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label output">Output</div>
+                        <div class="io-content"><code>accept-cctv-camera-connection</code> <code>accept-cctv-monitor-connection</code> × 13/tick</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Decentro -->
+        <section id="decentro" class="section">
+            <div class="section-header">
+                <span>💰</span>
+                <h2>Decentro Programs</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">decentro-node</span>
+                    <span class="program-type type-producer">Producer</span>
+                </div>
+                <p class="program-desc">Authenticate Decentro transactions. Decentro peers can connect to this program to perform peer-to-peer transactions. You may only spend decentro currencies that are accessible by decentro nodes.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">24</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">12</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">6</span></div>
+                    <div class="stat"><span class="stat-label">Stack:</span> <span class="stat-value">10</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label output">Output</div>
+                        <div class="io-content"><code>facilitate-p2p-transaction</code> × 10/tick</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">decentro-wallet</span>
+                    <span class="program-type type-storage">Data Storage</span>
+                </div>
+                <p class="program-desc">Safeguards your decentro currencies from power loss or unscheduled shutdown events. Stored uses persist across device reboots.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">1</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">2</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">2</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label stores">Stores</div>
+                        <div class="io-content"><code>access-p2p-currency</code> — 10 per free HDD</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">decentro-collector</span>
+                    <span class="program-type type-converter">Converter (Transfer)</span>
+                </div>
+                <p class="program-desc">Collects decentro currencies over the network and accumulates them on the installed device.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">1</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">1</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">1</span></div>
+                    <div class="stat"><span class="stat-label">Stack:</span> <span class="stat-value">6 per free MEM</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label input">Input (network)</div>
+                        <div class="io-content"><code>access-p2p-currency</code> × 1/tick</div>
+                    </div>
+                    <div class="io-box">
+                        <div class="io-label output">Output (local)</div>
+                        <div class="io-content"><code>access-p2p-currency</code> × 1/tick</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Botnet -->
+        <section id="botnet" class="section">
+            <div class="section-header">
+                <span>🤖</span>
+                <h2>Botnet Programs</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">ubbt</span>
+                    <span class="program-type type-converter">Converter</span>
+                </div>
+                <p class="program-desc">Analyzes user traffic behavior from a network tap to support botnet operations.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">4</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">4</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">6</span></div>
+                    <div class="stat"><span class="stat-label">Stack:</span> <span class="stat-value">4</span></div>
+                    <div class="stat"><span class="stat-label">Requires:</span> <span class="stat-value">Network tap with user traffic</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label input">Input</div>
+                        <div class="io-content"><code>inspect-user-packets</code> × 4/tick</div>
+                    </div>
+                    <div class="io-box">
+                        <div class="io-label output">Output</div>
+                        <div class="io-content"><code>support-bots</code> × 4/tick</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Router Firmware -->
+        <section id="router" class="section">
+            <div class="section-header">
+                <span>🔀</span>
+                <h2>Router Firmware</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">rtkernel</span>
+                    <span class="program-type type-firmware">Firmware</span>
+                </div>
+                <p class="program-desc">Normal capacity router firmware.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">4</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">1</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">2</span></div>
+                    <div class="stat"><span class="stat-label">Requires:</span> <span class="stat-value">/etc/routes.conf</span></div>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">hakernel</span>
+                    <span class="program-type type-firmware">Firmware</span>
+                </div>
+                <p class="program-desc">High capacity router firmware.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">8</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">2</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">4</span></div>
+                    <div class="stat"><span class="stat-label">Requires:</span> <span class="stat-value">/etc/routes.conf</span></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Switch Firmware -->
+        <section id="switch" class="section">
+            <div class="section-header">
+                <span>🔌</span>
+                <h2>Switch Firmware</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">bladeos</span>
+                    <span class="program-type type-firmware">Firmware</span>
+                </div>
+                <p class="program-desc">Normal capacity switch firmware.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">2</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">1</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">1</span></div>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">vlanfirm</span>
+                    <span class="program-type type-firmware">Firmware</span>
+                </div>
+                <p class="program-desc">High capacity switch firmware that supports VLAN port tagging.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">2</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">2</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">2</span></div>
+                    <div class="stat"><span class="stat-label">Requires:</span> <span class="stat-value">/etc/vlan.tags</span></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Firewall Firmware -->
+        <section id="firewall" class="section">
+            <div class="section-header">
+                <span>🛡️</span>
+                <h2>Firewall Firmware</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">firewatcher</span>
+                    <span class="program-type type-firmware">Firmware</span>
+                </div>
+                <p class="program-desc">Basic Firewall firmware.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">4</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">1</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">2</span></div>
+                    <div class="stat"><span class="stat-label">Requires:</span> <span class="stat-value">/etc/nftables.conf</span></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Debugging -->
+        <section id="debugging" class="section">
+            <div class="section-header">
+                <span>🔍</span>
+                <h2>Debugging Firmware</h2>
+                <a href="#toc" class="back-to-toc">↑ ToC</a>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">wirerat</span>
+                    <span class="program-type type-firmware">Firmware</span>
+                </div>
+                <p class="program-desc">Network tap firmware that produces inspect-user-packets use stack.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">2</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">2</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">1</span></div>
+                    <div class="stat"><span class="stat-label">Stack:</span> <span class="stat-value">12</span></div>
+                </div>
+                <div class="program-io">
+                    <div class="io-box">
+                        <div class="io-label output">Output</div>
+                        <div class="io-content"><code>inspect-user-packets</code> × 4/tick</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">netpeeker</span>
+                    <span class="program-type type-firmware">Firmware</span>
+                </div>
+                <p class="program-desc">Basic Debugger firmware.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">1</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">1</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">1</span></div>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-name">dnsspam</span>
+                    <span class="program-type type-firmware">Firmware</span>
+                </div>
+                <p class="program-desc">DNS blasting firmware that rapidly sends out udp/53 requests.</p>
+                <div class="program-stats">
+                    <div class="stat"><span class="stat-label">CPU:</span> <span class="stat-value stat-cpu">1</span></div>
+                    <div class="stat"><span class="stat-label">MEM:</span> <span class="stat-value stat-mem">1</span></div>
+                    <div class="stat"><span class="stat-label">HDD:</span> <span class="stat-value stat-hdd">1</span></div>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="../index.html">Home</a>
+                <span class="footer-sep">|</span>
+                <a href="../credits.html">Credits</a>
+                <span class="footer-sep">|</span>
+                <a href="https://github.com/salvo-praxis/tni-toolkit" target="_blank">GitHub</a>
+                <span class="footer-sep">|</span>
+                <a href="https://store.steampowered.com/app/2939600/Tower_Networking_Inc/" target="_blank">TNI on Steam</a>
+            </div>
+            <p class="footer-note">Data from tni-programs.json v1.1.1</p>
+            <div class="footer-badges">
+                <span class="version-badge">v1.1.0</span>
+                <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/LICENSE" target="_blank" class="license-badge">MIT License</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
