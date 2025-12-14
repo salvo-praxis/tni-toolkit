@@ -4,6 +4,15 @@ Running log of all contributions to the TNI Toolkit. For guidelines on contribut
 
 ---
 
+## 2025-12-13
+
+### Salvo Praxis
+- `device-calculator.html` v1.8.0 — Program throughput metrics (output_uses, input_uses), Throughput Summary panel (Input/Output/Dynamic Capacity), dynamic capacity calculations, SATA behavior split (minimum vs maximize), config menu two-column layout, results panel visibility improvements
+- `CLAUDE.md` — Restructured with volatile SESSION STATE section, preserved permanent documentation
+- `README.md` — Updated Device Calculator description with v1.8 features
+
+---
+
 ## 2025-12-12
 
 ### Salvo Praxis

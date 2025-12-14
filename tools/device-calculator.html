@@ -2,8 +2,8 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║  TNI Device Compatibility Calculator                                         ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║  Version: 1.7.0                                                              ║
-║  Updated: 2025-12-12                                                         ║
+║  Version: 1.8.0                                                              ║
+║  Updated: 2025-12-13                                                         ║
 ║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Description:                                                                ║
@@ -19,6 +19,7 @@
 ║    - File-level resource breakdown table                                     ║
 ║    - Colorized stats display (CPU/MEM/HDD/W/T/s)                             ║
 ║    - Traversal metrics (TPT, TPS, T/s) with granular toggles                 ║
+║    - Program throughput metrics (O/t, I/t, Stack, O/s) with toggles          ║
 ║    - Comprehensive device tooltip on hover (optional)                        ║
 ║    - Warranty and vendor information display                                 ║
 ║    - Config menu with persistent settings                                    ║
@@ -31,6 +32,15 @@
 ║    - Singing Pot Beast (auto-prune/config menu suggestion)                   ║
 ║                                                                              ║
 ║  Changelog:                                                                  ║
+║    1.8.0 - Program throughput metrics: output/tick (O/t), input/tick (I/t),  ║
+║            stack limit, output/sec (O/s) with config toggles; Throughput     ║
+║            Summary panel with Input (needs) / Output / Dynamic Capacity      ║
+║            boxes; aggregated I/O by use-type across all programs; dynamic    ║
+║            capacity calculations (decentro-wallet: 10/free hdd, decentro-    ║
+║            collector: 6/free mem); SATA behavior split into minimum vs       ║
+║            maximize toggles; config menu two-column layout; results panel    ║
+║            shows when programs selected without device; file table headers   ║
+║            changed to CPU MEM HDD; formula labels: "free mem" / "free hdd"   ║
 ║    1.7.0 - Config menu with granular toggles: show refurbs, vendor,          ║
 ║            warranty, power (W), traversals/sec (T/s), traversals/tick (TPT), ║
 ║            ticks/sec (TPS); comprehensive device tooltip on hover (opt-in);  ║
@@ -444,6 +454,11 @@
         .stat-tpt { color: #7ee787; }
         .stat-tps { color: #79c0ff; }
         .stat-tsec { color: #00ff88; }
+        /* Program stats */
+        .stat-output { color: #7ee787; }
+        .stat-input { color: #ff7b72; }
+        .stat-stack { color: #d2a8ff; }
+        .stat-osec { color: #00ff88; }
         
         .stat-warranty {
             color: #8b949e;
@@ -850,6 +865,139 @@
             background: rgba(88, 166, 255, 0.05);
         }
         
+        /* I/O Summary Tables */
+        .io-section {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #30363d;
+        }
+        
+        .io-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            color: #8b949e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .io-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        
+        .io-box {
+            background: rgba(13, 17, 23, 0.6);
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            padding: 10px 12px;
+        }
+        
+        .io-box-title {
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+        
+        .io-box-title.output { color: #7ee787; }
+        .io-box-title.input { color: #ff7b72; }
+        .io-box-title.storage { color: #d2a8ff; }
+        
+        .io-box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+        }
+        
+        .io-col-header {
+            display: flex;
+            font-size: 9px;
+            color: #8b949e;
+            white-space: nowrap;
+        }
+        
+        .io-col-header .h-tick {
+            width: 42px;
+            text-align: right;
+        }
+        
+        .io-col-header .h-sep {
+            width: 16px;
+            text-align: center;
+        }
+        
+        .io-col-header .h-sec {
+            width: 40px;
+            text-align: left;
+        }
+        
+        .io-items {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .io-item {
+            display: flex;
+            align-items: baseline;
+            font-size: 11px;
+            color: #c9d1d9;
+            padding: 2px 0;
+        }
+        
+        .io-item-use {
+            flex: 1;
+            opacity: 0.8;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-right: 8px;
+        }
+        
+        .io-item-tick {
+            width: 42px;
+            text-align: right;
+            font-weight: 500;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .io-item-sep {
+            width: 16px;
+            text-align: center;
+            opacity: 0.4;
+            flex-shrink: 0;
+        }
+        
+        .io-item-sec {
+            width: 40px;
+            text-align: left;
+            font-weight: 500;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .io-item-formula {
+            text-align: left;
+            padding-left: 6px;
+            opacity: 0.5;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .io-total {
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px dashed #30363d;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        
         /* === SHARECODE PANEL (Style Guide Compliant) === */
         .sharecode-panel {
             margin-top: 24px;
@@ -1041,7 +1189,8 @@
             border: 1px solid #30363d;
             border-radius: 8px;
             padding: 16px;
-            min-width: 280px;
+            min-width: 600px;
+            max-width: 700px;
             z-index: 100;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
             display: none;
@@ -1061,11 +1210,25 @@
             border-bottom: 1px solid #30363d;
         }
         
-        .config-section {
-            margin-bottom: 16px;
+        .config-columns {
+            display: flex;
+            gap: 24px;
         }
         
-        .config-section:last-child {
+        .config-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .config-full-width {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #30363d;
+        }
+        
+        .config-section {
             margin-bottom: 0;
         }
         
@@ -1083,6 +1246,7 @@
             justify-content: space-between;
             padding: 8px 0;
             border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+            min-height: 52px;
         }
         
         .config-option:last-child {
@@ -1098,6 +1262,7 @@
             color: #7d8590;
             font-size: 10px;
             margin-top: 2px;
+            max-width: 220px;
         }
         
         /* Toggle Switch */
@@ -1203,133 +1368,204 @@
         <div class="config-panel" id="config-panel">
             <h3>⚙ Configuration</h3>
             
-            <div class="config-section">
-                <div class="config-section-title">Device List</div>
-                
-                <div class="config-option">
-                    <div>
-                        <div class="config-option-label">Include refurbished devices</div>
-                        <div class="config-option-desc">Show devices from Refurb Hut (lower price, 3-day warranty)</div>
+            <div class="config-columns">
+                <!-- Left Column: Device Settings -->
+                <div class="config-column">
+                    <div class="config-section">
+                        <div class="config-section-title">Device List</div>
+                        
+                        <div class="config-option">
+                            <div>
+                                <div class="config-option-label">Include refurbished devices</div>
+                                <div class="config-option-desc">Show devices from Refurb Hut (lower price, 3-day warranty)</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="config-show-refurbs" onchange="onConfigChange()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="config-option">
+                            <div>
+                                <div class="config-option-label">Show vendor</div>
+                                <div class="config-option-desc">Display vendor name on device cards</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="config-show-vendor" checked onchange="onConfigChange()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="config-option">
+                            <div>
+                                <div class="config-option-label">Show warranty</div>
+                                <div class="config-option-desc">Display warranty days on device cards</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="config-show-warranty" checked onchange="onConfigChange()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
                     </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="config-show-refurbs" onchange="onConfigChange()">
-                        <span class="toggle-slider"></span>
-                    </label>
+                    
+                    <div class="config-section">
+                        <div class="config-section-title">Device Inline Stats</div>
+                        
+                        <div class="config-option">
+                            <div>
+                                <div class="config-option-label">Show power (W)</div>
+                                <div class="config-option-desc">Display power consumption in watts</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="config-show-power" checked onchange="onConfigChange()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="config-option">
+                            <div>
+                                <div class="config-option-label">Show traversals/sec (T/s)</div>
+                                <div class="config-option-desc">Display calculated traversals per second</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="config-show-traversals" checked onchange="onConfigChange()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="config-option">
+                            <div>
+                                <div class="config-option-label">Show traversals/tick (TPT)</div>
+                                <div class="config-option-desc">Display raw traversals per tick value</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="config-show-tpt" onchange="onConfigChange()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="config-option">
+                            <div>
+                                <div class="config-option-label">Show ticks/sec (TPS)</div>
+                                <div class="config-option-desc">Display ticks per second from cpu_cycle</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="config-show-tps" onchange="onConfigChange()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="config-section">
+                        <div class="config-section-title">Tooltip</div>
+                        
+                        <div class="config-option">
+                            <div>
+                                <div class="config-option-label">Show detailed tooltip on hover</div>
+                                <div class="config-option-desc">Comprehensive stats popup when hovering devices</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="config-show-tooltip" onchange="onConfigChange()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="config-option">
-                    <div>
-                        <div class="config-option-label">Show vendor</div>
-                        <div class="config-option-desc">Display vendor name on device cards</div>
+                <!-- Right Column: Program Settings -->
+                <div class="config-column">
+                    <div class="config-section">
+                        <div class="config-section-title">Program Inline Stats</div>
+                        
+                        <div class="config-option">
+                            <div>
+                                <div class="config-option-label">Show output/tick (O/t)</div>
+                                <div class="config-option-desc">Uses produced per tick for producers/converters</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="config-show-program-output" checked onchange="onConfigChange()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="config-option">
+                            <div>
+                                <div class="config-option-label">Show input/tick (I/t)</div>
+                                <div class="config-option-desc">Uses consumed per tick (converters only)</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="config-show-program-input" onchange="onConfigChange()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="config-option">
+                            <div>
+                                <div class="config-option-label">Show stack limit</div>
+                                <div class="config-option-desc">Maximum use stack size for the program</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="config-show-program-stack" onchange="onConfigChange()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="config-option">
+                            <div>
+                                <div class="config-option-label">Show output/sec (O/s)</div>
+                                <div class="config-option-desc">Calculated uses per second (requires device)</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="config-show-program-output-sec" checked onchange="onConfigChange()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
                     </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="config-show-vendor" checked onchange="onConfigChange()">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="config-option">
-                    <div>
-                        <div class="config-option-label">Show warranty</div>
-                        <div class="config-option-desc">Display warranty days on device cards</div>
+                    
+                    <div class="config-section">
+                        <div class="config-section-title">SATA Behavior</div>
+                        
+                        <div class="config-option">
+                            <div>
+                                <div class="config-option-label">Auto-populate SATA (minimum)</div>
+                                <div class="config-option-desc">Add minimum SATA modules to meet storage needs</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="config-auto-sata" onchange="onConfigChange()" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="config-option">
+                            <div>
+                                <div class="config-option-label">Auto-maximize SATA</div>
+                                <div class="config-option-desc">Fill all available SATA slots for max storage</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="config-max-sata" onchange="onConfigChange()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
                     </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="config-show-warranty" checked onchange="onConfigChange()">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
-            
-            <div class="config-section">
-                <div class="config-section-title">Inline Stats</div>
-                
-                <div class="config-option">
-                    <div>
-                        <div class="config-option-label">Show power (W)</div>
-                        <div class="config-option-desc">Display power consumption in watts</div>
+                    
+                    <div class="config-section">
+                        <div class="config-section-title">Compatibility</div>
+                        
+                        <div class="config-option disabled">
+                            <div>
+                                <div class="config-option-label">Auto-prune incompatible</div>
+                                <div class="config-option-desc">Hide devices that can't run selected programs</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="config-auto-prune" disabled>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="config-option-note">
+                            ⚠ Requires firmware/software compatibility data. 
+                            <a href="../contributing.html" target="_blank">Help contribute →</a>
+                        </div>
                     </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="config-show-power" checked onchange="onConfigChange()">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="config-option">
-                    <div>
-                        <div class="config-option-label">Show traversals/sec (T/s)</div>
-                        <div class="config-option-desc">Display calculated traversals per second</div>
-                    </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="config-show-traversals" checked onchange="onConfigChange()">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="config-option">
-                    <div>
-                        <div class="config-option-label">Show traversals/tick (TPT)</div>
-                        <div class="config-option-desc">Display raw traversals per tick value</div>
-                    </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="config-show-tpt" onchange="onConfigChange()">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="config-option">
-                    <div>
-                        <div class="config-option-label">Show ticks/sec (TPS)</div>
-                        <div class="config-option-desc">Display ticks per second from cpu_cycle</div>
-                    </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="config-show-tps" onchange="onConfigChange()">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
-            
-            <div class="config-section">
-                <div class="config-section-title">Tooltip</div>
-                
-                <div class="config-option">
-                    <div>
-                        <div class="config-option-label">Show detailed tooltip on hover</div>
-                        <div class="config-option-desc">Comprehensive stats popup when hovering devices</div>
-                    </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="config-show-tooltip" onchange="onConfigChange()">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
-            
-            <div class="config-section">
-                <div class="config-section-title">Behavior</div>
-                
-                <div class="config-option">
-                    <div>
-                        <div class="config-option-label">Auto-populate SATA slots</div>
-                        <div class="config-option-desc">Automatically add SATA modules to meet storage needs</div>
-                    </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="config-auto-sata" onchange="onConfigChange()" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="config-option disabled">
-                    <div>
-                        <div class="config-option-label">Auto-prune incompatible</div>
-                        <div class="config-option-desc">Hide devices that can't run selected programs</div>
-                    </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="config-auto-prune" disabled>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <div class="config-option-note">
-                    ⚠ Requires firmware/software compatibility data not yet documented. 
-                    <a href="../contributing.html" target="_blank">Help contribute this data →</a>
                 </div>
             </div>
         </div>
@@ -1503,32 +1739,32 @@
 
         // === TNI DATA: PROGRAMS ===
         const programs = [
-            { name: "dns-lite", type: "Producer", cpu: 1, memory: 1, storage: 2, output: "reply-dns-queries (3/tick)", requires: null },
-            { name: "dns-server", type: "Converter", cpu: 4, memory: 3, storage: 3, output: "reply-dns-queries (20/tick)", requires: "store-text" },
-            { name: "sun-dns", type: "Converter", cpu: 10, memory: 6, storage: 9, output: "reply-dns-queries (40/tick)", requires: "store-text" },
-            { name: "dnsmasq", type: "Producer", cpu: 1, memory: 1, storage: 2, output: "reply-dhcp-request (3/tick)", requires: null },
-            { name: "kea", type: "Converter", cpu: 6, memory: 5, storage: 7, output: "reply-dhcp-request (15/tick)", requires: "store-text" },
-            { name: "padu_v1", type: "Producer", cpu: 1, memory: 2, storage: 4, output: "store-text, store-image (1/tick)", requires: null },
-            { name: "padu_v2", type: "Producer", cpu: 2, memory: 4, storage: 8, output: "store-text/image/audio (2/tick)", requires: null },
-            { name: "padu_v3", type: "Producer", cpu: 4, memory: 6, storage: 12, output: "store-text/image/audio/video (4/tick)", requires: null },
-            { name: "poems-db", type: "Producer", cpu: 4, memory: 4, storage: 6, output: "store-text (4/tick)", requires: null },
-            { name: "gitcoffee", type: "Converter", cpu: 4, memory: 2, storage: 4, output: "read-text, update-software (16/tick)", requires: "store-text" },
-            { name: "mailer", type: "Converter", cpu: 5, memory: 6, storage: 3, output: "read-text, post-text, verify-user (15/tick)", requires: "store-text AND store-image" },
-            { name: "voip-server", type: "Producer", cpu: 5, memory: 2, storage: 5, output: "accept-voip-phone-connection (10/tick)", requires: null },
-            { name: "rtsp-diva-r", type: "Producer", cpu: 6, memory: 4, storage: 10, output: "accept-cctv connections (13/tick)", requires: null },
-            { name: "decentro-node", type: "Producer", cpu: 24, memory: 12, storage: 6, output: "facilitate-p2p-transaction (10/tick)", requires: null },
-            { name: "decentro-wallet", type: "Storage", cpu: 1, memory: 2, storage: 2, output: "access-p2p-currency (10/free storage)", requires: null },
-            { name: "decentro-collector", type: "Converter", cpu: 1, memory: 1, storage: 1, output: "access-p2p-currency (collects)", requires: null },
-            { name: "ubbt", type: "Converter", cpu: 4, memory: 4, storage: 6, output: "support-bots (4/tick)", requires: "inspect-user-packets" },
+            { name: "dns-lite", type: "Producer", cpu: 1, memory: 1, storage: 2, output_uses: ["reply-dns-queries"], output_amount: 3, input_amount: null, input_uses: null, stack_limit: 3, requires: null },
+            { name: "dns-server", type: "Converter", cpu: 4, memory: 3, storage: 3, output_uses: ["reply-dns-queries"], output_amount: 20, input_amount: 1, input_uses: "store-text", stack_limit: 20, requires: "store-text" },
+            { name: "sun-dns", type: "Converter", cpu: 10, memory: 6, storage: 9, output_uses: ["reply-dns-queries"], output_amount: 40, input_amount: 3, input_uses: "store-text", stack_limit: 40, requires: "store-text" },
+            { name: "dnsmasq", type: "Producer", cpu: 1, memory: 1, storage: 2, output_uses: ["reply-dhcp-request"], output_amount: 3, input_amount: null, input_uses: null, stack_limit: 3, requires: null },
+            { name: "kea", type: "Converter", cpu: 6, memory: 5, storage: 7, output_uses: ["reply-dhcp-request"], output_amount: 15, input_amount: 1, input_uses: "store-text", stack_limit: 15, requires: "store-text" },
+            { name: "padu_v1", type: "Producer", cpu: 1, memory: 2, storage: 4, output_uses: ["store-text", "store-image"], output_amount: 1, input_amount: null, input_uses: null, stack_limit: 2, requires: null },
+            { name: "padu_v2", type: "Producer", cpu: 2, memory: 4, storage: 8, output_uses: ["store-text", "store-image", "store-audio"], output_amount: 2, input_amount: null, input_uses: null, stack_limit: 2, requires: null },
+            { name: "padu_v3", type: "Producer", cpu: 4, memory: 6, storage: 12, output_uses: ["store-text", "store-image", "store-audio", "store-video"], output_amount: 4, input_amount: null, input_uses: null, stack_limit: 4, requires: null },
+            { name: "poems-db", type: "Producer", cpu: 4, memory: 4, storage: 6, output_uses: ["store-text"], output_amount: 4, input_amount: null, input_uses: null, stack_limit: 4, requires: null },
+            { name: "gitcoffee", type: "Converter", cpu: 4, memory: 2, storage: 4, output_uses: ["read-text", "update-software"], output_amount: 16, input_amount: 2, input_uses: "store-text", stack_limit: 16, requires: "store-text" },
+            { name: "mailer", type: "Converter", cpu: 5, memory: 6, storage: 3, output_uses: ["read-text", "post-text", "verify-user"], output_amount: 15, input_amount: 3, input_uses: "store-text + store-image", stack_limit: 15, requires: "store-text AND store-image" },
+            { name: "voip-server", type: "Producer", cpu: 5, memory: 2, storage: 5, output_uses: ["accept-voip-phone-connection"], output_amount: 10, input_amount: null, input_uses: null, stack_limit: 10, requires: null },
+            { name: "rtsp-diva-r", type: "Producer", cpu: 6, memory: 4, storage: 10, output_uses: ["accept-cctv-camera-connection", "accept-cctv-monitor-connection"], output_amount: 13, input_amount: null, input_uses: null, stack_limit: 13, requires: null },
+            { name: "decentro-node", type: "Producer", cpu: 24, memory: 12, storage: 6, output_uses: ["facilitate-p2p-transaction"], output_amount: 10, input_amount: null, input_uses: null, stack_limit: 10, requires: null },
+            { name: "decentro-wallet", type: "Storage", cpu: 1, memory: 2, storage: 2, output_uses: ["access-p2p-currency"], output_amount: null, input_amount: null, input_uses: null, stack_limit: null, requires: null, capacity_per: { resource: "storage", amount: 10 } },
+            { name: "decentro-collector", type: "Converter", cpu: 1, memory: 1, storage: 1, output_uses: ["access-p2p-currency"], output_amount: 1, input_amount: 1, input_uses: "access-p2p-currency", stack_limit: null, requires: null, stack_per: { resource: "memory", amount: 6 } },
+            { name: "ubbt", type: "Converter", cpu: 4, memory: 4, storage: 6, output_uses: ["support-bots"], output_amount: 4, input_amount: 4, input_uses: "inspect-user-packets", stack_limit: 4, requires: "inspect-user-packets" },
             // Firmware
-            { name: "rtkernel", type: "Firmware", cpu: 4, memory: 1, storage: 2, output: "Router OS", requires: "/etc/routes.conf" },
-            { name: "hakernel", type: "Firmware", cpu: 8, memory: 2, storage: 4, output: "High-cap Router OS", requires: "/etc/routes.conf" },
-            { name: "bladeos", type: "Firmware", cpu: 2, memory: 1, storage: 1, output: "Switch OS", requires: null },
-            { name: "vlanfirm", type: "Firmware", cpu: 2, memory: 2, storage: 2, output: "VLAN Switch OS", requires: "/etc/vlan.tags" },
-            { name: "firewatcher", type: "Firmware", cpu: 4, memory: 1, storage: 2, output: "Firewall OS", requires: "/etc/nftables.conf" },
-            { name: "wirerat", type: "Firmware", cpu: 2, memory: 2, storage: 1, output: "inspect-user-packets (4/tick)", requires: null },
-            { name: "netpeeker", type: "Firmware", cpu: 1, memory: 1, storage: 1, output: "Debugger OS", requires: null },
-            { name: "dnsspam", type: "Firmware", cpu: 1, memory: 1, storage: 1, output: "DNS Load Test OS", requires: null },
+            { name: "rtkernel", type: "Firmware", cpu: 4, memory: 1, storage: 2, output_uses: [], output_amount: null, input_amount: null, input_uses: null, stack_limit: null, requires: "/etc/routes.conf" },
+            { name: "hakernel", type: "Firmware", cpu: 8, memory: 2, storage: 4, output_uses: [], output_amount: null, input_amount: null, input_uses: null, stack_limit: null, requires: "/etc/routes.conf" },
+            { name: "bladeos", type: "Firmware", cpu: 2, memory: 1, storage: 1, output_uses: [], output_amount: null, input_amount: null, input_uses: null, stack_limit: null, requires: null },
+            { name: "vlanfirm", type: "Firmware", cpu: 2, memory: 2, storage: 2, output_uses: [], output_amount: null, input_amount: null, input_uses: null, stack_limit: null, requires: "/etc/vlan.tags" },
+            { name: "firewatcher", type: "Firmware", cpu: 4, memory: 1, storage: 2, output_uses: [], output_amount: null, input_amount: null, input_uses: null, stack_limit: null, requires: "/etc/nftables.conf" },
+            { name: "wirerat", type: "Firmware", cpu: 2, memory: 2, storage: 1, output_uses: ["inspect-user-packets"], output_amount: 4, input_amount: null, input_uses: null, stack_limit: 12, requires: null },
+            { name: "netpeeker", type: "Firmware", cpu: 1, memory: 1, storage: 1, output_uses: [], output_amount: null, input_amount: null, input_uses: null, stack_limit: null, requires: null },
+            { name: "dnsspam", type: "Firmware", cpu: 1, memory: 1, storage: 1, output_uses: [], output_amount: null, input_amount: null, input_uses: null, stack_limit: null, requires: null },
         ];
 
         // Constants
@@ -1556,8 +1792,14 @@
             showTPT: false,        // Traversals per tick
             showTPS: false,        // Ticks per second
             showTooltip: false,    // Comprehensive tooltip on hover
-            autoSata: true,
-            autoPrune: false
+            autoSata: true,        // Auto-populate minimum SATA to meet storage
+            maxSata: false,        // Auto-maximize all SATA slots
+            autoPrune: false,
+            // Program display options
+            showProgramOutput: true,   // O/t - output per tick
+            showProgramInput: false,   // I/t - input per tick (converters)
+            showProgramStack: false,   // Stack limit
+            showProgramOutputSec: true // O/s - calculated output per second
         };
 
         // Load config from localStorage
@@ -1579,7 +1821,13 @@
                     document.getElementById('config-show-tps').checked = config.showTPS;
                     document.getElementById('config-show-tooltip').checked = config.showTooltip;
                     document.getElementById('config-auto-sata').checked = config.autoSata;
+                    document.getElementById('config-max-sata').checked = config.maxSata;
                     // config-auto-prune checkbox is disabled, don't update it
+                    // Program config options
+                    document.getElementById('config-show-program-output').checked = config.showProgramOutput;
+                    document.getElementById('config-show-program-input').checked = config.showProgramInput;
+                    document.getElementById('config-show-program-stack').checked = config.showProgramStack;
+                    document.getElementById('config-show-program-output-sec').checked = config.showProgramOutputSec;
                 }
             } catch (e) {
                 // Ignore localStorage errors
@@ -1624,7 +1872,18 @@
             config.showTPS = document.getElementById('config-show-tps').checked;
             config.showTooltip = document.getElementById('config-show-tooltip').checked;
             config.autoSata = document.getElementById('config-auto-sata').checked;
+            config.maxSata = document.getElementById('config-max-sata').checked;
+            // If maxSata is on, autoSata should be implied
+            if (config.maxSata) {
+                config.autoSata = true;
+                document.getElementById('config-auto-sata').checked = true;
+            }
             // config.autoPrune is disabled until compatibility data is documented
+            // Program config options
+            config.showProgramOutput = document.getElementById('config-show-program-output').checked;
+            config.showProgramInput = document.getElementById('config-show-program-input').checked;
+            config.showProgramStack = document.getElementById('config-show-program-stack').checked;
+            config.showProgramOutputSec = document.getElementById('config-show-program-output-sec').checked;
             saveConfig();
             renderDevices();
             renderPrograms();
@@ -2152,6 +2411,12 @@
             let html = '';
             let programsDividerAdded = false;
             let firmwareDividerAdded = false;
+            
+            // Get device TPS for O/s calculation
+            let deviceTPS = null;
+            if (selectedDevice && selectedDevice.cpu_cycle) {
+                deviceTPS = parseTicksPerSecond(selectedDevice.cpu_cycle);
+            }
 
             filteredPrograms.forEach((program) => {
                 const idx = programs.indexOf(program);
@@ -2170,6 +2435,41 @@
 
                 const isSelected = selectedPrograms.some(p => p.name === program.name);
                 const typeClass = `type-${program.type.toLowerCase()}`;
+                
+                // Build program throughput stats
+                let programThroughput = '';
+                
+                // Output per tick (O/t)
+                if (config.showProgramOutput && program.output_amount !== null) {
+                    programThroughput += `<span class="stat stat-output"><span class="stat-label">O/t</span>${program.output_amount}</span>`;
+                }
+                
+                // Input per tick (I/t) - converters only
+                if (config.showProgramInput && program.input_amount !== null) {
+                    programThroughput += `<span class="stat stat-input"><span class="stat-label">I/t</span>${program.input_amount}</span>`;
+                }
+                
+                // Stack limit
+                if (config.showProgramStack && program.stack_limit !== null) {
+                    programThroughput += `<span class="stat stat-stack"><span class="stat-label">Stack</span>${program.stack_limit}</span>`;
+                }
+                
+                // Output per second (O/s) - calculated from device TPS
+                if (config.showProgramOutputSec && program.output_amount !== null && deviceTPS !== null) {
+                    const outputPerSec = program.output_amount * deviceTPS;
+                    programThroughput += `<span class="stat stat-osec"><span class="stat-label">O/s</span>${formatTraversals(outputPerSec)}</span>`;
+                }
+                
+                // Dynamic capacity display for special programs
+                let dynamicNote = '';
+                if (program.capacity_per) {
+                    const capResLabel = program.capacity_per.resource === 'storage' ? 'hdd' : 'mem';
+                    dynamicNote = `${program.capacity_per.amount}/free ${capResLabel}`;
+                } else if (program.stack_per) {
+                    const stackResLabel = program.stack_per.resource === 'memory' ? 'mem' : 'hdd';
+                    dynamicNote = `stack: ${program.stack_per.amount}/free ${stackResLabel}`;
+                }
+                
                 html += `
                     <div class="list-item ${isSelected ? 'program-selected' : ''}"
                          data-program-idx="${idx}">
@@ -2183,11 +2483,12 @@
                                     <span class="stat stat-cpu"><span class="stat-label">CPU</span>${program.cpu}</span>
                                     <span class="stat stat-mem"><span class="stat-label">MEM</span>${program.memory}</span>
                                     <span class="stat stat-hdd"><span class="stat-label">HDD</span>${program.storage}</span>
+                                    ${programThroughput}
                                 </div>
                             </div>
                         </div>
                         <div class="item-output">
-                            → ${program.output}
+                            → ${program.output_uses && program.output_uses.length > 0 ? program.output_uses.join(', ') : (program.type === 'Firmware' ? program.type + ' OS' : '—')}${dynamicNote ? ` <span style="color: #f0c674;">(${dynamicNote})</span>` : ''}
                         </div>
                         ${program.requires ? `<div class="item-requires">← needs: ${program.requires}</div>` : ''}
                     </div>
@@ -2248,11 +2549,141 @@
 
         // === CALCULATE RESULTS ===
         function calculate() {
-            if (!selectedDevice) {
+            // Hide if nothing selected at all
+            if (!selectedDevice && selectedPrograms.length === 0) {
                 resultsEl.classList.add('hidden');
                 updateSharecode();
                 return;
             }
+            
+            // Show panel - determine validity
+            resultsEl.classList.remove('hidden');
+            
+            // Case: Programs selected but no device
+            if (!selectedDevice) {
+                const totalCpu = selectedPrograms.reduce((sum, p) => sum + p.cpu, 0);
+                const totalMemory = selectedPrograms.reduce((sum, p) => sum + p.memory, 0);
+                const totalStorage = selectedPrograms.reduce((sum, p) => sum + p.storage, 0);
+                
+                resultsEl.classList.remove('valid', 'invalid');
+                resultsEl.classList.add('invalid');
+                
+                resultsTitleEl.className = 'results-title invalid';
+                resultsTitleEl.textContent = '✗ NO DEVICE SELECTED';
+                
+                totalCostEl.innerHTML = `Total Cost: <span class="cost-value">—</span>`;
+                
+                // Show program requirements without device comparison
+                metricsGridEl.innerHTML = `
+                    <div class="metric-box">
+                        <div class="metric-label">CPU NEEDED</div>
+                        <div class="metric-value">${totalCpu}</div>
+                        <div class="metric-remaining">select a device</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">MEMORY NEEDED</div>
+                        <div class="metric-value">${totalMemory}</div>
+                        <div class="metric-remaining">select a device</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">STORAGE NEEDED</div>
+                        <div class="metric-value">${totalStorage}</div>
+                        <div class="metric-remaining">select a device</div>
+                    </div>
+                `;
+                
+                // Still show programs summary
+                if (selectedPrograms.length > 0) {
+                    const files = [];
+                    selectedPrograms.forEach(p => {
+                        const hasConfig = p.requires && p.requires.startsWith('/etc/');
+                        const binStorage = hasConfig ? p.storage - 1 : p.storage;
+                        files.push({ path: `/bin/${p.name}`, cpu: p.cpu, mem: p.memory, storage: binStorage });
+                        if (hasConfig) {
+                            files.push({ path: p.requires, cpu: '-', mem: '-', storage: 1 });
+                        }
+                    });
+                    files.sort((a, b) => a.path.localeCompare(b.path));
+                    const rows = files.map(f =>
+                        `<tr><td>${f.path}</td><td>${f.cpu}</td><td>${f.mem}</td><td>${f.storage}</td></tr>`
+                    ).join('');
+                    
+                    // Basic I/O summary without device TPS
+                    let ioHtml = '';
+                    const outputs = {};
+                    const inputs = {};
+                    const stores = [];
+                    selectedPrograms.forEach(p => {
+                        // Aggregate outputs by individual use type
+                        if (p.output_amount !== null && p.output_amount > 0 && p.output_uses) {
+                            p.output_uses.forEach(use => {
+                                if (!outputs[use]) outputs[use] = { perTick: 0 };
+                                outputs[use].perTick += p.output_amount;
+                            });
+                        }
+                        if (p.input_amount !== null && p.input_amount > 0 && p.input_uses) {
+                            const key = p.input_uses;
+                            if (!inputs[key]) inputs[key] = { perTick: 0 };
+                            inputs[key].perTick += p.input_amount;
+                        }
+                        // Storage programs with dynamic capacity
+                        if (p.capacity_per) {
+                            const resLabel = p.capacity_per.resource === 'storage' ? 'hdd' : 'mem';
+                            stores.push({ use: p.output_uses ? p.output_uses.join(', ') : '?', capacity: '?', formula: `${p.capacity_per.amount}/free ${resLabel}`, needsDevice: true });
+                        }
+                        // Programs with dynamic stack limit
+                        if (p.stack_per) {
+                            const stackResLabel = p.stack_per.resource === 'memory' ? 'mem' : 'hdd';
+                            stores.push({ use: `${p.name} limit`, capacity: '?', formula: `${p.stack_per.amount}/free ${stackResLabel}`, needsDevice: true });
+                        }
+                    });
+                    
+                    const hasOutputs = Object.keys(outputs).length > 0;
+                    const hasInputs = Object.keys(inputs).length > 0;
+                    const hasStores = stores.length > 0;
+                    
+                    if (hasOutputs || hasInputs || hasStores) {
+                        ioHtml = '<div class="io-section"><div class="io-section-title">Throughput Summary</div><div class="io-grid">';
+                        if (hasInputs) {
+                            let inputItems = '';
+                            for (const [use, data] of Object.entries(inputs)) {
+                                inputItems += `<div class="io-item"><span class="io-item-use">${use}</span><span class="io-item-tick">${data.perTick}</span></div>`;
+                            }
+                            ioHtml += `<div class="io-box"><div class="io-box-header"><span class="io-box-title input">↓ Input (needs)</span><span class="io-col-header">per tick</span></div><div class="io-items">${inputItems}</div></div>`;
+                        }
+                        if (hasOutputs) {
+                            let outputItems = '';
+                            for (const [use, data] of Object.entries(outputs)) {
+                                outputItems += `<div class="io-item"><span class="io-item-use">${use}</span><span class="io-item-tick">${data.perTick}</span></div>`;
+                            }
+                            ioHtml += `<div class="io-box"><div class="io-box-header"><span class="io-box-title output">↑ Output</span><span class="io-col-header">per tick</span></div><div class="io-items">${outputItems}</div></div>`;
+                        }
+                        if (hasStores) {
+                            let storeItems = '';
+                            for (const s of stores) {
+                                storeItems += `<div class="io-item"><span class="io-item-use">${s.use}</span><span class="io-item-tick">${s.capacity}</span><span class="io-item-formula">(${s.formula})</span></div>`;
+                            }
+                            ioHtml += `<div class="io-box"><div class="io-box-header"><span class="io-box-title storage">◆ Dynamic Capacity</span></div><div class="io-items">${storeItems}</div><div style="font-size:10px;color:#8b949e;margin-top:6px;">Select device to calculate</div></div>`;
+                        }
+                        ioHtml += '</div></div>';
+                    }
+                    
+                    programsSummaryEl.classList.remove('hidden');
+                    programsSummaryEl.innerHTML = `
+                        <strong>Selected:</strong> ${selectedPrograms.map(p => p.name).join(' + ')}${ioHtml}
+                        <table class="file-table">
+                            <thead><tr><th>File</th><th>CPU</th><th>MEM</th><th>HDD</th></tr></thead>
+                            <tbody>${rows}</tbody>
+                        </table>`;
+                } else {
+                    programsSummaryEl.classList.add('hidden');
+                }
+                
+                updateSharecode();
+                return;
+            }
+            
+            // Case: Device selected (with or without programs)
 
             const totalCpu = selectedPrograms.reduce((sum, p) => sum + p.cpu, 0);
             const totalMemory = selectedPrograms.reduce((sum, p) => sum + p.memory, 0);
@@ -2268,9 +2699,18 @@
                 : 0;
             
             // Auto-populate SATA if config enabled and user hasn't manually overridden
-            if (config.autoSata && !sataManualOverride && sataNeeded !== sataSelected) {
-                sataSelected = sataNeeded;
-                updateToggles();
+            if (!sataManualOverride) {
+                if (config.maxSata && sataSlots > 0) {
+                    // Maximize: fill all SATA slots
+                    if (sataSelected !== sataSlots) {
+                        sataSelected = sataSlots;
+                        updateToggles();
+                    }
+                } else if (config.autoSata && sataNeeded !== sataSelected) {
+                    // Minimum: only add what's needed
+                    sataSelected = sataNeeded;
+                    updateToggles();
+                }
             }
             
             // Use sataSelected (auto-adjusted or user-controlled)
@@ -2314,7 +2754,7 @@
                 )}
             `;
 
-            // Programs summary with file table
+            // Programs summary with file table and I/O summary
             if (selectedPrograms.length > 0) {
                 // Build file list
                 const files = [];
@@ -2332,12 +2772,114 @@
                 const rows = files.map(f =>
                     `<tr><td>${f.path}</td><td>${f.cpu}</td><td>${f.mem}</td><td>${f.storage}</td></tr>`
                 ).join('');
+                
+                // Build I/O summary
+                const outputs = {};
+                const inputs = {};
+                const stores = [];
+                let deviceTPS = null;
+                
+                if (selectedDevice && selectedDevice.cpu_cycle) {
+                    deviceTPS = parseTicksPerSecond(selectedDevice.cpu_cycle);
+                }
+                
+                selectedPrograms.forEach(p => {
+                    // Aggregate outputs by individual use type
+                    if (p.output_amount !== null && p.output_amount > 0 && p.output_uses) {
+                        p.output_uses.forEach(use => {
+                            if (!outputs[use]) outputs[use] = { perTick: 0, perSec: 0 };
+                            outputs[use].perTick += p.output_amount;
+                            if (deviceTPS) outputs[use].perSec += p.output_amount * deviceTPS;
+                        });
+                    }
+                    
+                    // Aggregate inputs
+                    if (p.input_amount !== null && p.input_amount > 0 && p.input_uses) {
+                        const key = p.input_uses;
+                        if (!inputs[key]) inputs[key] = { perTick: 0, perSec: 0 };
+                        inputs[key].perTick += p.input_amount;
+                        if (deviceTPS) inputs[key].perSec += p.input_amount * deviceTPS;
+                    }
+                    
+                    // Storage programs with dynamic capacity
+                    if (p.capacity_per) {
+                        const freeResource = p.capacity_per.resource === 'storage' 
+                            ? storageRemaining 
+                            : (p.capacity_per.resource === 'memory' ? memoryRemaining : 0);
+                        const capacity = Math.max(0, freeResource) * p.capacity_per.amount;
+                        const resLabel = p.capacity_per.resource === 'storage' ? 'hdd' : 'mem';
+                        stores.push({ use: p.output_uses ? p.output_uses.join(', ') : '?', capacity: capacity, formula: `${p.capacity_per.amount}/free ${resLabel}` });
+                    }
+                    
+                    // Programs with dynamic stack limit
+                    if (p.stack_per) {
+                        const freeResource = p.stack_per.resource === 'memory' 
+                            ? memoryRemaining 
+                            : (p.stack_per.resource === 'storage' ? storageRemaining : 0);
+                        const stackCap = Math.max(0, freeResource) * p.stack_per.amount;
+                        const stackResLabel = p.stack_per.resource === 'memory' ? 'mem' : 'hdd';
+                        stores.push({ use: `${p.name} limit`, capacity: stackCap, formula: `${p.stack_per.amount}/free ${stackResLabel}` });
+                    }
+                });
+                
+                // Build I/O HTML
+                let ioHtml = '';
+                const hasOutputs = Object.keys(outputs).length > 0;
+                const hasInputs = Object.keys(inputs).length > 0;
+                const hasStores = stores.length > 0;
+                
+                if (hasOutputs || hasInputs || hasStores) {
+                    ioHtml = '<div class="io-section"><div class="io-section-title">Throughput Summary</div><div class="io-grid">';
+                    
+                    // Inputs box (left side - what flows in)
+                    if (hasInputs) {
+                        let inputItems = '';
+                        for (const [use, data] of Object.entries(inputs)) {
+                            if (deviceTPS) {
+                                inputItems += `<div class="io-item"><span class="io-item-use">${use}</span><span class="io-item-tick">${data.perTick}</span><span class="io-item-sep">•</span><span class="io-item-sec">${formatTraversals(data.perSec)}</span></div>`;
+                            } else {
+                                inputItems += `<div class="io-item"><span class="io-item-use">${use}</span><span class="io-item-tick">${data.perTick}</span></div>`;
+                            }
+                        }
+                        const colHeader = deviceTPS 
+                            ? '<span class="h-tick">per tick</span><span class="h-sep"></span><span class="h-sec">per sec</span>' 
+                            : 'per tick';
+                        ioHtml += `<div class="io-box"><div class="io-box-header"><span class="io-box-title input">↓ Input (needs)</span><span class="io-col-header">${colHeader}</span></div><div class="io-items">${inputItems}</div></div>`;
+                    }
+                    
+                    // Outputs box (right side - what flows out)
+                    if (hasOutputs) {
+                        let outputItems = '';
+                        for (const [use, data] of Object.entries(outputs)) {
+                            if (deviceTPS) {
+                                outputItems += `<div class="io-item"><span class="io-item-use">${use}</span><span class="io-item-tick">${data.perTick}</span><span class="io-item-sep">•</span><span class="io-item-sec">${formatTraversals(data.perSec)}</span></div>`;
+                            } else {
+                                outputItems += `<div class="io-item"><span class="io-item-use">${use}</span><span class="io-item-tick">${data.perTick}</span></div>`;
+                            }
+                        }
+                        const colHeader = deviceTPS 
+                            ? '<span class="h-tick">per tick</span><span class="h-sep"></span><span class="h-sec">per sec</span>' 
+                            : 'per tick';
+                        ioHtml += `<div class="io-box"><div class="io-box-header"><span class="io-box-title output">↑ Output</span><span class="io-col-header">${colHeader}</span></div><div class="io-items">${outputItems}</div></div>`;
+                    }
+                    
+                    // Storage box
+                    if (hasStores) {
+                        let storeItems = '';
+                        for (const s of stores) {
+                            storeItems += `<div class="io-item"><span class="io-item-use">${s.use}</span><span class="io-item-tick">${s.capacity}</span><span class="io-item-formula">(${s.formula})</span></div>`;
+                        }
+                        ioHtml += `<div class="io-box"><div class="io-box-header"><span class="io-box-title storage">◆ Dynamic Capacity</span></div><div class="io-items">${storeItems}</div></div>`;
+                    }
+                    
+                    ioHtml += '</div></div>';
+                }
 
                 programsSummaryEl.classList.remove('hidden');
                 programsSummaryEl.innerHTML = `
-                    <strong>Selected:</strong> ${selectedPrograms.map(p => p.name).join(' + ')}
+                    <strong>Selected:</strong> ${selectedPrograms.map(p => p.name).join(' + ')}${ioHtml}
                     <table class="file-table">
-                        <thead><tr><th>File</th><th>C</th><th>M</th><th>S</th></tr></thead>
+                        <thead><tr><th>File</th><th>CPU</th><th>MEM</th><th>HDD</th></tr></thead>
                         <tbody>${rows}</tbody>
                     </table>`;
             } else {

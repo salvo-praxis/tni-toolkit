@@ -26,7 +26,16 @@ Standalone HTML files — download and open in any browser. Works offline. All t
 
 ### Device Compatibility Calculator
 
-Select any device (servers, switches, routers, firewalls, debuggers), check off programs/firmware, and instantly see if CPU/Memory/Storage requirements fit. Features category filtering, search, shareable configuration codes via URL, and file-level resource breakdown.
+Plan your server builds before you buy. Select any device (servers, switches, routers, firewalls, debuggers), check off programs, and instantly see if CPU/Memory/Storage requirements fit. 
+
+**Features:**
+- Category filtering, search, shareable configs via URL
+- Inline device stats: power draw, traversals/sec, warranty, vendor
+- Program throughput metrics: I/O per tick, per second, stack limits
+- Throughput Summary panel with aggregated input/output/capacity
+- Auto-populate SATA expansion modules
+- Config menu with toggleable display options
+- Works with refurbished devices
 
 **[Use: Device Calculator](https://tni-toolkit.salvo.host/tools/device-calculator.html) or [Download: `tools/device-calculator.html`](tools/device-calculator.html)**
 
@@ -92,8 +101,10 @@ tni-toolkit/
 ├── LICENSE
 ├── CLAUDE.md                   # Claude Code project context
 ├── CONTRIBUTING.md             # Contribution guidelines (markdown)
-├── index.html                  # Landing page (GitHub Pages)
+├── CONTRIBUTIONS.md            # Contribution history log
+├── index.html                  # Landing page
 ├── contributing.html           # Contribution guide (styled)
+├── contributions.html          # Contribution history (styled)
 ├── credits.html                # Credits, sources, greetz
 ├── data/
 │   ├── tni-store.json          # Equipment & store catalog
@@ -101,10 +112,11 @@ tni-toolkit/
 │   ├── tni-cli-commands.json   # Terminal command reference
 │   └── tni-traffic-types.json  # Network traffic types
 ├── tools/
-│   ├── device-calculator.html   # Device compatibility calculator
+│   ├── device-calculator.html  # Device compatibility calculator
 │   └── seed-finder.html        # Starting proposal seed finder
 └── docs/
     ├── STYLE_GUIDE.md          # Complete CSS reference
+    ├── style-guide.html        # Style guide (styled)
     └── screenshots/
 ```
 

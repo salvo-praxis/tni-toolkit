@@ -7,6 +7,50 @@ Community-built data files and planning tools for **Tower Networking Inc.** by P
 **Repository:** https://github.com/salvo-praxis/tni-toolkit  
 **Live Site:** https://tni-toolkit.salvo.host/
 
+---
+
+## ⚡ SESSION STATE (VOLATILE)
+
+> **This section tracks current work and is cleared after each successful commit.**
+
+### Current Work
+
+**File:** device-calculator.html  
+**Starting Version:** v1.7.0  
+**Target Version:** v1.8.0  
+**Last Commit:** YAML workflow fix (build-zip-and-ftp-deploy-full-repo.yml v1.0.3)
+
+### Changes This Session
+
+- Program throughput metrics (output_uses array, input_uses field)
+- Throughput Summary panel (Input/Output/Dynamic Capacity boxes)
+- Dynamic capacity calculations (decentro-wallet, decentro-collector)
+- SATA behavior split (minimum vs maximize toggles)
+- Config menu two-column layout
+- Results panel visibility improvements
+- File table headers: CPU MEM HDD
+- Formula labels: "free mem" / "free hdd"
+- Column alignment (42px tick, 16px sep, 40px sec)
+
+### Files Ready for Commit
+
+- `device-calculator.html` (v1.8.0)
+- `CLAUDE.md`
+
+### Pending Attributions
+
+| Who | Context | Status |
+|-----|---------|--------|
+| *(None this session)* | | |
+
+### Next Steps
+
+1. Version bump device-calculator header → v1.8.0
+2. Update CONTRIBUTIONS.md
+3. Commit: `tool: add program throughput metrics (device-calculator v1.8.0)`
+
+---
+
 ## Architecture
 
 All tools are **standalone HTML files** with embedded CSS/JS. No build process, no external dependencies, works offline. Each tool embeds its own data.
@@ -15,11 +59,11 @@ All tools are **standalone HTML files** with embedded CSS/JS. No build process, 
 tni-toolkit/
 ├── .github/
 │   └── workflows/
-│       └── build-zip-and-ftp-deploy.yml  # CI/CD automation
+│       └── build-zip-and-ftp-deploy-full-repo.yml  # CI/CD automation
 ├── CLAUDE.md              # You are here
 ├── CONTRIBUTING.md        # Contribution guidelines
 ├── CONTRIBUTIONS.md       # Contribution history log
-├── index.html             # Landing page (GitHub Pages)
+├── index.html             # Landing page
 ├── contributing.html      # Contribution guide (styled)
 ├── contributions.html     # Contribution history (styled)
 ├── credits.html           # Credits, sources, greetz
@@ -37,13 +81,15 @@ tni-toolkit/
     └── style-guide.html   # HTML version of style guide
 ```
 
-## When Building New Tools
+### When Building New Tools
 
 1. **Read `docs/STYLE_GUIDE.md` first** — Contains complete CSS reference, component patterns, and copy-paste templates
 2. **Single HTML file** — All CSS in `<style>`, all JS in `<script>`, data embedded as JS objects
 3. **Match the NOC aesthetic** — Dark theme, monospace font, green/blue accents
 4. **Include standard footer** — Links to TNI Toolkit and Steam page
 5. **Test offline** — Tools must work without network access
+
+---
 
 ## Quick Reference
 
@@ -319,117 +365,9 @@ This keeps complex tooling isolated while the toolkit remains a clean collection
 
 ---
 
-## TODO
-
-Active work items and community feedback tracking.
-
-### Credits and Notations
-
-| Who | Context | Status |
-|-----|---------|--------|
-| *(No pending attributions)* | | |
-
-### Data File Build / Expansion
-
-- [ ] **tni-proposals.json** — New data file for proposal prerequisites:
-  - `rip` command: 7 routers before chance of proposal
-  - `vmconf` command: 5 servers before chance of proposal
-
-### Device Compatibility Calculator
-
-**UI Improvements:**
-- [x] ~~In-list metrics display~~ *(v1.7.0 — granular toggles for all stats)*
-
-**Feature Requests:**
-- [x] ~~Display device warranty~~ *(v1.7.0)*
-- [x] ~~Display device power usage~~ *(v1.7.0)*
-- [x] ~~Display traversals metrics~~ *(v1.7.0)*
-- [x] ~~Auto-prune incompatible devices during program selection~~ *(v1.7.0 config menu)*
-- [x] ~~Granular inline toggles for all stats~~ *(v1.7.0)*
-- [x] ~~Comprehensive hover tooltip~~ *(v1.7.0)*
-
-**Config Menu:** *(v1.7.0 — implemented)*
-- [x] ~~Auto-populate SATA expansion modules as needed~~
-- [x] ~~Auto-prune incompatible devices during program selection~~
-- [x] ~~Include refurbished devices in list~~
-- [x] ~~Display device warranty~~
-- [x] ~~Display vendor~~
-- [x] ~~Show Power (W) — DEFAULT ON~~
-- [x] ~~Show Traversals/sec (T/s) — DEFAULT ON~~
-- [x] ~~Show Traversals per Tick (TPT) — DEFAULT OFF~~
-- [x] ~~Show Ticks per Second (TPS) — DEFAULT OFF~~
-- [x] ~~Show detailed tooltip on hover — DEFAULT OFF~~
-
-**Traversals Metrics:** *(v1.7.0 — implemented)*
-```
-Data in device-calculator.html:
-- traversals_per_tick: number (e.g., 25, 50, 108)
-- cpu_cycle: string (e.g., "1 tick / 2.0s")
-
-Calculation (parseTicksPerSecond, calculateTraversalsPerSec):
-- Parse cpu_cycle → extract seconds (2.0s → 2.0)
-- ticks_per_second = 1 / seconds_per_tick  
-- traversals_per_second = traversals_per_tick * ticks_per_second
-
-Inline display (all toggleable):
-- Power: "22W"
-- T/s: "12.5 T/s" (calculated)
-- TPT: "25 TPT" (raw)
-- TPS: "0.5 TPS" (calculated from cpu_cycle)
-
-Tooltip (opt-in, comprehensive):
-Shows model, vendor, CPU/MEM/HDD, power, warranty, 
-traversals breakdown (T/s = TPT × TPS)
-```
-
-### Starting Proposal Seed Finder
-
-- [ ] **Paginate results**
-- [ ] **Config menu:**
-  - Show `[ - #### + ]` seeds per page (increments of 25, or manual entry)
-
-### Link Updates
-
-- [ ] Relative links where applicable
-- [ ] Where there is an HTML counterpart to an MD file, link to the HTML version (relative, not GitHub)
-- [ ] `tni-toolkit.zip` download link should be relative (published on both GitHub and production server @ root)
-
-### YAML Automation
-
-- [x] Build ZIP and deploy via FTP entire repo (including zip) to tni-toolkit.salvo.host
-
----
-
 ## Versioning & Attribution Workflow
 
-This section defines how Claude and Salvo Praxis manage versions, attributions, and file synchronization across work sessions.
-
-### Session Management
-
-#### Starting a Session
-
-1. **Declare working version**: State current version from file header (e.g., "Starting from device-calculator v1.5.0")
-2. **Review TODO**: Check Credits and Notations for pending attributions
-3. **Set session scope**: What features/fixes are we targeting?
-
-#### During a Session
-
-- **DO NOT bump version on every edit** — All work is "in progress" on the starting version
-- **Track changes** — Claude maintains awareness of what's changed this session
-- **Intermediate downloads** — Files downloaded mid-session keep the starting version
-- **Note attributions** — If implementing a community suggestion, note it for end-of-session
-
-#### Ending a Session (Publishing)
-
-When session ends (context limit, natural stopping point, or explicit wrap-up):
-
-1. **Bump version ONCE** based on total scope of changes
-2. **Update ALL required files** (see File Update Checklist)
-3. **Move attributions** from TODO → CONTRIBUTIONS.md/credits.html
-4. **Generate commit message** following standard format
-5. **Output session handoff** if context is running low
-
----
+This section defines how Claude and contributors manage versions, attributions, and file synchronization across work sessions.
 
 ### Version Bump Rules
 
@@ -443,20 +381,43 @@ Semantic versioning: `MAJOR.MINOR.PATCH`
 
 **Session consolidation**: Multiple changes in one session = one version bump at the highest applicable level.
 
----
+### Session Management
+
+#### Starting a Session
+
+1. **Declare working version**: State current version from file header (e.g., "Starting from device-calculator v1.5.0")
+2. **Review TODO**: Check for pending attributions or work items
+3. **Set session scope**: What features/fixes are we targeting?
+
+#### During a Session
+
+- **DO NOT bump version on every edit** — All work is "in progress" on the starting version
+- **Track changes** — Update SESSION STATE section as you go
+- **Intermediate downloads** — Files downloaded mid-session keep the starting version
+- **Note attributions** — If implementing a community suggestion, add to Pending Attributions
+
+#### Ending a Session (Publishing)
+
+When session ends (context limit, natural stopping point, or explicit wrap-up):
+
+1. **Bump version ONCE** based on total scope of changes
+2. **Update ALL required files** (see File Update Checklist)
+3. **Move attributions** from SESSION STATE → CONTRIBUTIONS.md/credits.html
+4. **Generate commit message** following standard format
+5. **Clear SESSION STATE** after successful commit
 
 ### Attribution Pipeline
 
 #### Stage 1: Suggestion Received
-Add to `TODO > Credits and Notations`:
+Add to `SESSION STATE > Pending Attributions`:
 ```markdown
 | **@username** | Brief context of what they suggested | Pending |
 ```
 
 #### Stage 2: Suggestion Implemented  
-Update status in TODO:
+Update status:
 ```markdown
-| **@username** | Brief context | ✓ Implemented, needs attribution |
+| **@username** | Brief context | ✓ Implemented |
 ```
 
 #### Stage 3: Attribution Applied (End of Session)
@@ -466,15 +427,8 @@ Update files in this order:
 3. **contributions.html** — Mirror the MD entry
 4. **credits.html** — Update Greetz count + Recent Contributions table
 
-Then update TODO status:
-```markdown
-| **@username** | Brief context | ✓ Fixed, credited, committed |
-```
-
 #### Stage 4: Cleanup
-After confirming commit, delete completed rows from TODO.
-
----
+After confirming commit, clear completed rows from SESSION STATE.
 
 ### File Update Checklist
 
@@ -501,8 +455,6 @@ After confirming commit, delete completed rows from TODO.
 - [ ] CONTRIBUTIONS.md: Add entry under contributor with "Added:" prefix
 - [ ] contributions.html: Mirror entry
 - [ ] credits.html: Add/update Greetz count, add to Recent Contributions
-
----
 
 ### Commit Message Format
 
@@ -537,21 +489,19 @@ Files updated:
 - credits.html (vX.Y.Z)
 ```
 
-**Examples:**
+**Example:**
 ```
 tool: add config menu with warranty/refurbs display (device-calculator v1.7.0)
 
 Changes:
-- Config menu with localStorage persistence (auto-SATA, show refurbs/warranty/vendor)
+- Config menu with localStorage persistence
 - Clear buttons for device/program selection
 - Colorized stats (CPU/MEM/HDD/W)
 - Warranty and vendor display
-- Decentro Rigs category with Dvergar device
-- Refurbished devices data
 
 Attribution:
 - Suggested by @gamers2000 (warranty, refurbs)
-- Suggested by @SingingPotBeast (auto-prune/config menu)
+- Suggested by @SingingPotBeast (config menu)
 
 Files updated:
 - device-calculator.html (v1.7.0)
@@ -560,47 +510,15 @@ Files updated:
 - credits.html (v1.6.1)
 ```
 
-```
-fix: correct SATA storage value (device-calculator v1.4.1)
-
-Changes:
-- SATA expansion storage: 6 → 4
-
-Attribution:
-- Reported by @Kurtchen
-
-Files updated:
-- device-calculator.html (v1.4.1)
-- CONTRIBUTIONS.md
-- contributions.html
-- credits.html
-```
-
-```
-data: add compatible_programs field (tni-store v1.2.0)
-
-Changes:
-- Added compatible_programs field to all 47 devices
-- Placeholder arrays for community contribution
-
-Files updated:
-- tni-store.json (v1.2.0)
-- CONTRIBUTIONS.md
-```
-
----
-
 ### Context Recovery Protocol
 
 When starting a new Claude session:
 
-1. **Read CLAUDE.md** — Especially TODO and this workflow section
+1. **Read CLAUDE.md** — Especially SESSION STATE and TODO sections
 2. **Check file headers** — Note current versions of relevant files
 3. **Review recent CONTRIBUTIONS.md** — See what was just completed
-4. **Check for "Pending" in TODO** — Attributions that need handling
+4. **Check for "Pending" in SESSION STATE** — Attributions that need handling
 5. **Ask if unclear** — "What version is [file] at? What are we working on?"
-
----
 
 ### Session Handoff Template
 
@@ -625,17 +543,12 @@ Files ready for commit:
 - file2.md (in outputs)
 ```
 
----
-
 ### Internal Files (No Public Attribution)
 
 These files are internal and should NOT appear in CONTRIBUTIONS.md or credits.html:
 - `CLAUDE.md` — Project context for Claude
-- `STYLE_GUIDE_AUDIT.md` — Internal reference document
 - Draft/WIP files not yet published
 - Test files
-
----
 
 ### Greetz Count Rules
 
@@ -654,9 +567,7 @@ credits.html Greetz section tracks community contribution counts.
 
 **Display order:** Descending by count, then alphabetical for ties.
 
----
-
-### Quick Reference
+### Quick Reference Table
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -678,11 +589,37 @@ SESSION END:   Bump once → Update all files → Commit message → Handoff
 
 ---
 
+## TODO
+
+### Pending Attributions
+
+| Who | Context | Status |
+|-----|---------|--------|
+| *(None pending)* | | |
+
+### Data Files
+
+- [ ] **tni-proposals.json** — Proposal prerequisites data:
+  - `rip` command: 7 routers before chance of proposal
+  - `vmconf` command: 5 servers before chance of proposal
+
+### Seed Finder
+
+- [ ] Paginate results
+- [ ] Config menu: seeds per page (increments of 25)
+
+### General
+
+- [ ] Relative links where applicable
+- [ ] HTML counterparts should link to HTML versions (not GitHub MD)
+- [ ] `tni-toolkit.zip` download link should be relative
+
+---
+
 ## Roadmap
 
 ### In Progress
 - [ ] **CLI Command Builder** — Form-based command generator for NetShell
-  - *Blocker: Traffic types data* ✓ Created `tni-traffic-types.json`
 
 ### Up Next  
 - [ ] **Store Browser / Cart Calculator** — Browse equipment, build carts, calculate totals
@@ -702,21 +639,9 @@ SESSION END:   Bump once → Update all files → Commit message → Handoff
 
 ---
 
-## Links
+## Working with Claude
 
-- [Style Guide](docs/STYLE_GUIDE.md) — Detailed CSS reference
-- [Contributing](CONTRIBUTING.md) — How to contribute (markdown)
-- [Contributing Guide](contributing.html) — How to contribute (styled)
-- [Credits](credits.html) — Sources, contributors, greetz
-- [TNI on Steam](https://store.steampowered.com/app/2939600/Tower_Networking_Inc/)
-- [Pocosia Studios](https://pocosia.com/)
-- [TNI Discord](https://discord.com/invite/nNKRMjDhf2) — Community
-
----
-
-## Working with Claude Code
-
-Tips for effective development sessions. See also: **Versioning & Attribution Workflow** above.
+Tips for effective development sessions.
 
 ### Session Discipline
 
@@ -766,3 +691,15 @@ If confused: *"Stop. Read CLAUDE.md and docs/STYLE_GUIDE.md again. Then look at 
 - **Running low on context?** Ask Claude for a session handoff
 - **Starting fresh?** Upload files + state versions + check TODO
 - **Version skew?** Trust file headers as source of truth, not memory
+
+---
+
+## Links
+
+- [Style Guide](docs/STYLE_GUIDE.md) — Detailed CSS reference
+- [Contributing](CONTRIBUTING.md) — How to contribute (markdown)
+- [Contributing Guide](contributing.html) — How to contribute (styled)
+- [Credits](credits.html) — Sources, contributors, greetz
+- [TNI on Steam](https://store.steampowered.com/app/2939600/Tower_Networking_Inc/)
+- [Pocosia Studios](https://pocosia.com/)
+- [TNI Discord](https://discord.com/invite/nNKRMjDhf2) — Community
