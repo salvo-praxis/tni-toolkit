@@ -1,105 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  TNI Toolkit - XML Sitemap
-  Generated: 2025-12-15
-  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
-  
-  This sitemap is auto-updated by the generate-sitemap GitHub Action on each push.
-  Manual edits will be overwritten.
--->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Landing Page -->
-  <url>
-    <loc>https://tni-toolkit.salvo.host/</loc>
-    <priority>1.0</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  
-  <!-- Tools -->
-  <url>
-    <loc>https://tni-toolkit.salvo.host/tools/device-calculator.html</loc>
-    <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://tni-toolkit.salvo.host/tools/seed-finder.html</loc>
-    <priority>0.9</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  
-  <!-- Reference Pages -->
-  <url>
-    <loc>https://tni-toolkit.salvo.host/docs/store-reference.html</loc>
-    <priority>0.8</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://tni-toolkit.salvo.host/docs/programs-reference.html</loc>
-    <priority>0.8</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://tni-toolkit.salvo.host/docs/proposals-reference.html</loc>
-    <priority>0.8</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://tni-toolkit.salvo.host/docs/cli-reference.html</loc>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://tni-toolkit.salvo.host/docs/traffic-types-reference.html</loc>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  
-  <!-- Documentation -->
-  <url>
-    <loc>https://tni-toolkit.salvo.host/docs/style-guide.html</loc>
-    <priority>0.6</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://tni-toolkit.salvo.host/contributing.html</loc>
-    <priority>0.6</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://tni-toolkit.salvo.host/contributions.html</loc>
-    <priority>0.5</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://tni-toolkit.salvo.host/credits.html</loc>
-    <priority>0.5</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  
-  <!-- Data Files (JSON) -->
-  <url>
-    <loc>https://tni-toolkit.salvo.host/data/tni-store.json</loc>
-    <priority>0.7</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://tni-toolkit.salvo.host/data/tni-programs.json</loc>
-    <priority>0.7</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://tni-toolkit.salvo.host/data/tni-proposals.json</loc>
-    <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://tni-toolkit.salvo.host/data/tni-cli-commands.json</loc>
-    <priority>0.6</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://tni-toolkit.salvo.host/data/tni-traffic-types.json</loc>
-    <priority>0.6</priority>
-    <changefreq>monthly</changefreq>
-  </url>
+<url>
+<loc>https://tni-toolkit.salvo.host/</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/contributing.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/contributions.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/credits.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/data/tni-cli-commands.json</loc>
+<lastmod>2025-12-07T20:41:07-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/data/tni-programs.json</loc>
+<lastmod>2025-12-08T18:09:20-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/data/tni-proposals.json</loc>
+<lastmod>2025-12-14T15:48:57-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/data/tni-store.json</loc>
+<lastmod>2025-12-14T15:48:57-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/data/tni-traffic-types.json</loc>
+<lastmod>2025-12-14T15:48:57-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/docs/cli-reference.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/docs/programs-reference.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/docs/proposals-reference.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/docs/store-reference.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/docs/style-guide.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/docs/traffic-types-reference.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/tni-toolkit-seo-update/</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/tni-toolkit-seo-update/contributing.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/tni-toolkit-seo-update/contributions.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/tni-toolkit-seo-update/credits.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/tools/device-calculator.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/tools/seed-finder.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/tni-toolkit-seo-update/docs/cli-reference.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/tni-toolkit-seo-update/docs/programs-reference.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/tni-toolkit-seo-update/docs/proposals-reference.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/tni-toolkit-seo-update/docs/store-reference.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/tni-toolkit-seo-update/docs/style-guide.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/tni-toolkit-seo-update/docs/traffic-types-reference.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/tni-toolkit-seo-update/tools/device-calculator.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
+<url>
+<loc>https://tni-toolkit.salvo.host/tni-toolkit-seo-update/tools/seed-finder.html</loc>
+<lastmod>2025-12-15T01:52:59-06:00</lastmod>
+</url>
 </urlset>
