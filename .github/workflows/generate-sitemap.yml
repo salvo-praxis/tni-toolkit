@@ -2,7 +2,7 @@
 # TNI Toolkit - GitHub Actions Workflow
 # File: .github/workflows/generate-sitemap.yml
 # Name: Generate Sitemap
-# Version: 1.0.0
+# Version: 1.0.1
 # Updated: 2025-12-15
 # Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
 # Description:
@@ -13,6 +13,7 @@
 #   - salvo-praxis (@salvo-praxis) - workflow design
 #   - Claude - YAML scaffolding
 # Changelog:
+#   1.0.1 - Fixed sync step: temp copy approach for handling concurrent pushes
 #   1.0.0 - Initial release
 # ============================================================================
 
@@ -60,7 +61,22 @@ jobs:
           echo "Excluded ${{ steps.sitemap.outputs.excluded-count }} URLs"
       
       # ----------------------------------------------------------
-      # Step 4: Commit updated sitemap
+      # Step 4: Sync with origin before commit (handle concurrent pushes)
+      # ----------------------------------------------------------
+      - name: Sync with latest origin/main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Save our generated sitemap
+          cp sitemap.xml /tmp/sitemap.xml
+          # Reset to whatever origin has now
+          git fetch origin main
+          git reset --hard origin/main
+          # Restore our generated sitemap
+          cp /tmp/sitemap.xml sitemap.xml
+      
+      # ----------------------------------------------------------
+      # Step 5: Commit updated sitemap
       # ----------------------------------------------------------
       - name: Commit sitemap
         uses: stefanzweifel/git-auto-commit-action@v5
