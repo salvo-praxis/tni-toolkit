@@ -15,26 +15,66 @@ Community-built data files and planning tools for **Tower Networking Inc.** by P
 
 ### Current Work
 
-**Status:** READY FOR COMMIT  
-**Last Commit:** 2025-12-14 — fix: device-calc v1.8.2 search fix, attribution updates (Блинчик)
+**Status:** IN PROGRESS — SEO & Archivability Setup  
+**Session Date:** 2025-12-15
+
+### Session Goals
+
+1. **Visibility (SEO)** — Get indexed on Google, Bing, etc.
+2. **Archivability** — Archive.org (Wayback Machine) + Software Heritage
 
 ### Changes This Session
 
-**Updated files:**
-- proposals-reference.html (v1.1.1) — Corrected "bug note" to clarification (gamers2000)
-- credits.html (v1.6.8) — gamers2000 greetz 3→4, v1.1.1 entry, trimmed table to 11 highlights
-- contributions.html (v1.2.7) — Added gamers2000 proposals clarification
-- CONTRIBUTIONS.md — Added gamers2000 entry
-- CLAUDE.md — Updated session state, added Recent Contributions Table guidelines
+**New files to create:**
+- `sitemap.xml` — XML sitemap for search engines
+- `robots.txt` — Crawler directives with sitemap reference
+- `.github/workflows/generate-sitemap.yml` — Auto-generate sitemap on push
+- `.github/workflows/archive-software-heritage.yml` — Archive to Software Heritage on release
+
+**Files to update:**
+- All HTML files — Add SEO meta tags (OG, canonical, keywords)
+- `CLAUDE.md` — Document SEO meta tag standards
+- `docs/style-guide.html` — Add meta tags section to documentation
+- `docs/STYLE_GUIDE.md` — Add meta tags section
+- `contributing.html` — Add meta tags documentation
+
+### Pending User Actions
+
+Salvo is handling these in parallel:
+- [ ] Register site with Google Search Console (URL Prefix: `https://tni-toolkit.salvo.host`)
+- [ ] Register site with Bing Webmaster Tools
+- [ ] Manual "Save Page Now" on Archive.org for key URLs
+- [ ] Submit repos to Software Heritage: `https://archive.softwareheritage.org/save/`
+  - `https://github.com/salvo-praxis/tni-toolkit`
+  - `https://github.com/salvo-praxis/tni-seed-harvester`
+
+### Visibility Checklist (SEO)
+
+| Task | Status | Notes |
+|------|--------|-------|
+| Create `sitemap.xml` | 🔴 TODO | Include all public HTML + JSON files |
+| Create `robots.txt` | 🔴 TODO | Reference sitemap |
+| Add SEO meta tags to HTML | 🔴 TODO | OG, canonical, description |
+| Google Search Console | ⏳ Salvo | URL Prefix: tni-toolkit.salvo.host |
+| Bing Webmaster Tools | ⏳ Salvo | Covers Yahoo/DuckDuckGo |
+| Sitemap generation workflow | 🔴 TODO | Auto-update on push |
+| Community outreach | ⏳ Future | Discord, Steam, Reddit |
+
+### Archivability Checklist
+
+| Task | Status | Notes |
+|------|--------|-------|
+| Manual Save Page Now | ⏳ Salvo | Key URLs on web.archive.org |
+| Submit to Software Heritage | ⏳ Salvo | Both repos |
+| Archive workflow (releases) | 🔴 TODO | Auto-trigger on GitHub release |
+| Add Software Heritage badge | 🔴 TODO | README.md after first archive |
 
 ### Files Ready for Commit
 
-All in /mnt/user-data/outputs/:
-- proposals-reference.html (v1.1.1)
-- credits.html (v1.6.8)
-- contributions.html (v1.2.7)
-- CONTRIBUTIONS.md
-- CLAUDE.md
+sitemap.xml                     # NEW: XML sitemap
+robots.txt                      # NEW: Crawler directives
+generate-sitemap.yml            # NEW: Auto-generate sitemap
+archive-software-heritage.yml   # NEW: Archive on release
 
 ---
 
@@ -46,7 +86,9 @@ All tools are **standalone HTML files** with embedded CSS/JS. No build process, 
 tni-toolkit/
 ├── .github/
 │   └── workflows/
-│       └── build-zip-and-ftp-deploy-full-repo.yml  # CI/CD automation
+│       ├── build-zip-and-ftp-deploy-full-repo.yml  # CI/CD automation
+│       ├── generate-sitemap.yml                     # NEW: Auto-generate sitemap
+│       └── archive-software-heritage.yml            # NEW: Archive on release
 ├── CLAUDE.md              # You are here
 ├── CONTRIBUTING.md        # Contribution guidelines
 ├── CONTRIBUTIONS.md       # Contribution history log
@@ -55,6 +97,8 @@ tni-toolkit/
 ├── contributions.html     # Contribution history (styled)
 ├── credits.html           # Credits, sources, greetz
 ├── README.md              # GitHub readme
+├── sitemap.xml            # NEW: XML sitemap
+├── robots.txt             # NEW: Crawler directives
 ├── data/                  # Source JSON datasets
 │   ├── tni-store.json     # Equipment catalog
 │   ├── tni-programs.json  # Server programs
@@ -81,6 +125,7 @@ tni-toolkit/
 3. **Match the NOC aesthetic** — Dark theme, monospace font, green/blue accents
 4. **Include standard footer** — Links to TNI Toolkit and Steam page
 5. **Test offline** — Tools must work without network access
+6. **Include SEO meta tags** — See Meta Tags section below
 
 ---
 
@@ -176,6 +221,60 @@ HTML tools include a comment header **before** `<!DOCTYPE html>`:
 -->
 ```
 
+### HTML Meta Tags (SEO)
+
+All HTML files should include these meta tags in the `<head>` section after `<meta charset>` and `<meta viewport>`:
+
+```html
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Page Title] - TNI Toolkit</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="[Page-specific description, 150-160 chars]">
+    <meta name="keywords" content="Tower Networking Inc, TNI, Pocosia Studios, [page-specific keywords]">
+    <meta name="author" content="Salvo Praxis">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph (Facebook, Discord, etc.) -->
+    <meta property="og:title" content="[Page Title] - TNI Toolkit">
+    <meta property="og:description" content="[Same as meta description]">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tni-toolkit.salvo.host/[path]">
+    <meta property="og:site_name" content="TNI Toolkit">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="[Page Title] - TNI Toolkit">
+    <meta name="twitter:description" content="[Same as meta description]">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://tni-toolkit.salvo.host/[path]">
+    
+    <style>
+        /* ... */
+    </style>
+</head>
+```
+
+**Page-specific descriptions:**
+
+| Page | Description |
+|------|-------------|
+| index.html | Community-built data files and planning tools for Tower Networking Inc. by Pocosia Studios. Device calculator, seed finder, and reference guides. |
+| device-calculator.html | Plan your TNI server builds. Select devices, check off programs, verify CPU/Memory/Storage requirements fit. Works offline. |
+| seed-finder.html | Find Tower Networking Inc. world seeds by starting proposals. 455 combinations across 3,794 verified seeds. |
+| store-reference.html | Complete Tower Networking Inc. equipment catalog. 101 items across 16 categories with specs and prices. |
+| programs-reference.html | All 25 TNI server programs with CPU, memory, storage requirements and I/O specifications. |
+| proposals-reference.html | All 30 Tower Networking Inc. proposals with prerequisites, costs, and effects. |
+| cli-reference.html | Complete NetShell command reference for Tower Networking Inc. 24 commands with syntax and examples. |
+| traffic-types-reference.html | 14 network traffic types for TNI firewall rules and router configuration. |
+| style-guide.html | TNI Toolkit design system. Colors, typography, UI components, and code patterns. |
+| contributing.html | How to contribute to TNI Toolkit. Data corrections, feature suggestions, and pull requests. |
+| contributions.html | TNI Toolkit contribution history log. Community corrections, features, and data additions. |
+| credits.html | TNI Toolkit credits. Contributors, data sources, and community acknowledgments. |
+
 ### YAML Files
 
 YAML configuration files (GitHub Actions, CI/CD) use comment headers:
@@ -251,80 +350,50 @@ HTML tools are standalone and work offline, but images require external files or
 1. **No images** (current) — Text-only, minimal footprint
 2. **Base64 embedded** — Self-contained but bloated file size
 3. **External `/assets/`** — Clean separation but requires file management
-4. **CDN/external URL** — Works online only, defeats offline goal
 
 ### Current Decision
-Text-only for now. Consider Base64 for small icons if needed. Revisit when game provides official asset pack.
+Text-only for tools. Screenshots in `docs/screenshots/` for documentation only (README, etc.).
 
 ---
 
-## Tool External Sources
+## SEO & Archivability
 
-Some tools have companion repositories with build pipelines:
+### Search Engine Visibility
 
-| Tool | Source Repo | Pipeline |
-|------|-------------|----------|
-| `seed-finder.html` | [tni-seed-harvester](https://github.com/salvo-praxis/tni-seed-harvester) | AHK → OCR → Python → HTML |
+**Google Search Console:** https://search.google.com/search-console
+- Property type: URL Prefix
+- URL: `https://tni-toolkit.salvo.host`
+- Verification: HTML file, meta tag, or DNS
 
-The pipeline produces the final HTML artifact which gets copied to `tni-toolkit/tools/`.
+**Bing Webmaster Tools:** https://www.bing.com/webmasters
+- Also covers Yahoo and DuckDuckGo
+- Can import from Google Search Console
 
----
+**Sitemap:** `https://tni-toolkit.salvo.host/sitemap.xml`
+- Auto-generated by GitHub Action on push
+- Includes all HTML files and JSON data files
 
-## Versioning Guidelines
+### Archive Preservation
 
-### Semantic Versioning (X.Y.Z)
+**Internet Archive (Wayback Machine):**
+- Manual: https://web.archive.org → Save Page Now
+- Automated: `wayback-machine-archiver` Python CLI
+- Use "Save outlinks" for full page capture
 
-| Change Type | Bump | Example |
-|-------------|------|---------|
-| Bug fix, typo | PATCH (Z) | 1.0.0 → 1.0.1 |
-| New feature, UI change | MINOR (Y) | 1.0.1 → 1.1.0 |
-| Breaking change, redesign | MAJOR (X) | 1.1.0 → 2.0.0 |
+**Software Heritage:**
+- Submit repos: https://archive.softwareheritage.org/save/
+- Repos to archive:
+  - `https://github.com/salvo-praxis/tni-toolkit`
+  - `https://github.com/salvo-praxis/tni-seed-harvester`
+- Auto-archive on release via GitHub Action
 
-### Session Discipline
-
-**During a session:** Make changes without bumping version (all work is "in progress")  
-**End of session:** Bump version ONCE based on total scope of changes
-
-### File Dependencies
-
-When updating one file, others may need updates:
-
-| Changed | Also Update |
-|---------|-------------|
-| Any tool HTML | CONTRIBUTIONS.md, contributions.html |
-| Data JSON | Any tool that embeds it |
-| Style patterns | docs/STYLE_GUIDE.md, style-guide.html |
-| Credits/attribution | credits.html, CONTRIBUTIONS.md |
+**GitHub Archive Program:**
+- All public repos automatically eligible
+- Arctic Code Vault snapshots (periodic)
 
 ---
 
-## Attribution & Contribution Tracking
-
-### Files Involved
-
-- **CONTRIBUTIONS.md** — Markdown log of all contributions (source of truth)
-- **contributions.html** — Styled HTML version (mirrors CONTRIBUTIONS.md)
-- **credits.html** — Public credits page with Greetz counts
-
-### When to Update
-
-#### For Community Suggestions/Bug Reports
-- [ ] Source file: Implement fix/feature, bump version, update changelog
-- [ ] CONTRIBUTIONS.md: Add entry under reporter's name
-- [ ] contributions.html: Mirror entry
-- [ ] credits.html: Update Greetz count, add to Recent Contributions (see table guidelines)
-
-#### For Salvo Praxis Work (via Claude sessions)
-- [ ] Source file: Implement changes, bump version, update changelog
-- [ ] CONTRIBUTIONS.md: Add entry under Salvo Praxis
-- [ ] contributions.html: Mirror entry
-- [ ] credits.html: **Skip Recent Contributions** unless it's a major feature (Greetz unchanged)
-
-#### For External PRs/Direct Contributions
-- [ ] Source file: Merge changes, bump version, add contributor, update changelog
-- [ ] CONTRIBUTIONS.md: Add entry under contributor with "Added:" prefix
-- [ ] contributions.html: Mirror entry
-- [ ] credits.html: Add/update Greetz count, add to Recent Contributions
+## Version Workflow
 
 ### Commit Message Format
 
@@ -339,6 +408,7 @@ When updating one file, others may need updates:
 | `ci:` | GitHub Actions / automation |
 | `style:` | Style guide, CSS-only changes |
 | `meta:` | CLAUDE.md, project config |
+| `seo:` | SEO-related changes (sitemap, meta tags) |
 
 **Full format:**
 ```
@@ -449,7 +519,7 @@ credits.html Recent Contributions is a **highlight reel**, not a complete log.
 └─────────────────────────────────────────────────────────────┘
 * = PATCH or MINOR depending on scope
 
-COMMIT PREFIX: data: | tool: | fix: | docs: | ci: | style: | meta:
+COMMIT PREFIX: data: | tool: | fix: | docs: | ci: | style: | meta: | seo:
 
 SESSION START: Note version → Check TODO → Set scope
 SESSION END:   Bump once → Update all files → Commit message → Handoff
@@ -488,6 +558,16 @@ SESSION END:   Bump once → Update all files → Commit message → Handoff
 ### Automation
 
 - [x] YAML workflow: Build ZIP and FTP deploy *(completed & committed)*
+- [ ] YAML workflow: Auto-generate sitemap *(in progress this session)*
+- [ ] YAML workflow: Archive to Software Heritage on release *(in progress this session)*
+
+### SEO
+
+- [ ] Add sitemap.xml *(in progress this session)*
+- [ ] Add robots.txt *(in progress this session)*
+- [ ] Add meta tags to all HTML files *(in progress this session)*
+- [ ] Register with Google Search Console *(Salvo)*
+- [ ] Register with Bing Webmaster Tools *(Salvo)*
 
 ---
 

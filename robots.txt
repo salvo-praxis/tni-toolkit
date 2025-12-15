@@ -1,0 +1,14 @@
+# TNI Toolkit - robots.txt
+# https://tni-toolkit.salvo.host/
+# Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+
+# Allow all crawlers access to all content
+User-agent: *
+Allow: /
+
+# Point crawlers to the sitemap
+Sitemap: https://tni-toolkit.salvo.host/sitemap.xml
+
+# Crawl-delay suggestion (be nice to servers)
+# Most modern crawlers ignore this, but it doesn't hurt
+Crawl-delay: 1

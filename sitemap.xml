@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TNI Toolkit - XML Sitemap
+  Generated: 2025-12-15
+  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+  
+  This sitemap is auto-updated by the generate-sitemap GitHub Action on each push.
+  Manual edits will be overwritten.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Landing Page -->
+  <url>
+    <loc>https://tni-toolkit.salvo.host/</loc>
+    <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <!-- Tools -->
+  <url>
+    <loc>https://tni-toolkit.salvo.host/tools/device-calculator.html</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://tni-toolkit.salvo.host/tools/seed-finder.html</loc>
+    <priority>0.9</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  
+  <!-- Reference Pages -->
+  <url>
+    <loc>https://tni-toolkit.salvo.host/docs/store-reference.html</loc>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://tni-toolkit.salvo.host/docs/programs-reference.html</loc>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://tni-toolkit.salvo.host/docs/proposals-reference.html</loc>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://tni-toolkit.salvo.host/docs/cli-reference.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://tni-toolkit.salvo.host/docs/traffic-types-reference.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  
+  <!-- Documentation -->
+  <url>
+    <loc>https://tni-toolkit.salvo.host/docs/style-guide.html</loc>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://tni-toolkit.salvo.host/contributing.html</loc>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://tni-toolkit.salvo.host/contributions.html</loc>
+    <priority>0.5</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://tni-toolkit.salvo.host/credits.html</loc>
+    <priority>0.5</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <!-- Data Files (JSON) -->
+  <url>
+    <loc>https://tni-toolkit.salvo.host/data/tni-store.json</loc>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://tni-toolkit.salvo.host/data/tni-programs.json</loc>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://tni-toolkit.salvo.host/data/tni-proposals.json</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://tni-toolkit.salvo.host/data/tni-cli-commands.json</loc>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://tni-toolkit.salvo.host/data/tni-traffic-types.json</loc>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+</urlset>
