@@ -16,25 +16,23 @@ Community-built data files and planning tools for **Tower Networking Inc.** by P
 ### Current Work
 
 **Status:** READY FOR COMMIT  
-**Last Commit:** 2025-12-14 (mega-commit with all reference pages)
+**Last Commit:** 2025-12-14 — fix: device-calc v1.8.2 search fix, attribution updates (Блинчик)
 
 ### Changes This Session
 
 **Updated files:**
-- device-calculator.html (v1.8.2) — Fixed program search box (Блинчик bug report)
-- index.html (v1.5.1) — Added Quick Reference to ToC, shortened "Contribution Log" to "Contributions"
-- credits.html (v1.6.6) — Блинчик greetz 1→2, v1.8.2 entry
-- contributions.html (v1.2.6) — Added Блинчик bug report entry
-- CONTRIBUTIONS.md — Added 2025-12-14 section with all attributions
-- CLAUDE.md — Updated session state
+- proposals-reference.html (v1.1.1) — Corrected "bug note" to clarification (gamers2000)
+- credits.html (v1.6.8) — gamers2000 greetz 3→4, v1.1.1 entry, trimmed table to 11 highlights
+- contributions.html (v1.2.7) — Added gamers2000 proposals clarification
+- CONTRIBUTIONS.md — Added gamers2000 entry
+- CLAUDE.md — Updated session state, added Recent Contributions Table guidelines
 
 ### Files Ready for Commit
 
 All in /mnt/user-data/outputs/:
-- device-calculator.html (v1.8.2)
-- index.html (v1.5.1)
-- credits.html (v1.6.6)
-- contributions.html (v1.2.6)
+- proposals-reference.html (v1.1.1)
+- credits.html (v1.6.8)
+- contributions.html (v1.2.7)
 - CONTRIBUTIONS.md
 - CLAUDE.md
 
@@ -314,13 +312,13 @@ When updating one file, others may need updates:
 - [ ] Source file: Implement fix/feature, bump version, update changelog
 - [ ] CONTRIBUTIONS.md: Add entry under reporter's name
 - [ ] contributions.html: Mirror entry
-- [ ] credits.html: Update Greetz count, add to Recent Contributions
+- [ ] credits.html: Update Greetz count, add to Recent Contributions (see table guidelines)
 
 #### For Salvo Praxis Work (via Claude sessions)
 - [ ] Source file: Implement changes, bump version, update changelog
 - [ ] CONTRIBUTIONS.md: Add entry under Salvo Praxis
 - [ ] contributions.html: Mirror entry
-- [ ] credits.html: Add to Recent Contributions (no Greetz change)
+- [ ] credits.html: **Skip Recent Contributions** unless it's a major feature (Greetz unchanged)
 
 #### For External PRs/Direct Contributions
 - [ ] Source file: Merge changes, bump version, add contributor, update changelog
@@ -417,6 +415,25 @@ credits.html Greetz section tracks community contribution counts.
 - General feedback without actionable items
 
 **Display order:** Descending by count, then alphabetical for ties.
+
+### Recent Contributions Table
+
+credits.html Recent Contributions is a **highlight reel**, not a complete log.
+
+**Keep ~10-12 entries max.** The full history lives in contributions.html and CONTRIBUTIONS.md.
+
+**Prioritize community contributions:**
+- Bug reports that got fixed
+- Feature suggestions that got implemented
+- External data contributions (AlinaNova, Chaotic Crumb, etc.)
+- External sources (@tower-network wiki, etc.)
+
+**Deprioritize Salvo-only work:**
+- Internal refactors, style changes
+- New features without community input
+- Documentation-only updates
+
+**When trimming:** Remove oldest Salvo-only entries first. Keep community contributions visible longer — they're the whole point of the Greetz system.
 
 ### Quick Reference Table
 

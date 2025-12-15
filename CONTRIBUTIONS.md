@@ -10,9 +10,11 @@ Running log of all contributions to the TNI Toolkit. For guidelines on contribut
 - `device-calculator.html` v1.8.2 — Reported: Program search box not filtering results
 
 ### gamers2000
+- `docs/proposals-reference.html` v1.1.1 — Clarified: Legal Retaliation/Lobby Against don't block each other (both hostile actions against Tenabolt, not a bug)
 - `tni-store.json` v1.2.1 — Reported: Firewalls CPU/MEM/HDD wrong (4/1/2 should be 6/3/3 due to pre-installed firewatcher + wirerat)
 
 ### Salvo Praxis
+- `docs/proposals-reference.html` v1.1.1 — Changed "bug note" to clarification on Legal Retaliation/Lobby Against (gamers2000)
 - `tools/device-calculator.html` v1.8.2 — Fixed program search box; search now matches names, output uses, and input uses
 - `tni-store.json` v1.2.1 — Fixed firewall CPU/MEM/HDD specs (4/1/2 → 6/3/3)
 - `tools/device-calculator.html` v1.8.1 — Fixed firewall specs in embedded database
