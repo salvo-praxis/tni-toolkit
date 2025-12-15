@@ -1,5 +1,7 @@
 # TNI Toolkit
 
+[![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/salvo-praxis/tni-toolkit/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/salvo-praxis/tni-toolkit)
+
 **Community-built data files and planning tools for [Tower Networking Inc.](https://store.steampowered.com/app/2939600/Tower_Networking_Inc/) by [Pocosia Studios](https://pocosia.com/games/tower-networking-inc/)**
 
 ---
@@ -10,6 +12,7 @@
 |---------|-------------|
 | [🛠️ Tools](#️-tools) | Standalone planning tools |
 | [🗺️ Roadmap](#️-roadmap) | Planned features |
+| [📚 Quick Reference](#-quick-reference) | Game data in markdown |
 | [📊 Data Files](#-data-files) | JSON datasets |
 | [📁 Repository Structure](#-repository-structure) | File layout |
 | [📐 JSON Structure](#-json-structure) | Data schemas |
@@ -73,6 +76,24 @@ Search a database of 3,794 verified seeds by selecting up to 3 starting proposal
 - [ ] Switch/Router Comparison Tool
 - [ ] Decentro Network Planner
 - [ ] Equipment ROI Calculator
+
+[⬆️ Back to top](#tni-toolkit)
+
+---
+
+## 📚 Quick Reference
+
+Browse game data directly in GitHub or download for offline use.
+
+| Reference | Items | Description |
+|-----------|-------|-------------|
+| [Store Reference](docs/store-reference.md) | 101 | Complete equipment catalog with specs and prices |
+| [Programs Reference](docs/programs-reference.md) | 25 | Server programs with CPU/MEM/HDD requirements |
+| [Proposals Reference](docs/proposals-reference.md) | 30 | In-game proposals with costs and effects |
+| [CLI Reference](docs/cli-reference.md) | 24 | Terminal commands with syntax and examples |
+| [Traffic Types Reference](docs/traffic-types-reference.md) | 14 | Network traffic for firewall/router rules |
+
+*Also available as [styled HTML pages](https://tni-toolkit.salvo.host/index.html#quick-reference) on the live site.*
 
 [⬆️ Back to top](#tni-toolkit)
 

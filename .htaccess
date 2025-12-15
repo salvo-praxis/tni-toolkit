@@ -1,0 +1,80 @@
+##############################################
+# TNI TOOLKIT — .htaccess
+# SEO | ARCHIVAL | SECURITY | COMPATIBILITY
+# Version: 1.0.0
+# Updated: 2025-12-15
+#
+# Note: HTTPS redirect handled by CloudFlare
+# (Enable "Always Use HTTPS" in CF dashboard)
+##############################################
+
+# -------------------------
+# 1) Allow directory browsing
+# -------------------------
+Options +Indexes
+
+# -------------------------
+# 2) Enable rewrite engine
+# -------------------------
+RewriteEngine On
+
+# -------------------------
+# 3) Canonical homepage
+# (redirect /index.html → /)
+# Prevents duplicate content issues
+# -------------------------
+RewriteCond %{THE_REQUEST} \s/+index\.html[\s?]
+RewriteRule ^index\.html$ https://%{HTTP_HOST}/ [R=301,L]
+
+# -------------------------
+# 4) Markdown files
+# (archive-friendly, but not indexed)
+# -------------------------
+<FilesMatch "\.md$">
+    AddType text/plain .md
+    Header set X-Robots-Tag "noindex, follow"
+</FilesMatch>
+
+# -------------------------
+# 5) JSON files
+# (indexed, source-of-truth for community)
+# -------------------------
+<FilesMatch "\.json$">
+    AddType application/json .json
+    Header set X-Robots-Tag "index, follow"
+</FilesMatch>
+
+# -------------------------
+# 6) HTML files
+# (primary content for search engines)
+# -------------------------
+<FilesMatch "\.(html|htm)$">
+    Header set X-Robots-Tag "index, follow"
+</FilesMatch>
+
+# -------------------------
+# 7) Security headers
+# -------------------------
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "SAMEORIGIN"
+Header set Referrer-Policy "strict-origin-when-cross-origin"
+Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+# Note: X-XSS-Protection removed - deprecated, modern browsers 
+# use Content-Security-Policy instead. CloudFlare handles CSP.
+
+# -------------------------
+# 8) Caching — frequent updates
+# (1 minute freshness for active development)
+# -------------------------
+<FilesMatch "\.(html|htm|json)$">
+    Header set Cache-Control "max-age=60, public, must-revalidate"
+</FilesMatch>
+
+<FilesMatch "\.(png|jpg|jpeg|gif|svg|webp|ico)$">
+    Header set Cache-Control "max-age=60, public, must-revalidate"
+</FilesMatch>
+
+##############################################
+# END OF FILE
+##############################################

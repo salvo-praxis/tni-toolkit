@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <!-- Background gradient matching site -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0e14"/>
+      <stop offset="50%" style="stop-color:#1a1f2e"/>
+      <stop offset="100%" style="stop-color:#0d1117"/>
+    </linearGradient>
+    
+    <!-- Glow filter for TNI text -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Subtle grid pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e2430" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  
+  <!-- Grid overlay -->
+  <rect width="1200" height="630" fill="url(#grid)" opacity="0.4"/>
+  
+  <!-- Decorative terminal lines - top left -->
+  <g opacity="0.3" fill="none" stroke="#30363d" stroke-width="1">
+    <line x1="60" y1="60" x2="200" y2="60"/>
+    <line x1="60" y1="60" x2="60" y2="120"/>
+    <circle cx="60" cy="60" r="4" fill="#30363d"/>
+  </g>
+  
+  <!-- Decorative terminal lines - bottom right -->
+  <g opacity="0.3" fill="none" stroke="#30363d" stroke-width="1">
+    <line x1="1000" y1="570" x2="1140" y2="570"/>
+    <line x1="1140" y1="510" x2="1140" y2="570"/>
+    <circle cx="1140" cy="570" r="4" fill="#30363d"/>
+  </g>
+  
+  <!-- Main title: TNI -->
+  <text x="600" y="280" 
+        font-family="JetBrains Mono, Fira Code, SF Mono, Consolas, monospace" 
+        font-size="120" 
+        font-weight="700" 
+        text-anchor="middle" 
+        letter-spacing="12"
+        fill="#00ff88"
+        filter="url(#glow)">TNI</text>
+  
+  <!-- Main title: TOOLKIT -->
+  <text x="600" y="380" 
+        font-family="JetBrains Mono, Fira Code, SF Mono, Consolas, monospace" 
+        font-size="72" 
+        font-weight="700" 
+        text-anchor="middle" 
+        letter-spacing="8"
+        fill="#58a6ff">TOOLKIT</text>
+  
+  <!-- Tagline -->
+  <text x="600" y="450" 
+        font-family="JetBrains Mono, Fira Code, SF Mono, Consolas, monospace" 
+        font-size="22" 
+        text-anchor="middle" 
+        fill="#8b949e">Community Tools for Tower Networking Inc.</text>
+  
+  <!-- Terminal prompt decoration -->
+  <text x="600" y="520" 
+        font-family="JetBrains Mono, Fira Code, SF Mono, Consolas, monospace" 
+        font-size="16" 
+        text-anchor="middle" 
+        fill="#30363d">▸ calculators • reference guides • data files</text>
+  
+  <!-- Decorative brackets -->
+  <text x="180" y="330" 
+        font-family="JetBrains Mono, monospace" 
+        font-size="140" 
+        fill="#1e2430">{</text>
+  <text x="980" y="330" 
+        font-family="JetBrains Mono, monospace" 
+        font-size="140" 
+        fill="#1e2430">}</text>
+  
+  <!-- Border accent -->
+  <rect x="4" y="4" width="1192" height="622" fill="none" stroke="#30363d" stroke-width="1" rx="8"/>
+</svg>

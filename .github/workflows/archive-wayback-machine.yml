@@ -1,0 +1,78 @@
+# ============================================================================
+# TNI Toolkit - GitHub Actions Workflow
+# File: .github/workflows/archive-wayback-machine.yml
+# Name: Archive to Wayback Machine
+# Version: 1.0.0
+# Updated: 2025-12-15
+# Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+# Description:
+#   Archives all sitemap URLs to Archive.org's Wayback Machine after
+#   successful FTP deployment. Runs in the workflow chain:
+#   Generate Sitemap → Build/FTP Deploy → Wayback Machine Archive
+# 
+# Required Secrets:
+#   ARCHIVE_ORG_S3_ACCESS_KEY - Your Archive.org S3 access key
+#   ARCHIVE_ORG_S3_SECRET_KEY - Your Archive.org S3 secret key
+#   (Get keys at: https://archive.org/account/s3.php)
+#
+# Contributors:
+#   - salvo-praxis (@salvo-praxis) - workflow design
+#   - Claude - YAML scaffolding
+# Changelog:
+#   1.0.0 - Initial release
+# ============================================================================
+
+name: Archive to Wayback Machine
+
+on:
+  # Run after Build/FTP deploy completes
+  workflow_run:
+    workflows: ["Build zip and FTP deploy (tni-toolkit)"]
+    types: [completed]
+
+  # Allow manual trigger
+  workflow_dispatch: {}
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    # Only run if the triggering workflow succeeded (or manual trigger)
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+
+    steps:
+      # ----------------------------------------------------------
+      # Step 1: Set up Python
+      # ----------------------------------------------------------
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # ----------------------------------------------------------
+      # Step 2: Install wayback-machine-archiver
+      # ----------------------------------------------------------
+      - name: Install archiver
+        run: pip install wayback-machine-archiver
+
+      # ----------------------------------------------------------
+      # Step 3: Archive all sitemap URLs
+      # ----------------------------------------------------------
+      - name: Archive sitemap URLs
+        env:
+          IA_S3_ACCESS_KEY: ${{ secrets.ARCHIVE_ORG_S3_ACCESS_KEY }}
+          IA_S3_SECRET_KEY: ${{ secrets.ARCHIVE_ORG_S3_SECRET_KEY }}
+        run: |
+          echo "Archiving all URLs from sitemap..."
+          archiver --sitemaps https://tni-toolkit.salvo.host/sitemap.xml
+          echo "Archive request submitted successfully!"
+
+      # ----------------------------------------------------------
+      # Step 4: Summary
+      # ----------------------------------------------------------
+      - name: Summary
+        run: |
+          echo "## Wayback Machine Archive" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Archive request submitted for all sitemap URLs" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "View archives at: https://web.archive.org/web/*/https://tni-toolkit.salvo.host/*" >> $GITHUB_STEP_SUMMARY

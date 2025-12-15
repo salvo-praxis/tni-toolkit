@@ -2,17 +2,26 @@
 # TNI Toolkit - GitHub Actions Workflow
 # File: .github/workflows/generate-sitemap.yml
 # Name: Generate Sitemap
-# Version: 1.0.1
+# Version: 1.1.1
 # Updated: 2025-12-15
 # Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+#
 # Description:
 #   Auto-generates sitemap.xml on every push to main branch.
 #   Uses cicirello/generate-sitemap to crawl HTML and JSON files,
 #   then commits the updated sitemap back to the repository.
+#
+# Exclusions (via post-processing):
+#   - Search engine verification files (google*.html, BingSiteAuth.xml)
+#   - MD files (not included - no additional-extensions entry)
+#
 # Contributors:
 #   - salvo-praxis (@salvo-praxis) - workflow design
 #   - Claude - YAML scaffolding
+#
 # Changelog:
+#   1.1.1 - Fixed exclusion: use sed post-processing instead of invalid parameter
+#   1.1.0 - Added exclusion pattern for verification files (broken)
 #   1.0.1 - Fixed sync step: temp copy approach for handling concurrent pushes
 #   1.0.0 - Initial release
 # ============================================================================
@@ -53,15 +62,44 @@ jobs:
           additional-extensions: json
       
       # ----------------------------------------------------------
-      # Step 3: Output sitemap stats
+      # Step 3: Remove verification files from sitemap
+      # (google*.html, BingSiteAuth.xml, og-preview images)
+      # ----------------------------------------------------------
+      - name: Clean sitemap
+        run: |
+          # Create a Python script to properly remove unwanted URL blocks
+          python3 << 'EOF'
+          import re
+          
+          with open('sitemap.xml', 'r') as f:
+              content = f.read()
+          
+          # Pattern to match full <url>...</url> blocks containing unwanted files
+          patterns = [
+              r'<url>\s*<loc>[^<]*google[a-z0-9]*\.html[^<]*</loc>\s*<lastmod>[^<]*</lastmod>\s*</url>\s*',
+              r'<url>\s*<loc>[^<]*BingSiteAuth\.xml[^<]*</loc>\s*<lastmod>[^<]*</lastmod>\s*</url>\s*',
+              r'<url>\s*<loc>[^<]*/images/[^<]*</loc>\s*<lastmod>[^<]*</lastmod>\s*</url>\s*',
+          ]
+          
+          for pattern in patterns:
+              content = re.sub(pattern, '', content)
+          
+          with open('sitemap.xml', 'w') as f:
+              f.write(content)
+          
+          print("Sitemap cleaned successfully")
+          EOF
+      
+      # ----------------------------------------------------------
+      # Step 4: Output sitemap stats
       # ----------------------------------------------------------
       - name: Sitemap stats
         run: |
-          echo "Sitemap generated with ${{ steps.sitemap.outputs.sitemap-url-count }} URLs"
-          echo "Excluded ${{ steps.sitemap.outputs.excluded-count }} URLs"
+          echo "Sitemap generated with ${{ steps.sitemap.outputs.sitemap-url-count }} URLs (before cleaning)"
+          echo "Final URL count: $(grep -c '<loc>' sitemap.xml)"
       
       # ----------------------------------------------------------
-      # Step 4: Sync with origin before commit (handle concurrent pushes)
+      # Step 5: Sync with origin before commit (handle concurrent pushes)
       # ----------------------------------------------------------
       - name: Sync with latest origin/main
         run: |
@@ -76,7 +114,7 @@ jobs:
           cp /tmp/sitemap.xml sitemap.xml
       
       # ----------------------------------------------------------
-      # Step 5: Commit updated sitemap
+      # Step 6: Commit updated sitemap
       # ----------------------------------------------------------
       - name: Commit sitemap
         uses: stefanzweifel/git-auto-commit-action@v5

@@ -1,14 +1,15 @@
 # TNI Toolkit - robots.txt
-# https://tni-toolkit.salvo.host/
-# Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+# Version: 1.0.0
+# Updated: 2025-12-15
 
-# Allow all crawlers access to all content
 User-agent: *
 Allow: /
 
-# Point crawlers to the sitemap
+# Avoid indexing raw MD pages (HTML versions are canonical)
+Disallow: /*.md$
+
+# Sitemap location
 Sitemap: https://tni-toolkit.salvo.host/sitemap.xml
 
-# Crawl-delay suggestion (be nice to servers)
-# Most modern crawlers ignore this, but it doesn't hurt
-Crawl-delay: 1
+# Preferred domain
+Host: tni-toolkit.salvo.host
