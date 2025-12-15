@@ -2,8 +2,8 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║  TNI Device Compatibility Calculator                                         ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║  Version: 1.8.1                                                              ║
-║  Updated: 2025-12-13                                                         ║
+║  Version: 1.8.2                                                              ║
+║  Updated: 2025-12-14                                                         ║
 ║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Description:                                                                ║
@@ -31,7 +31,13 @@
 ║    - gamers2000 (warranty display, refurb devices suggestions)               ║
 ║    - Singing Pot Beast (auto-prune/config menu suggestion)                   ║
 ║                                                                              ║
+║  Bug Reports:                                                                ║
+║    - Блинчик (program search box fix)                                        ║
+║                                                                              ║
 ║  Changelog:                                                                  ║
+║    1.8.2 - Fixed program search box not filtering results; search now        ║
+║            matches program names, output uses, and input uses; reported by   ║
+║            Блинчик                                                           ║
 ║    1.8.1 - Firewall specs corrected: 4/1/2 → 6/3/3; firmware field now       ║
 ║            supports arrays for multiple pre-installed programs; reported by  ║
 ║            gamers2000                                                        ║
@@ -1661,7 +1667,7 @@
         </div>
         <p class="footer-note">Made with ❤️ for the TNI community</p>
         <div class="footer-badges">
-            <span class="version-badge">v1.7.0</span>
+            <span class="version-badge">v1.8.2</span>
             <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/LICENSE" target="_blank" class="license-badge">MIT License — Free to use, modify, and share</a>
         </div>
     </footer>
@@ -2402,7 +2408,12 @@
             // Filter by search
             if (programSearch) {
                 const search = programSearch.toLowerCase();
-                result = result.filter(p => p.name.toLowerCase().includes(search) || p.output.toLowerCase().includes(search));
+                result = result.filter(p => {
+                    if (p.name.toLowerCase().includes(search)) return true;
+                    if (p.output_uses && p.output_uses.some(u => u.toLowerCase().includes(search))) return true;
+                    if (p.input_uses && p.input_uses.toLowerCase().includes(search)) return true;
+                    return false;
+                });
             }
             
             return result;

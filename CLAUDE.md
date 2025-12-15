@@ -15,50 +15,28 @@ Community-built data files and planning tools for **Tower Networking Inc.** by P
 
 ### Current Work
 
-**Status:** READY FOR MEGA-COMMIT  
-**Last Commit:** *(uncommitted — ready for commit)*
+**Status:** READY FOR COMMIT  
+**Last Commit:** 2025-12-14 (mega-commit with all reference pages)
 
 ### Changes This Session
 
-**New files:**
-- data/tni-proposals.json (v1.0.0) — 30 proposals, 7 categories
-- data/tni-traffic-types.json (v1.0.0) — 14 traffic types, 10 categories
-- docs/proposals-reference.html (v1.0.0)
-- docs/programs-reference.html (v1.0.0)
-- docs/cli-reference.html (v1.0.0)
-- docs/traffic-types-reference.html (v1.0.0)
-- docs/store-reference.html (v1.8.2) — major layout restructure
-
 **Updated files:**
-- index.html (v1.5.0) — Quick Reference section
-- credits.html (v1.6.4) — AlinaNova name fix, greetz 3→4
-- contributions.html (v1.2.4) — new entries
-- CONTRIBUTIONS.md — new entries
-- README.md — updated structure
-- device-calculator.html — AlinaNova name fix
-- style-guide.html — back-link text consistency fix
+- device-calculator.html (v1.8.2) — Fixed program search box (Блинчик bug report)
+- index.html (v1.5.1) — Added Quick Reference to ToC, shortened "Contribution Log" to "Contributions"
+- credits.html (v1.6.6) — Блинчик greetz 1→2, v1.8.2 entry
+- contributions.html (v1.2.6) — Added Блинчик bug report entry
+- CONTRIBUTIONS.md — Added 2025-12-14 section with all attributions
+- CLAUDE.md — Updated session state
 
 ### Files Ready for Commit
 
 All in /mnt/user-data/outputs/:
-- cli-reference.html
-- programs-reference.html
-- proposals-reference.html
-- store-reference.html (v1.8.2)
-- traffic-types-reference.html
-- tni-traffic-types.json
-- style-guide.html
-- index.html
-- credits.html
-- contributions.html
-- contributing.html
-- README.md
+- device-calculator.html (v1.8.2)
+- index.html (v1.5.1)
+- credits.html (v1.6.6)
+- contributions.html (v1.2.6)
+- CONTRIBUTIONS.md
 - CLAUDE.md
-
-**Still needed from local repo:**
-- data/tni-proposals.json
-- CONTRIBUTIONS.md (check if in uploads)
-- device-calculator.html (AlinaNova name fix)
 
 ---
 

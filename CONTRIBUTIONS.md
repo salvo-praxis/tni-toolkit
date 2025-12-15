@@ -4,6 +4,26 @@ Running log of all contributions to the TNI Toolkit. For guidelines on contribut
 
 ---
 
+## 2025-12-14
+
+### Блинчик
+- `device-calculator.html` v1.8.2 — Reported: Program search box not filtering results
+
+### gamers2000
+- `tni-store.json` v1.2.1 — Reported: Firewalls CPU/MEM/HDD wrong (4/1/2 should be 6/3/3 due to pre-installed firewatcher + wirerat)
+
+### Salvo Praxis
+- `tools/device-calculator.html` v1.8.2 — Fixed program search box; search now matches names, output uses, and input uses
+- `tni-store.json` v1.2.1 — Fixed firewall CPU/MEM/HDD specs (4/1/2 → 6/3/3)
+- `tools/device-calculator.html` v1.8.1 — Fixed firewall specs in embedded database
+- `docs/store-reference.html` v1.8.3 — Fixed firewall specs, expanded Notes columns, layout restructure
+- `docs/style-guide.html` — Back-link text consistency fix ("← Back to TNI Toolkit")
+- `index.html` v1.5.1 — Added Quick Reference to On This Page ToC; shortened Contribution Log to Contributions
+- `credits.html` v1.6.6 — Блинчик greetz 1→2 (program search bug), device-calc v1.8.2 entry
+- `contributions.html` v1.2.6 — Added Блинчик bug report entry
+
+---
+
 ## 2025-12-13
 
 ### AlinaNova

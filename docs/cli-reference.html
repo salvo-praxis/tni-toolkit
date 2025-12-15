@@ -68,7 +68,8 @@
         .toc-section-title a { color: #f0883e; text-decoration: none; transition: color 0.15s; }
         .toc-section-title a:hover { color: #00ff88; }
         
-        .toc-commands { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 16px; padding-left: 20px; }
+        .toc-commands { display: grid; grid-template-rows: repeat(7, auto); grid-auto-flow: column; gap: 6px 16px; padding-left: 20px; }
+        .toc-commands.short { grid-template-rows: repeat(2, auto); }
         .toc-commands a { color: #c9d1d9; text-decoration: none; font-size: 13px; transition: color 0.15s; display: flex; align-items: center; gap: 6px; padding: 3px 0; }
         .toc-commands a::before { content: "›"; color: #30363d; font-weight: bold; }
         .toc-commands a:hover { color: #00ff88; }
@@ -169,7 +170,7 @@
             <!-- Utility Commands -->
             <div class="toc-section">
                 <div class="toc-section-title">🛠️ <a href="#utility">Utility Commands</a></div>
-                <div class="toc-commands">
+                <div class="toc-commands short">
                     <a href="#utility"><code>clear</code></a>
                     <a href="#utility"><code>echo</code></a>
                     <a href="#utility"><code>lstdbg</code></a>
