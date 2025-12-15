@@ -112,11 +112,14 @@
         
         /* Table of Contents / Navigation */
         .toc-nav {
+            background: rgba(22, 27, 34, 0.8);
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
             display: flex;
             justify-content: center;
-            gap: 32px;
-            padding: 20px 0;
-            border-bottom: 1px solid #30363d;
+            gap: 48px;
             flex-wrap: wrap;
         }
         
@@ -136,16 +139,19 @@
         
         .toc-links {
             display: flex;
-            gap: 16px;
+            gap: 14px;
             flex-wrap: wrap;
         }
         
         .toc-links a {
-            color: #c9d1d9;
+            color: #f0883e;
             text-decoration: none;
             font-size: 12px;
             padding: 4px 0;
             transition: color 0.15s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
         }
         
         .toc-links a:hover {
@@ -516,7 +522,7 @@
                 <div class="toc-links">
                     <a href="#tools"><span class="emoji">🛠️</span>Tools</a>
                     <a href="#quick-reference"><span class="emoji">📖</span>Reference</a>
-                    <a href="#data-files"><span class="emoji">📊</span>Data Files</a>
+                    <a href="#data-files"><span class="emoji">📊</span>Data</a>
                     <a href="#roadmap"><span class="emoji">🗺️</span>Roadmap</a>
                     <a href="#community"><span class="emoji">🤝</span>Community</a>
                 </div>
@@ -524,7 +530,7 @@
             <div class="toc-group">
                 <div class="toc-group-title">Documentation</div>
                 <div class="toc-links">
-                    <a href="docs/style-guide.html"><span class="emoji">🎨</span>Style Guide</a>
+                    <a href="docs/style-guide.html"><span class="emoji">🎨</span>Styling</a>
                     <a href="contributing.html"><span class="emoji">📋</span>Contributing</a>
                     <a href="credits.html"><span class="emoji">🏆</span>Credits</a>
                     <a href="contributions.html"><span class="emoji">📜</span>Contributions</a>

@@ -139,8 +139,8 @@
         
         .toc-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 4px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px 24px;
             list-style: none;
             margin-top: 12px;
         }
@@ -150,13 +150,24 @@
         }
         
         .toc-list a {
-            color: #8b949e;
+            color: #f0883e;
             text-decoration: none;
             font-size: 12px;
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 6px;
             padding: 2px 0;
             transition: color 0.15s;
             line-height: 1.3;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .toc-list a .toc-icon {
+            display: inline-block;
+            width: 18px;
+            text-align: center;
+            flex-shrink: 0;
         }
         
         .toc-list a:hover {
@@ -479,6 +490,10 @@
         }
         
         /* Responsive */
+        @media (max-width: 900px) {
+            .toc-list { grid-template-columns: repeat(2, 1fr); }
+        }
+        
         @media (max-width: 600px) {
             body { padding: 16px; }
             .toc-list { grid-template-columns: 1fr; }
@@ -1248,16 +1263,16 @@
         <nav class="toc">
             <h2>📑 Table of Contents</h2>
             <ul class="toc-list">
-                <li><a href="#design-tokens">🎨 Design Tokens</a></li>
-                <li><a href="#base-template">📄 Base Template</a></li>
-                <li><a href="#master-css">📦 Master CSS</a></li>
-                <li><a href="#master-js">⚡ Master JS</a></li>
-                <li><a href="#layout-components">📐 Layout Components</a></li>
-                <li><a href="#ui-components">🧩 UI Components</a></li>
-                <li><a href="#patterns">📝 Patterns & Examples</a></li>
-                <li><a href="#responsive">📱 Responsive Design</a></li>
-                <li><a href="#best-practices">✅ Best Practices</a></li>
-                <li><a href="#file-formats">📄 File Format Standards</a></li>
+                <li><a href="#design-tokens"><span class="toc-icon">🎨</span>Design Tokens</a></li>
+                <li><a href="#base-template"><span class="toc-icon">📄</span>Base Template</a></li>
+                <li><a href="#master-css"><span class="toc-icon">📦</span>Master CSS</a></li>
+                <li><a href="#master-js"><span class="toc-icon">⚡</span>Master JS</a></li>
+                <li><a href="#layout-components"><span class="toc-icon">📐</span>Layout Components</a></li>
+                <li><a href="#ui-components"><span class="toc-icon">🧩</span>UI Components</a></li>
+                <li><a href="#patterns"><span class="toc-icon">📝</span>Patterns & Examples</a></li>
+                <li><a href="#responsive"><span class="toc-icon">📱</span>Responsive Design</a></li>
+                <li><a href="#best-practices"><span class="toc-icon">✅</span>Best Practices</a></li>
+                <li><a href="#file-formats"><span class="toc-icon">📄</span>File Format Standards</a></li>
             </ul>
         </nav>
         
@@ -4275,28 +4290,6 @@ Changelog:
                     <tr><td>Description</td><td style="color: #f0883e;">Yes</td><td>What the script does</td></tr>
                     <tr><td>Contributors</td><td style="color: #f0883e;">Yes</td><td>List of contributors with @handles and roles</td></tr>
                     <tr><td>Changelog</td><td style="color: #f0883e;">Yes</td><td>Version history with descriptions</td></tr>
-                </table>
-            </div>
-        </section>
-        
-        <!-- ================================================================== -->
-        <!-- VERSION HISTORY -->
-        <!-- ================================================================== -->
-        <section class="section">
-            <div class="section-header">
-                <span>📜</span>
-                <h2>Version History</h2>
-            </div>
-            
-            <div class="panel">
-                <table class="info-table">
-                    <tr><th>Version</th><th>Date</th><th>Changes</th></tr>
-                    <tr><td>v1.5</td><td>2025-12</td><td>Added Master JS section; converted Patterns & Examples to collapsible format; fixed ToC hover underline</td></tr>
-                    <tr><td>v1.4</td><td>2025-12</td><td>Added Collapsible Panel component with new vertical layout format (CSS/HTML/JS sections)</td></tr>
-                    <tr><td>v1.3</td><td>2025-12</td><td>Added Stepper Control component (−/+ numeric input)</td></tr>
-                    <tr><td>v1.2</td><td>2025-12</td><td>Added Custom Dropdown component; consolidated Interactive States into UI Components (Copy Feedback moved, hover/selected/disabled states already in Interactive Card)</td></tr>
-                    <tr><td>v1.1</td><td>2025-12</td><td>Added File Format Standards section (JSON, HTML, YAML, Python, Shell)</td></tr>
-                    <tr><td>v1.0</td><td>2025-12</td><td>Initial style guide based on seed-finder and server-calculator</td></tr>
                 </table>
             </div>
         </section>
