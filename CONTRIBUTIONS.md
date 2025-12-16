@@ -4,6 +4,13 @@ Running log of all contributions to the TNI Toolkit. For guidelines on contribut
 
 ---
 
+## 2025-12-15
+
+### Salvo Praxis
+- `tools/seed-finder.html` v1.3.0 — Added Spoiler Prevention mode (Settings toggle to hide unselected proposals for surprise gameplay)
+
+---
+
 ## 2025-12-14
 
 ### Блинчик
