@@ -1,0 +1,168 @@
+# ============================================================================
+# TNI Toolkit - GitHub Actions Workflow
+# File: .github/workflows/generate-og-images.yml
+# Name: Generate OG Images
+# Version: 1.0.2
+# Updated: 2025-12-17
+# Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+#
+# Description:
+#   Automatically generates Open Graph preview images (1200x630 PNG) for all
+#   HTML pages using headless Chromium. Runs after Generate Sitemap workflow
+#   completes. Part of the deployment chain:
+#   Generate Sitemap → Generate OG Images → Build ZIP & Deploy Repo To FTP
+#
+# Contributors:
+#   - salvo-praxis (@salvo-praxis) - workflow design
+#   - Claude - implementation
+#
+# Changelog:
+#   1.0.2 - Fix backlink hiding: check both id and class selectors
+#   1.0.1 - Hide backlink before capture for cleaner screenshots
+#   1.0.0 - Initial release
+# ============================================================================
+
+name: Generate OG Images
+
+on:
+  # Run after Generate Sitemap workflow completes
+  workflow_run:
+    workflows: ["Generate Sitemap"]
+    types: [completed]
+  
+  # Allow manual trigger
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  generate-og-images:
+    runs-on: ubuntu-latest
+    # Only run if the sitemap workflow succeeded (or manual trigger)
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    
+    steps:
+      # ----------------------------------------------------------
+      # Step 1: Check out repository
+      # ----------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      # ----------------------------------------------------------
+      # Step 2: Set up Python
+      # ----------------------------------------------------------
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      # ----------------------------------------------------------
+      # Step 3: Install Playwright
+      # ----------------------------------------------------------
+      - name: Install Playwright
+        run: |
+          pip install playwright
+          playwright install chromium
+          playwright install-deps chromium
+      
+      # ----------------------------------------------------------
+      # Step 4: Generate screenshots
+      # ----------------------------------------------------------
+      - name: Generate OG images
+        run: |
+          python3 << 'EOF'
+          import os
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+
+          # Pages to screenshot (relative to repo root)
+          PAGES = [
+              ('index.html', 'og-index.png'),
+              ('tools/device-calculator.html', 'og-device-calculator.png'),
+              ('tools/seed-finder.html', 'og-seed-finder.png'),
+              ('docs/style-guide.html', 'og-style-guide.png'),
+              ('docs/proposals-reference.html', 'og-proposals-reference.png'),
+              ('docs/programs-reference.html', 'og-programs-reference.png'),
+              ('docs/cli-reference.html', 'og-cli-reference.png'),
+              ('docs/traffic-types-reference.html', 'og-traffic-types-reference.png'),
+              ('docs/store-reference.html', 'og-store-reference.png'),
+              ('credits.html', 'og-credits.png'),
+              ('contributions.html', 'og-contributions.png'),
+              ('contributing.html', 'og-contributing.png'),
+          ]
+
+          # OG image dimensions (Facebook/Twitter recommended)
+          WIDTH = 1200
+          HEIGHT = 630
+
+          # Output directory
+          OUTPUT_DIR = Path('images/og')
+          OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+          # Get absolute path to repo root
+          REPO_ROOT = Path.cwd()
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              
+              for html_file, output_name in PAGES:
+                  html_path = REPO_ROOT / html_file
+                  
+                  if not html_path.exists():
+                      print(f"⚠ Skipping {html_file} (not found)")
+                      continue
+                  
+                  page = browser.new_page(viewport={'width': WIDTH, 'height': HEIGHT})
+                  
+                  # Load page from file system
+                  page.goto(f'file://{html_path}')
+                  
+                  # Wait for page to fully render (fonts, etc.)
+                  page.wait_for_load_state('networkidle')
+                  page.wait_for_timeout(500)  # Extra buffer for CSS animations
+                  
+                  # Hide backlink for cleaner OG image (tools use id, other pages use class)
+                  page.evaluate('''() => {
+                      const backlinkById = document.getElementById('back-to-toolkit');
+                      const backlinkByClass = document.querySelector('.back-link');
+                      if (backlinkById) backlinkById.style.display = 'none';
+                      if (backlinkByClass) backlinkByClass.style.display = 'none';
+                  }''')
+                  
+                  # Screenshot
+                  output_path = OUTPUT_DIR / output_name
+                  page.screenshot(path=str(output_path))
+                  print(f"✓ {output_name}")
+                  
+                  page.close()
+              
+              browser.close()
+
+          print(f"\nGenerated {len(list(OUTPUT_DIR.glob('*.png')))} OG images")
+          EOF
+      
+      # ----------------------------------------------------------
+      # Step 5: Sync with origin before commit (handle concurrent pushes)
+      # ----------------------------------------------------------
+      - name: Sync with latest origin/main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Save our generated images
+          cp -r images/og /tmp/og-images
+          # Reset to whatever origin has now
+          git fetch origin main
+          git reset --hard origin/main
+          # Restore our generated images
+          mkdir -p images/og
+          cp /tmp/og-images/*.png images/og/
+      
+      # ----------------------------------------------------------
+      # Step 6: Commit updated images
+      # ----------------------------------------------------------
+      - name: Commit OG images
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "assets: auto-update OG preview images"
+          file_pattern: "images/og/*.png"

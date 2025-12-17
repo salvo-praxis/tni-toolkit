@@ -1,0 +1,74 @@
+# ============================================================================
+# TNI Toolkit - GitHub Actions Workflow
+# File: .github/workflows/ftp-deploy.yml
+# Name: Deploy to FTP
+# Version: 1.0.0
+# Updated: 2025-12-17
+# Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+#
+# Description:
+#   Mirrors the repository contents to the public FTP host (tni-toolkit.salvo.host).
+#   Final step in the deployment chain:
+#   Generate Sitemap → Generate OG Images → Build ZIP → Deploy to FTP
+#
+# Contributors:
+#   - salvo-praxis (@salvo-praxis) - workflow design & integration
+#   - Claude - YAML scaffolding
+#
+# Changelog:
+#   1.0.0 - Split from build-zip-and-ftp-deploy-full-repo.yml v1.0.6
+# ============================================================================
+
+name: Deploy to FTP
+
+on:
+  # Run after Build ZIP workflow completes
+  workflow_run:
+    workflows: ["Build ZIP"]
+    types: [completed]
+
+  # Allow manual trigger
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # Only run if the Build ZIP workflow succeeded (or manual trigger)
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+
+    steps:
+      # ----------------------------------------------------------
+      # Step 1: Check out the repository
+      # ----------------------------------------------------------
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      # ----------------------------------------------------------
+      # Step 2: Sync the repo to the FTP server
+      # ----------------------------------------------------------
+      - name: Deploy entire repo over FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          # FTP hostname
+          server:   ${{ secrets.FTP_SERVER }}
+
+          # FTP user
+          username: ${{ secrets.FTP_USERNAME }}
+
+          # FTP password (stored as a GitHub secret)
+          password: ${{ secrets.FTP_PASSWORD }}
+
+          # Use FTPS for encrypted transfer
+          protocol: ftps
+
+          # Local directory to deploy: root of the checked-out repository
+          local-dir: ./
+
+          # Target directory on the FTP server
+          server-dir: /
+
+          # Exclude internal metadata and CI configuration from the public web root
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**

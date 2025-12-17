@@ -1,14 +1,14 @@
 # ============================================================================
 # TNI Toolkit - GitHub Actions Workflow
 # File: .github/workflows/archive-wayback-machine.yml
-# Name: Archive to Wayback Machine
-# Version: 1.0.0
-# Updated: 2025-12-15
+# Name: Submit To Wayback Machine
+# Version: 1.1.1
+# Updated: 2025-12-16
 # Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
 # Description:
-#   Archives all sitemap URLs to Archive.org's Wayback Machine after
-#   successful FTP deployment. Runs in the workflow chain:
-#   Generate Sitemap → Build/FTP Deploy → Wayback Machine Archive
+#   Archives all sitemap URLs to Archive.org's Wayback Machine.
+#   Runs daily at midnight UTC and can be triggered manually.
+#   Separate from the deploy chain to avoid submitting every small change.
 # 
 # Required Secrets:
 #   ARCHIVE_ORG_S3_ACCESS_KEY - Your Archive.org S3 access key
@@ -19,25 +19,25 @@
 #   - salvo-praxis (@salvo-praxis) - workflow design
 #   - Claude - YAML scaffolding
 # Changelog:
+#   1.1.1 - Changed schedule from weekly to daily
+#   1.1.0 - Changed to scheduled (weekly) + manual; removed auto-trigger
+#   1.0.1 - Updated description to reflect chain (with OG images step)
 #   1.0.0 - Initial release
 # ============================================================================
 
-name: Archive to Wayback Machine
+name: Submit To Wayback Machine
 
 on:
-  # Run after Build/FTP deploy completes
-  workflow_run:
-    workflows: ["Build zip and FTP deploy (tni-toolkit)"]
-    types: [completed]
-
+  # Daily schedule: midnight UTC
+  schedule:
+    - cron: '0 0 * * *'
+  
   # Allow manual trigger
   workflow_dispatch: {}
 
 jobs:
   archive:
     runs-on: ubuntu-latest
-    # Only run if the triggering workflow succeeded (or manual trigger)
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
 
     steps:
       # ----------------------------------------------------------

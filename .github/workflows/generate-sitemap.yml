@@ -2,24 +2,29 @@
 # TNI Toolkit - GitHub Actions Workflow
 # File: .github/workflows/generate-sitemap.yml
 # Name: Generate Sitemap
-# Version: 1.1.1
-# Updated: 2025-12-15
+# Version: 1.2.0
+# Updated: 2025-12-16
 # Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
 #
 # Description:
-#   Auto-generates sitemap.xml on every push to main branch.
-#   Uses cicirello/generate-sitemap to crawl HTML and JSON files,
-#   then commits the updated sitemap back to the repository.
+#   Auto-generates sitemap.xml on every push to main branch. First step in
+#   the deployment chain:
+#   Generate Sitemap → Generate OG Images → Build ZIP & Deploy Repo To FTP
+#   (Archive workflows run separately on schedule/manual trigger)
 #
 # Exclusions (via post-processing):
 #   - Search engine verification files (google*.html, BingSiteAuth.xml)
 #   - MD files (not included - no additional-extensions entry)
+#
+# Additions (via post-processing):
+#   - tni-toolkit.zip (for archive.org to capture)
 #
 # Contributors:
 #   - salvo-praxis (@salvo-praxis) - workflow design
 #   - Claude - YAML scaffolding
 #
 # Changelog:
+#   1.2.0 - Added tni-toolkit.zip to sitemap (for archive.org)
 #   1.1.1 - Fixed exclusion: use sed post-processing instead of invalid parameter
 #   1.1.0 - Added exclusion pattern for verification files (broken)
 #   1.0.1 - Fixed sync step: temp copy approach for handling concurrent pushes
@@ -62,32 +67,44 @@ jobs:
           additional-extensions: json
       
       # ----------------------------------------------------------
-      # Step 3: Remove verification files from sitemap
-      # (google*.html, BingSiteAuth.xml, og-preview images)
+      # Step 3: Clean sitemap and add tni-toolkit.zip
+      # (remove verification files, images; add zip for archive.org)
       # ----------------------------------------------------------
-      - name: Clean sitemap
+      - name: Clean and enhance sitemap
         run: |
-          # Create a Python script to properly remove unwanted URL blocks
           python3 << 'EOF'
           import re
+          from datetime import datetime
           
           with open('sitemap.xml', 'r') as f:
               content = f.read()
           
           # Pattern to match full <url>...</url> blocks containing unwanted files
-          patterns = [
+          exclusion_patterns = [
               r'<url>\s*<loc>[^<]*google[a-z0-9]*\.html[^<]*</loc>\s*<lastmod>[^<]*</lastmod>\s*</url>\s*',
               r'<url>\s*<loc>[^<]*BingSiteAuth\.xml[^<]*</loc>\s*<lastmod>[^<]*</lastmod>\s*</url>\s*',
               r'<url>\s*<loc>[^<]*/images/[^<]*</loc>\s*<lastmod>[^<]*</lastmod>\s*</url>\s*',
           ]
           
-          for pattern in patterns:
+          for pattern in exclusion_patterns:
               content = re.sub(pattern, '', content)
+          
+          today = datetime.now().strftime('%Y-%m-%d')
+          
+          # Add tni-toolkit.zip for archive.org to capture
+          zip_block = f'''  <url>
+    <loc>https://tni-toolkit.salvo.host/tni-toolkit.zip</loc>
+    <lastmod>{today}</lastmod>
+  </url>
+'''
+          
+          # Insert before </urlset>
+          content = content.replace('</urlset>', zip_block + '</urlset>')
           
           with open('sitemap.xml', 'w') as f:
               f.write(content)
           
-          print("Sitemap cleaned successfully")
+          print("Sitemap cleaned; tni-toolkit.zip added for archive.org")
           EOF
       
       # ----------------------------------------------------------
@@ -97,6 +114,7 @@ jobs:
         run: |
           echo "Sitemap generated with ${{ steps.sitemap.outputs.sitemap-url-count }} URLs (before cleaning)"
           echo "Final URL count: $(grep -c '<loc>' sitemap.xml)"
+          echo "Zip file included: $(grep -c 'tni-toolkit.zip' sitemap.xml)"
       
       # ----------------------------------------------------------
       # Step 5: Sync with origin before commit (handle concurrent pushes)

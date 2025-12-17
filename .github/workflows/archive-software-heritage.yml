@@ -1,26 +1,26 @@
 # ============================================================================
 # TNI Toolkit - GitHub Actions Workflow
 # File: .github/workflows/archive-software-heritage.yml
-# Name: Archive to Software Heritage
-# Version: 1.0.0
-# Updated: 2025-12-15
+# Name: Submit To Software Heritage
+# Version: 1.1.0
+# Updated: 2025-12-16
 # Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
 # Description:
-#   Triggers Software Heritage archive on every release publication.
-#   Submits a "Save Code Now" request to preserve the repository state.
-#   Also runs on manual workflow dispatch for ad-hoc archiving.
+#   Triggers Software Heritage archive via "Save Code Now" API request.
+#   Manual trigger only - use for milestone releases or periodic preservation.
+#   Software Heritage preserves source code with full git history.
 # Contributors:
 #   - salvo-praxis (@salvo-praxis) - workflow design
 #   - Claude - YAML scaffolding
 # Changelog:
+#   1.1.0 - Changed to manual-only; removed release trigger; renamed
 #   1.0.0 - Initial release
 # ============================================================================
 
-name: Archive to Software Heritage
+name: Submit To Software Heritage
 
 on:
-  release:
-    types: [ published ]
+  # Manual trigger only
   workflow_dispatch: {}
 
 jobs:

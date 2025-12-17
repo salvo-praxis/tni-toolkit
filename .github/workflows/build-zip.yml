@@ -1,0 +1,102 @@
+# ============================================================================
+# TNI Toolkit - GitHub Actions Workflow
+# File: .github/workflows/build-zip.yml
+# Name: Build ZIP
+# Version: 1.0.0
+# Updated: 2025-12-17
+# Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
+#
+# Description:
+#   Regenerates tni-toolkit.zip from selected files and commits it to the repo.
+#   Part of the deployment chain:
+#   Generate Sitemap → Generate OG Images → Build ZIP → Deploy to FTP
+#
+# Contributors:
+#   - salvo-praxis (@salvo-praxis) - workflow design & integration
+#   - Claude - YAML scaffolding
+#
+# Changelog:
+#   1.0.0 - Split from build-zip-and-ftp-deploy-full-repo.yml v1.0.6
+# ============================================================================
+
+name: Build ZIP
+
+on:
+  # Run after Generate OG Images workflow completes
+  workflow_run:
+    workflows: ["Generate OG Images"]
+    types: [completed]
+
+  # Allow manual trigger
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build-zip:
+    runs-on: ubuntu-latest
+    # Only run if the OG images workflow succeeded (or manual trigger)
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+
+    steps:
+      # ----------------------------------------------------------
+      # Step 1: Check out the repository
+      # ----------------------------------------------------------
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      # ----------------------------------------------------------
+      # Step 2: Build tni-toolkit.zip from selected files
+      # ----------------------------------------------------------
+      - name: Build tni-toolkit.zip
+        run: |
+          set -e
+
+          # Remove any existing archive so we always produce a fresh one
+          rm -f tni-toolkit.zip
+
+          # Create a new zip containing ONLY the intended distribution files
+          zip -r tni-toolkit.zip \
+            index.html \
+            credits.html \
+            contributing.html \
+            contributions.html \
+            docs/style-guide.html \
+            docs/store-reference.html \
+            docs/programs-reference.html \
+            docs/proposals-reference.html \
+            docs/cli-reference.html \
+            docs/traffic-types-reference.html \
+            tools/device-calculator.html \
+            tools/seed-finder.html \
+            data/tni-cli-commands.json \
+            data/tni-programs.json \
+            data/tni-proposals.json \
+            data/tni-store.json \
+            data/tni-traffic-types.json \
+            LICENSE
+
+      # ----------------------------------------------------------
+      # Step 3: Sync with origin before commit (handle concurrent pushes)
+      # ----------------------------------------------------------
+      - name: Sync with latest origin/main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Save our built zip
+          cp tni-toolkit.zip /tmp/tni-toolkit.zip
+          # Reset to whatever origin has now
+          git fetch origin main
+          git reset --hard origin/main
+          # Restore our built zip
+          cp /tmp/tni-toolkit.zip tni-toolkit.zip
+
+      # ----------------------------------------------------------
+      # Step 4: Commit the updated zip back to the repository
+      # ----------------------------------------------------------
+      - name: Commit updated zip
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: auto-build tni-toolkit.zip"
+          file_pattern: "tni-toolkit.zip"
