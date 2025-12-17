@@ -2,7 +2,7 @@
 # TNI Toolkit - GitHub Actions Workflow
 # File: .github/workflows/generate-sitemap.yml
 # Name: Generate Sitemap
-# Version: 1.2.1
+# Version: 1.2.2
 # Updated: 2025-12-17
 # Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
 #
@@ -24,7 +24,8 @@
 #   - Claude - YAML scaffolding
 #
 # Changelog:
-#   1.2.1 - Fixed YAML parse error: replaced f-string with .replace() for date insertion
+#   1.2.2 - Fixed YAML parse error: build XML via string concatenation (no multiline literals)
+#   1.2.1 - Attempted fix with .replace() (still failed)
 #   1.2.0 - Added tni-toolkit.zip to sitemap (for archive.org)
 #   1.1.1 - Fixed exclusion: use sed post-processing instead of invalid parameter
 #   1.1.0 - Added exclusion pattern for verification files (broken)
@@ -93,11 +94,11 @@ jobs:
           today = datetime.now().strftime('%Y-%m-%d')
           
           # Add tni-toolkit.zip for archive.org to capture
-          zip_block = '''  <url>
-    <loc>https://tni-toolkit.salvo.host/tni-toolkit.zip</loc>
-    <lastmod>DATE_PLACEHOLDER</lastmod>
-  </url>
-'''.replace('DATE_PLACEHOLDER', today)
+          # (Built via concatenation to avoid YAML parser issues with XML in heredoc)
+          zip_block = '  <url>\n'
+          zip_block += '    <loc>https://tni-toolkit.salvo.host/tni-toolkit.zip</loc>\n'
+          zip_block += '    <lastmod>' + today + '</lastmod>\n'
+          zip_block += '  </url>\n'
           
           # Insert before </urlset>
           content = content.replace('</urlset>', zip_block + '</urlset>')
