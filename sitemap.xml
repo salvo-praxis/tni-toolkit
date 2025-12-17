@@ -2,19 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://tni-toolkit.salvo.host/</loc>
-<lastmod>2025-12-15T17:27:51-06:00</lastmod>
+<lastmod>2025-12-17T08:12:22-06:00</lastmod>
 </url>
 <url>
 <loc>https://tni-toolkit.salvo.host/contributing.html</loc>
-<lastmod>2025-12-15T16:22:07-06:00</lastmod>
+<lastmod>2025-12-17T08:12:22-06:00</lastmod>
 </url>
 <url>
 <loc>https://tni-toolkit.salvo.host/contributions.html</loc>
-<lastmod>2025-12-16T00:10:41-06:00</lastmod>
+<lastmod>2025-12-17T08:12:22-06:00</lastmod>
 </url>
 <url>
 <loc>https://tni-toolkit.salvo.host/credits.html</loc>
-<lastmod>2025-12-16T00:10:41-06:00</lastmod>
+<lastmod>2025-12-17T08:12:22-06:00</lastmod>
 </url>
 <url>
 <loc>https://tni-toolkit.salvo.host/data/tni-cli-commands.json</loc>
@@ -38,34 +38,38 @@
 </url>
 <url>
 <loc>https://tni-toolkit.salvo.host/docs/cli-reference.html</loc>
-<lastmod>2025-12-15T16:22:07-06:00</lastmod>
+<lastmod>2025-12-17T08:12:22-06:00</lastmod>
 </url>
 <url>
 <loc>https://tni-toolkit.salvo.host/docs/programs-reference.html</loc>
-<lastmod>2025-12-15T17:27:51-06:00</lastmod>
+<lastmod>2025-12-17T08:12:22-06:00</lastmod>
 </url>
 <url>
 <loc>https://tni-toolkit.salvo.host/docs/proposals-reference.html</loc>
-<lastmod>2025-12-15T17:27:51-06:00</lastmod>
+<lastmod>2025-12-17T08:12:22-06:00</lastmod>
 </url>
 <url>
 <loc>https://tni-toolkit.salvo.host/docs/store-reference.html</loc>
-<lastmod>2025-12-15T17:27:51-06:00</lastmod>
+<lastmod>2025-12-17T08:12:22-06:00</lastmod>
 </url>
 <url>
 <loc>https://tni-toolkit.salvo.host/docs/style-guide.html</loc>
-<lastmod>2025-12-15T17:27:51-06:00</lastmod>
+<lastmod>2025-12-17T08:12:22-06:00</lastmod>
 </url>
 <url>
 <loc>https://tni-toolkit.salvo.host/docs/traffic-types-reference.html</loc>
-<lastmod>2025-12-15T17:27:51-06:00</lastmod>
+<lastmod>2025-12-17T08:12:22-06:00</lastmod>
 </url>
 <url>
 <loc>https://tni-toolkit.salvo.host/tools/device-calculator.html</loc>
-<lastmod>2025-12-15T16:22:07-06:00</lastmod>
+<lastmod>2025-12-17T08:12:22-06:00</lastmod>
 </url>
 <url>
 <loc>https://tni-toolkit.salvo.host/tools/seed-finder.html</loc>
-<lastmod>2025-12-16T00:10:41-06:00</lastmod>
+<lastmod>2025-12-17T08:12:22-06:00</lastmod>
 </url>
+  <url>
+    <loc>https://tni-toolkit.salvo.host/tni-toolkit.zip</loc>
+    <lastmod>2025-12-17</lastmod>
+  </url>
 </urlset>
