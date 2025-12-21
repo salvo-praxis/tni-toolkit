@@ -19,39 +19,161 @@ Community-built data files and planning tools for **Tower Networking Inc.** by P
 
 ### Current Work
 
-**Status:** READY TO COMMIT  
-**Session Date:** 2025-12-16 / 2025-12-17  
-**Last Commit:** (pending) — Backlink config, OG image workflow, archive workflow updates, per-page og:image + GitHub SVG for all pages
+**Status:** IN PROGRESS  
+**Session Date:** 2025-12-18  
+**Last Commit:** Backlink config, OG image workflow, archive workflow updates, per-page og:image + GitHub SVG for all pages
 
 ---
 
-### Completed This Session
+### Pending This Session
 
-| File | Version | Changes |
-|------|---------|---------|
-| `index.html` | v1.5.2 | Local download link; clean launch links; GitHub SVG in ToC & footer; og:image updated |
-| `tools/device-calculator.html` | v1.9.0 | Backlink config toggle in General section; simplified backlink logic; og:image updated; GitHub SVG footer |
-| `tools/seed-finder.html` | v1.4.0 | Backlink config toggle; reordered config menu; simplified backlink logic; og:image updated; GitHub SVG footer |
-| `generate-sitemap.yml` | v1.2.0 | Adds tni-toolkit.zip for archive.org; removed obsolete ?from=toolkit URLs |
-| `generate-og-images.yml` | v1.0.1 | **NEW** — Auto-screenshots all pages (1200x630); hides backlink for cleaner capture |
-| `build-zip.yml` | v1.0.0 | **NEW** — Split from combined workflow; builds & commits zip |
-| `ftp-deploy.yml` | v1.0.0 | **NEW** — Split from combined workflow; deploys repo to FTP |
-| `archive-wayback-machine.yml` | v1.1.1 | Renamed "Submit To Wayback Machine"; daily schedule + manual |
-| `archive-software-heritage.yml` | v1.1.0 | Renamed "Submit To Software Heritage"; manual only (removed release trigger) |
-| ~~`build-zip-and-ftp-deploy-full-repo.yml`~~ | — | **DELETE** — Replaced by build-zip.yml + ftp-deploy.yml |
-| `credits.html` | — | og:image updated; GitHub SVG footer |
-| `contributions.html` | — | og:image updated; GitHub SVG footer |
-| `contributing.html` | — | og:image updated; GitHub SVG footer |
-| `docs/style-guide.html` | — | og:image updated; GitHub SVG footer |
-| `docs/proposals-reference.html` | — | og:image updated; GitHub SVG footer |
-| `docs/programs-reference.html` | — | og:image updated; GitHub SVG footer |
-| `docs/cli-reference.html` | — | og:image updated; GitHub SVG footer |
-| `docs/traffic-types-reference.html` | — | og:image updated; GitHub SVG footer |
-| `docs/store-reference.html` | — | og:image updated; GitHub SVG footer |
+| Task | Status |
+|------|--------|
+| Add inline SVG favicon to all 12 HTML files | ✅ Done |
+| Add JSON-LD schema markup to all 12 HTML files | ✅ Done |
 
 ---
 
-### Deployment Chain (Updated)
+### Favicon Implementation
+
+**Design:** Network node topology (green diagonals + orange cardinals) matching TNI Toolkit style guide.
+
+**Method:** Single inline SVG data URI (~3.5 KB per file). No external files needed — each HTML remains fully standalone.
+
+**Browser Support:** Chrome, Firefox, Edge, Safari 15+, iOS Safari 15+, Steam Deck. Covers 100% of Windows/Linux Steam audience.
+
+**The favicon line to add inside `<head>` (after `<meta charset>`):**
+
+```html
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='bg' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%230a0e14'/><stop offset='50%' stop-color='%231a1f2e'/><stop offset='100%' stop-color='%230d1117'/></linearGradient><filter id='glowG' x='-150%' y='-150%' width='400%' height='400%'><feGaussianBlur stdDeviation='4'/><feColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 1 0 0 0 0 0.53 0 0 0 0.2 0'/></filter><filter id='glowO' x='-150%' y='-150%' width='400%' height='400%'><feGaussianBlur stdDeviation='3'/><feColorMatrix type='matrix' values='0 0 0 0 0.94 0 0 0 0 0.53 0 0 0 0 0.24 0 0 0 0.2 0'/></filter><radialGradient id='inset' cx='50%' cy='50%' r='50%'><stop offset='70%' stop-color='%23000' stop-opacity='0'/><stop offset='100%' stop-color='%23000' stop-opacity='0.12'/></radialGradient></defs><rect width='64' height='64' rx='8' fill='%23f0883e'/><rect x='1.5' y='1.5' width='61' height='61' rx='6.5' fill='url(%23bg)'/><rect x='1.5' y='1.5' width='61' height='61' rx='6.5' fill='url(%23inset)'/><g filter='url(%23glowG)'><line x1='32' y1='32' x2='16' y2='16' stroke='%2300ff88' stroke-width='3'/><line x1='32' y1='32' x2='48' y2='16' stroke='%2300ff88' stroke-width='3'/><line x1='32' y1='32' x2='16' y2='48' stroke='%2300ff88' stroke-width='3'/><line x1='32' y1='32' x2='48' y2='48' stroke='%2300ff88' stroke-width='3'/><circle cx='16' cy='16' r='6' fill='%2300ff88'/><circle cx='48' cy='16' r='6' fill='%2300ff88'/><circle cx='16' cy='48' r='6' fill='%2300ff88'/><circle cx='48' cy='48' r='6' fill='%2300ff88'/><circle cx='32' cy='32' r='10' fill='%2300ff88'/></g><g filter='url(%23glowO)'><line x1='32' y1='32' x2='32' y2='12' stroke='%23f0883e' stroke-width='2'/><line x1='32' y1='32' x2='32' y2='52' stroke='%23f0883e' stroke-width='2'/><line x1='32' y1='32' x2='12' y2='32' stroke='%23f0883e' stroke-width='2'/><line x1='32' y1='32' x2='52' y2='32' stroke='%23f0883e' stroke-width='2'/><circle cx='32' cy='12' r='4' fill='%23f0883e'/><circle cx='32' cy='52' r='4' fill='%23f0883e'/><circle cx='12' cy='32' r='4' fill='%23f0883e'/><circle cx='52' cy='32' r='4' fill='%23f0883e'/></g><line x1='32' y1='32' x2='32' y2='12' stroke='%239c5628' stroke-width='1.5'/><line x1='32' y1='32' x2='32' y2='52' stroke='%239c5628' stroke-width='1.5'/><line x1='32' y1='32' x2='12' y2='32' stroke='%239c5628' stroke-width='1.5'/><line x1='32' y1='32' x2='52' y2='32' stroke='%239c5628' stroke-width='1.5'/><line x1='32' y1='32' x2='16' y2='16' stroke='%2300a658' stroke-width='2'/><line x1='32' y1='32' x2='48' y2='16' stroke='%2300a658' stroke-width='2'/><line x1='32' y1='32' x2='16' y2='48' stroke='%2300a658' stroke-width='2'/><line x1='32' y1='32' x2='48' y2='48' stroke='%2300a658' stroke-width='2'/><circle cx='32' cy='12' r='3.5' fill='%23161b22' stroke='%23f0883e' stroke-width='1.5'/><circle cx='32' cy='52' r='3.5' fill='%23161b22' stroke='%23f0883e' stroke-width='1.5'/><circle cx='12' cy='32' r='3.5' fill='%23161b22' stroke='%23f0883e' stroke-width='1.5'/><circle cx='52' cy='32' r='3.5' fill='%23161b22' stroke='%23f0883e' stroke-width='1.5'/><circle cx='16' cy='16' r='5' fill='%23161b22' stroke='%2300ff88' stroke-width='2'/><circle cx='48' cy='16' r='5' fill='%23161b22' stroke='%2300ff88' stroke-width='2'/><circle cx='16' cy='48' r='5' fill='%23161b22' stroke='%2300ff88' stroke-width='2'/><circle cx='48' cy='48' r='5' fill='%23161b22' stroke='%2300ff88' stroke-width='2'/><circle cx='32' cy='32' r='8' fill='%2300ff88'/><circle cx='32' cy='32' r='4' fill='%230a0e14'/></svg>">
+```
+
+**Files to update (12 total):**
+
+| File | Location |
+|------|----------|
+| `index.html` | repo root |
+| `credits.html` | repo root |
+| `contributions.html` | repo root |
+| `contributing.html` | repo root |
+| `device-calculator.html` | tools/ |
+| `seed-finder.html` | tools/ |
+| `style-guide.html` | docs/ |
+| `proposals-reference.html` | docs/ |
+| `programs-reference.html` | docs/ |
+| `cli-reference.html` | docs/ |
+| `traffic-types-reference.html` | docs/ |
+| `store-reference.html` | docs/ |
+
+---
+
+### Schema Markup (JSON-LD)
+
+Add structured data for machine-readable page metadata. Place `<script type="application/ld+json">` in `<head>` after the favicon line.
+
+**Approach:** Analyze each page's actual content and purpose, then select the most appropriate schema type. Don't apply generic types — each page has distinct value.
+
+**Common fields for all pages:**
+```json
+{
+  "@context": "https://schema.org",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "TNI Toolkit",
+    "url": "https://tni-toolkit.salvo.host/"
+  },
+  "about": {
+    "@type": "VideoGame",
+    "name": "Tower Networking Inc.",
+    "url": "https://store.steampowered.com/app/2939600/Tower_Networking_Inc/"
+  }
+}
+```
+
+**Schema type guidance (analyze content to confirm/adjust):**
+
+| Page | Likely @type | Content Analysis Notes |
+|------|--------------|------------------------|
+| `index.html` | `WebSite` + `ItemList` | Landing page, lists available tools/resources |
+| `device-calculator.html` | `WebApplication` | Interactive calculator tool |
+| `seed-finder.html` | `WebApplication` | Interactive search/filter tool |
+| `credits.html` | `AboutPage` | Attribution and credits |
+| `contributions.html` | `AboutPage` | Contribution log/history |
+| `contributing.html` | `HowTo` | Guide for contributors |
+| `style-guide.html` | `TechArticle` | CSS/design documentation |
+| `store-reference.html` | `TechArticle` | Equipment catalog with specs |
+| `programs-reference.html` | `TechArticle` | Software/service catalog |
+| `cli-reference.html` | `TechArticle` | Command reference documentation |
+| `proposals-reference.html` | `TechArticle` | Proposal catalog with categories |
+| `traffic-types-reference.html` | `TechArticle` | Classification/taxonomy of traffic types |
+
+**Key instruction:** Read each page's content before writing its schema. Consider:
+- What is this page's primary purpose?
+- Is it a tool, a catalog, a guide, documentation?
+- Does it contain a list of distinct items that could be individually typed?
+- What would a user searching for this content expect to find?
+
+**Example for an interactive tool:**
+```html
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "TNI Device Calculator",
+  "description": "Server and program compatibility calculator for Tower Networking Inc.",
+  "url": "https://tni-toolkit.salvo.host/tools/device-calculator.html",
+  "applicationCategory": "GameTool",
+  "operatingSystem": "Web Browser",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "TNI Toolkit",
+    "url": "https://tni-toolkit.salvo.host/"
+  },
+  "about": {
+    "@type": "VideoGame",
+    "name": "Tower Networking Inc.",
+    "url": "https://store.steampowered.com/app/2939600/Tower_Networking_Inc/"
+  }
+}
+</script>
+```
+
+**Example for a reference page:**
+```html
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "name": "TNI Store Reference",
+  "headline": "Complete Equipment Catalog for Tower Networking Inc.",
+  "description": "All 101 purchasable items across 16 categories. Servers, switches, routers, firewalls, cables, racks, and more with full specifications and prices.",
+  "url": "https://tni-toolkit.salvo.host/docs/store-reference.html",
+  "author": {
+    "@type": "Person",
+    "name": "Salvo Praxis"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "TNI Toolkit"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "TNI Toolkit",
+    "url": "https://tni-toolkit.salvo.host/"
+  },
+  "about": {
+    "@type": "VideoGame",
+    "name": "Tower Networking Inc.",
+    "url": "https://store.steampowered.com/app/2939600/Tower_Networking_Inc/"
+  }
+}
+</script>
+```
+
+---
+
+### Deployment Chain
 
 ```
 push to main
@@ -67,75 +189,6 @@ Deploy to FTP (triggers on build-zip completion)
 ───────────────────────────────────────────────────────────────
 Submit To Wayback Machine — Daily (00:00 UTC) + Manual
 Submit To Software Heritage — Manual only
-```
-
----
-
-### Files Ready for Commit
-
-**HTML Files (place in repo root and subdirectories):**
-- `index.html` → repo root
-- `credits.html` → repo root
-- `contributions.html` → repo root
-- `contributing.html` → repo root
-- `tools/device-calculator.html` → tools/
-- `tools/seed-finder.html` → tools/
-- `docs/style-guide.html` → docs/
-- `docs/proposals-reference.html` → docs/
-- `docs/programs-reference.html` → docs/
-- `docs/cli-reference.html` → docs/
-- `docs/traffic-types-reference.html` → docs/
-- `docs/store-reference.html` → docs/
-
-**Workflows (place in `.github/workflows/`):**
-- `generate-sitemap.yml`
-- `generate-og-images.yml`
-- `build-zip.yml` *(replaces build-zip-and-ftp-deploy-full-repo.yml)*
-- `ftp-deploy.yml` *(replaces build-zip-and-ftp-deploy-full-repo.yml)*
-- `archive-wayback-machine.yml`
-- `archive-software-heritage.yml`
-
-**Delete from `.github/workflows/`:**
-- `build-zip-and-ftp-deploy-full-repo.yml` *(replaced by build-zip.yml + ftp-deploy.yml)*
-
-**This file:**
-- `CLAUDE.md` → repo root
-
----
-
-### Commit Message
-
-```
-feat: Backlink config toggle, OG image automation, archive scheduling
-
-Tools:
-- device-calculator.html v1.9.0: Backlink toggle in Settings → General;
-  simplified archive.org-compatible logic; GitHub SVG footer; per-page og:image
-- seed-finder.html v1.4.0: Backlink toggle; reordered config menu
-  (Spoiler Prevention first); GitHub SVG footer; per-page og:image
-
-Index:
-- index.html v1.5.2: Local download link (./tni-toolkit.zip); removed
-  ?from=toolkit params; GitHub SVG in ToC & footer; per-page og:image
-
-All Pages (og:image + GitHub SVG):
-- credits.html, contributions.html, contributing.html
-- docs/style-guide.html, docs/proposals-reference.html
-- docs/programs-reference.html, docs/cli-reference.html
-- docs/traffic-types-reference.html, docs/store-reference.html
-
-Workflows:
-- generate-og-images.yml v1.0.1: NEW — Auto-screenshots all pages (1200x630)
-  using headless Chromium; hides backlink during capture
-- generate-sitemap.yml v1.2.0: Adds tni-toolkit.zip for archive.org
-- build-zip.yml v1.0.0: NEW — Split from combined; builds & commits zip
-- ftp-deploy.yml v1.0.0: NEW — Split from combined; deploys to FTP
-- archive-wayback-machine.yml v1.1.1: Renamed; daily cron + manual (decoupled)
-- archive-software-heritage.yml v1.1.0: Renamed; manual only
-- DELETED: build-zip-and-ftp-deploy-full-repo.yml (replaced by split workflows)
-
-Deployment chain: Sitemap → OG Images → Build ZIP → Deploy to FTP
-Archive chain: Wayback (daily 00:00 UTC), Software Heritage (manual)
 ```
 
 ---
@@ -191,267 +244,11 @@ tni-toolkit/
 
 ### When Building New Tools
 
-1. **Read `docs/STYLE_GUIDE.md` first** — Contains complete CSS reference, component patterns, and copy-paste templates
-2. **Single HTML file** — All CSS in `<style>`, all JS in `<script>`, data embedded as JS objects
-3. **Match the NOC aesthetic** — Dark theme, monospace font, green/blue accents
-4. **Include standard footer** — Links to TNI Toolkit and Steam page
-5. **Test offline** — Tools must work without network access
-6. **Include SEO meta tags** — See Meta Tags section below
-
----
-
-## Quick Reference
-
-### Color Palette
-```css
---bg-gradient: linear-gradient(135deg, #0a0e14 0%, #1a1f2e 50%, #0d1117 100%);
---surface: rgba(22, 27, 34, 0.8);
---border: #30363d;
---text-primary: #c9d1d9;
---text-secondary: #8b949e;
---text-muted: #7d8590;
---accent-green: #00ff88;
---accent-blue: #58a6ff;
---accent-orange: #f0883e;
---accent-red: #f85149;
---success: #238636;
-```
-
-### Typography
-```css
-font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
-```
-
-### Standard Sizes
-- H1: 20px, uppercase, letter-spacing: 2px
-- H2 (panel headers): 13px, uppercase, letter-spacing: 1px
-- Body text: 12px
-- Small text: 11px
-- Fine print: 10px
-
----
-
-## File Header Standards
-
-All project files include standardized headers for version tracking, attribution, and changelog.
-
-### JSON Files
-
-JSON data files include a `_meta` object as the first key:
-
-```json
-{
-  "_meta": {
-    "game": "Tower Networking Inc.",
-    "dataset": "dataset-name",
-    "version": "1.0.0",
-    "last_updated": "YYYY-MM-DD",
-    "description": "What this dataset contains",
-    "sources": [
-      { "name": "In-game observation", "notes": "..." },
-      { "name": "Discord Community", "notes": "..." },
-      { "name": "External Source", "url": "https://...", "author": "@handle", "retrieved": "YYYY-MM-DD" }
-    ],
-    "contributors": ["Name or Handle"],
-    "corrections": [
-      { "version": "1.0.1", "correction": "Description", "reported_by": "Who", "corrected_by": "Who" }
-    ],
-    "future_additions": [
-      { "suggestion": "Brief description", "details": "Context", "suggested_by": "Who" }
-    ]
-  }
-}
-```
-
-### HTML Files
-
-HTML tools include a comment header **before** `<!DOCTYPE html>`:
-
-```html
-<!--
-╔══════════════════════════════════════════════════════════════════════════════╗
-║  Tool Name                                                                   ║
-╠══════════════════════════════════════════════════════════════════════════════╣
-║  Version: X.Y.Z                                                              ║
-║  Updated: YYYY-MM-DD                                                         ║
-║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
-╠══════════════════════════════════════════════════════════════════════════════╣
-║  Description:                                                                ║
-║    Brief description of what this tool does.                                 ║
-║                                                                              ║
-║  Features:                                                                   ║
-║    - Feature 1                                                               ║
-║    - Feature 2                                                               ║
-║                                                                              ║
-║  Contributors:                                                               ║
-║    - Name (contribution type)                                                ║
-║                                                                              ║
-║  Changelog:                                                                  ║
-║    X.Y.Z - Change description                                                ║
-╚══════════════════════════════════════════════════════════════════════════════╝
--->
-```
-
-### YAML Workflow Files
-
-```yaml
-# ============================================================================
-# TNI Toolkit - GitHub Actions Workflow
-# File: .github/workflows/workflow-name.yml
-# Name: Workflow Display Name
-# Version: X.Y.Z
-# Updated: YYYY-MM-DD
-# Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)
-#
-# Description:
-#   What this workflow does and when it runs.
-#
-# Contributors:
-#   - name (@handle) - contribution
-#
-# Changelog:
-#   X.Y.Z - Change description
-# ============================================================================
-```
-
----
-
-## Meta Tags
-
-All HTML files should include these meta tags in `<head>`:
-
-```html
-<!-- SEO Meta Tags -->
-<meta name="description" content="[Page-specific description, ~155 chars]">
-<meta name="author" content="Salvo Praxis">
-<meta name="robots" content="index, follow">
-
-<!-- Open Graph (Facebook, Discord, etc.) -->
-<meta property="og:title" content="[Page Title] - TNI Toolkit">
-<meta property="og:description" content="[Same as meta description]">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://tni-toolkit.salvo.host/[path]">
-<meta property="og:site_name" content="TNI Toolkit">
-<meta property="og:image" content="https://tni-toolkit.salvo.host/images/og-preview.png">
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="[Page Title] - TNI Toolkit">
-<meta name="twitter:description" content="[Shorter description, ~100 chars]">
-
-<!-- Canonical URL -->
-<link rel="canonical" href="https://tni-toolkit.salvo.host/[path]">
-```
-
----
-
-## Versioning & Attribution
-
-### Version Number Format
-
-**MAJOR.MINOR.PATCH** (SemVer-style)
-
-- **PATCH** (X.Y.Z → X.Y.Z+1): Bug fixes, typo corrections, data fixes
-- **MINOR** (X.Y.Z → X.Y+1.0): New features, new data fields, UI additions
-- **MAJOR** (X.Y.Z → X+1.0.0): Breaking changes, major redesigns
-
-### When to Bump Versions
-
-| Change Type | Version Bump | Example |
-|-------------|--------------|---------|
-| Typo fix | PATCH | 1.2.0 → 1.2.1 |
-| Data correction | PATCH | 1.2.1 → 1.2.2 |
-| Bug fix | PATCH | 1.2.2 → 1.2.3 |
-| New feature | MINOR | 1.2.3 → 1.3.0 |
-| New data field | MINOR | 1.3.0 → 1.4.0 |
-| UI addition | MINOR | 1.4.0 → 1.5.0 |
-| Major redesign | MAJOR | 1.5.0 → 2.0.0 |
-
-### Commit Message Format
-
-```
-<type>(<scope>): <description>
-
-[optional body]
-
-[optional footer]
-```
-
-**Types:** `feat`, `fix`, `data`, `docs`, `style`, `refactor`, `ci`, `meta`, `seo`
-
-**Examples:**
-```
-feat(device-calc): Add SATA expansion support
-fix(seed-finder): Correct pagination edge case
-data(store): Add missing router specs (gamers2000)
-docs: Update CLAUDE.md session state
-ci: Add sitemap generation workflow
-seo: Add meta tags to all HTML files
-```
-
-### Attribution Pipeline
-
-When community members contribute:
-
-1. **Credit in file header** — Add to Contributors or Bug Reports section
-2. **Credit in CONTRIBUTIONS.md** — Add dated entry with details
-3. **Credit in credits.html** — Update Greetz count, add to Recent Contributions if notable
-4. **Credit in JSON `_meta`** — If data file was modified
-
-### Greetz Counting Rules
-
-**Each of these counts as 1 contribution:**
-- Bug report that gets fixed
-- Feature suggestion that gets implemented
-- Data correction (single item or batch)
-- External data contribution (JSON, documentation, etc.)
-- Pull request merged
-
-**Does NOT count:**
-- Multiple suggestions in one conversation (= 1 contribution)
-- Suggestions not yet implemented
-- General feedback without actionable items
-
-**Display order:** Descending by count, then alphabetical for ties.
-
-### Recent Contributions Table
-
-credits.html Recent Contributions is a **highlight reel**, not a complete log.
-
-**Keep ~10-12 entries max.** The full history lives in contributions.html and CONTRIBUTIONS.md.
-
-**Prioritize community contributions:**
-- Bug reports that got fixed
-- Feature suggestions that got implemented
-- External data contributions (AlinaNova, Chaotic Crumb, etc.)
-- External sources (@tower-network wiki, etc.)
-
-**Deprioritize Salvo-only work:**
-- Internal refactors, style changes
-- New features without community input
-- Documentation-only updates
-
-**When trimming:** Remove oldest Salvo-only entries first. Keep community contributions visible longer — they're the whole point of the Greetz system.
-
-### Quick Reference Table
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│ CHANGE TYPE        │ VERSION │ FILES TO UPDATE              │
-├────────────────────┼─────────┼──────────────────────────────┤
-│ Bug fix (reported) │ PATCH   │ source + CONTRIB + credits   │
-│ Feature (suggested)│ MINOR   │ source + CONTRIB + credits   │
-│ Salvo's own work   │ *       │ source + CONTRIB + credits   │
-│ External PR        │ *       │ source + CONTRIB + credits   │
-│ Internal/docs only │ PATCH   │ source only (maybe)          │
-└─────────────────────────────────────────────────────────────┘
-* = PATCH or MINOR depending on scope
-
-COMMIT PREFIX: data: | tool: | fix: | docs: | ci: | style: | meta: | seo:
-
-SESSION START: Note version → Check TODO → Set scope
-SESSION END:   Bump once → Update all files → Commit message → Handoff
-```
+1. Use `tools/seed-finder.html` as the template (most complete example)
+2. Follow `docs/STYLE_GUIDE.md` for all CSS patterns
+3. Embed data directly in the HTML (no external fetches)
+4. Include the inline SVG favicon in `<head>`
+5. Test offline functionality before committing
 
 ---
 
@@ -472,65 +269,16 @@ SESSION END:   Bump once → Update all files → Commit message → Handoff
 
 - [ ] **In-Game Wiki Mirror** *(moved to [tni-wiki-harvester](https://github.com/salvo-praxis/tni-wiki-harvester))*
   - Goal: Extract wiki text for Claude context when building tools
-  - Problem: Wiki text is not copy-able, entries require scrolling
-  - Process:
-    1. Manually screenshot each wiki entry (scroll, screenshot, repeat)
-    2. Save screenshots in folders named by entry (e.g., `screenshots/Firewalls/`)
-    3. Run `stitch.bat` to vertically stitch images per folder → one long image per entry
-    4. Upload stitched images to Claude for transcription (see `CLAUDE.md` in tni-wiki-harvester)
-    5. Output: Markdown files with `[IMAGE:]` and `[ANIMATED:]` placeholders
   - Blocker: Screenshots not yet captured
-
-### Data Files
-
-- [x] **tni-proposals.json** — Complete proposals catalog (30 proposals, 7 categories)
-  - Added by AlinaNova (PROPOSALS_REFERENCE.md), converted to JSON by Salvo Praxis
-
-### Device Calculator
-
-- [x] Config menu: auto-prune, refurb toggle, warranty/traversals/power display *(completed & committed)*
-
-### Seed Finder
-
-- [x] Paginate results *(completed & committed)*
-- [x] Config menu: seeds per page *(completed & committed)*
-- [x] Spoiler Prevention mode *(completed 2025-12-15, v1.3.0)*
 
 ### General
 
-- [x] Relative links where applicable *(completed & committed)*
-- [x] HTML counterparts should link to HTML versions *(completed & committed)*
-- [x] `tni-toolkit.zip` download link should be local `./tni-toolkit.zip` *(completed 2025-12-16)*
-- [x] Fix conditional backlinks for archive.org *(completed 2025-12-16 — config toggle, simplified logic)*
-- [x] Standardize GitHub icon (SVG) in index.html, device-calculator, seed-finder *(completed 2025-12-16)*
-- [x] Standardize GitHub icon (SVG) in remaining 9 files *(completed 2025-12-17)*
-- [x] Update og:image meta tags in remaining 9 files *(completed 2025-12-17)*
+- [x] **Add inline SVG favicon to all 12 HTML files** *(done)*
+- [x] **Add JSON-LD schema markup to all 12 HTML files** *(done — using TechArticle for reference pages)*
 
-### Automation
+### Discoverability
 
-- [x] YAML workflow: Build ZIP and FTP deploy *(completed & committed)*
-- [x] YAML workflow: Auto-generate sitemap *(completed 2025-12-15, updated 2025-12-16 v1.2.0)*
-- [x] YAML workflow: Archive to Software Heritage *(completed 2025-12-15, updated 2025-12-16 — manual only)*
-- [x] YAML workflow: Archive to Wayback Machine *(completed 2025-12-15, updated 2025-12-16 — daily + manual)*
-- [x] YAML workflow: Generate OG preview images *(completed 2025-12-16, v1.0.1)*
-- [x] Sitemap includes tni-toolkit.zip for archive.org *(completed 2025-12-16)*
-
-### SEO
-
-- [x] Add sitemap.xml *(completed 2025-12-15)*
-- [x] Add robots.txt *(completed 2025-12-15)*
-- [x] Add meta tags to all HTML files *(completed 2025-12-15)*
-- [x] Register with Google Search Console *(completed 2025-12-15)*
-- [x] Register with Bing Webmaster Tools *(completed 2025-12-15)*
-- [x] Archive.org Wayback Machine *(completed 2025-12-15)*
-- [x] Submit to Software Heritage *(completed 2025-12-15 — both repos verified)*
-- [x] Add Software Heritage badge to README *(completed 2025-12-15)*
-- [x] Auto-archive to Wayback Machine workflow *(completed 2025-12-15, updated 2025-12-16 — daily schedule)*
-- [x] Auto-generate OG preview images workflow *(completed 2025-12-16)*
-- [x] Per-page og:image in index.html, device-calculator, seed-finder *(completed 2025-12-16)*
-- [x] Per-page og:image in remaining 9 files *(completed 2025-12-17)*
-- [ ] Add Schema markup (JSON-LD) to HTML files *(optional enhancement — requires new session)*
-- [ ] Write Steam Guide *(future — high-value backlink, wiki transcription will help)*
+- [ ] Write Steam Guide *(future — community visibility, wiki transcription will help)*
 
 ---
 
@@ -550,11 +298,6 @@ SESSION END:   Bump once → Update all files → Commit message → Handoff
 - [ ] Switch/Router Comparison Tool
 - [ ] Decentro Network Planner
 - [ ] Equipment ROI Calculator
-
-### Completed
-- [x] Server/Program Compatibility Calculator
-- [x] Starting Proposal Seed Finder
-- [x] Reference Pages (store, programs, CLI, traffic types, proposals)
 
 ---
 
