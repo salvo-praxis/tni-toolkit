@@ -2,7 +2,7 @@
   "_meta": {
     "game": "Tower Networking Inc.",
     "dataset": "price-per-use-caps",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "last_updated": "2025-12-29",
     "description": "Domain Registration PPU Limits",
     "sources": [
