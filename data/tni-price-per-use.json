@@ -1,0 +1,62 @@
+{
+  "_meta": {
+    "game": "Tower Networking Inc.",
+    "dataset": "price-per-use-caps",
+    "version": "0.0.1",
+    "last_updated": "2025-12-29",
+    "description": "Domain Registration PPU Limits",
+    "sources": [
+      {
+        "name": "Discord Collective Knowledge",
+        "url": "https://discord.com/channels/1314177878920794132/1330862854303125605/1454978396093288631",
+        "author": "gamers2000",
+        "retrieved": "2025-12-07",
+        "notes": "Not fully verified, but working to build a reference point. Difficulties Tested on: Zen"
+      }
+    ],
+    "contributors": [
+      "Salvo Praxis",
+      "Jacob Evans"
+    ],
+    "corrections": [
+    ]
+  },
+  "usage_spec": [
+    {
+      "type": "store-text",
+      "max_known_ppu": "1.1"
+    },
+    {
+      "type": "store-image",
+      "max_known_ppu": "1.1"
+    },
+    {
+      "type": "store-video",
+      "max_known_ppu": "1.1"
+    },
+    {
+      "type": "read-text",
+      "max_known_ppu": "1.0"
+    },
+    {
+      "type": "update-software",
+      "max_known_ppu": "1.1"
+    },
+    {
+      "type": "stream-live-video",
+      "max_known_ppu": "1.1"
+    },
+    {
+      "type": "stream-voice",
+      "max_known_ppu": "1.1"
+    },
+    {
+      "type": "post-text and verify-user",
+      "max_known_ppu": "0.8"
+    },
+    {
+      "type": "read-text and verify-user",
+      "max_known_ppu":"0.8"
+    }
+  ]
+}
