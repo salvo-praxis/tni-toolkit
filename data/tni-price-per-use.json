@@ -5,9 +5,10 @@
     "version": "1.0.0",
     "last_updated": "2025-12-29",
     "description": "Domain Registration PPU Limits",
+    "notes": "Not fully verified, but working to build a reference point. Difficulties Tested on: Zen",
     "sources": [
       {
-        "name": "Discord Collective Knowledge",
+        "name": "Discord Community",
         "url": "https://discord.com/channels/1314177878920794132/1330862854303125605/1454978396093288631",
         "author": "gamers2000",
         "retrieved": "2025-12-07",
