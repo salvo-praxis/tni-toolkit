@@ -21,6 +21,10 @@
 <lastmod>2025-12-07T20:41:07-06:00</lastmod>
 </url>
 <url>
+<loc>https://tni-toolkit.salvo.host/data/tni-price-per-use.json</loc>
+<lastmod>2026-03-14T11:59:42-05:00</lastmod>
+</url>
+<url>
 <loc>https://tni-toolkit.salvo.host/data/tni-programs.json</loc>
 <lastmod>2025-12-08T18:09:20-06:00</lastmod>
 </url>
@@ -70,6 +74,6 @@
 </url>
   <url>
     <loc>https://tni-toolkit.salvo.host/tni-toolkit.zip</loc>
-    <lastmod>2025-12-21</lastmod>
+    <lastmod>2026-03-14</lastmod>
   </url>
 </urlset>
