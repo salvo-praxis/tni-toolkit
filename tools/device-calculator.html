@@ -2,8 +2,8 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║  TNI Device Compatibility Calculator                                         ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║  Version: 1.9.0                                                              ║
-║  Updated: 2025-12-16                                                         ║
+║  Version: 1.10.0                                                             ║
+║  Updated: 2026-03-19                                                         ║
 ║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Description:                                                                ║
@@ -23,18 +23,24 @@
 ║    - Comprehensive device tooltip on hover (optional)                        ║
 ║    - Warranty and vendor information display                                 ║
 ║    - Config menu with persistent settings                                    ║
+║    - Auto-filter compatible devices or programs                              ║
 ║                                                                              ║
 ║  Contributors:                                                               ║
 ║    - Salvo Praxis (original author, style guide compliance)                  ║
 ║    - Claude (Anthropic)                                                      ║
-║    - AlinaNova (device categories, search, sharecode, file table)          ║
+║    - AlinaNova (device categories, search, sharecode, file table)            ║
 ║    - gamers2000 (warranty display, refurb devices suggestions)               ║
 ║    - Singing Pot Beast (auto-prune/config menu suggestion)                   ║
+║    - Agentd00nut (Auto-filter compatible)                                    ║
 ║                                                                              ║
 ║  Bug Reports:                                                                ║
 ║    - Блинчик (program search box fix)                                        ║
 ║                                                                              ║
 ║  Changelog:                                                                  ║
+║    1.10.0 - Added "Auto-filter compatible" toggle in Compatibility section;  ║
+║             automatically filters device/program lists to show only items    ║
+║             that fit selected configurations based on CPU/memory/storage     ║
+║             requirements; respects SATA expansion settings                   ║
 ║    1.9.0 - Added "Back to Toolkit" config toggle in General section;         ║
 ║            simplified backlink logic for archive.org compatibility;          ║
 ║            added GitHub SVG icon to footer                                   ║
@@ -1618,6 +1624,17 @@
                     <div class="config-section">
                         <div class="config-section-title">Compatibility</div>
                         
+                        <div class="config-option">
+                            <div>
+                                <div class="config-option-label">Auto-filter compatible</div>
+                                <div class="config-option-desc">Only show devices/programs that fit selected items</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="config-auto-filter" onchange="onConfigChange()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
                         <div class="config-option disabled">
                             <div>
                                 <div class="config-option-label">Auto-prune incompatible</div>
@@ -1743,7 +1760,7 @@
         </div>
         <p class="footer-note">Made with ❤️ for the TNI community</p>
         <div class="footer-badges">
-            <span class="version-badge">v1.8.2</span>
+            <span class="version-badge">v1.10.0</span>
             <a href="https://github.com/salvo-praxis/tni-toolkit/blob/main/LICENSE" target="_blank" class="license-badge">MIT License — Free to use, modify, and share</a>
         </div>
     </footer>
@@ -1879,6 +1896,7 @@
             showTooltip: false,    // Comprehensive tooltip on hover
             autoSata: true,        // Auto-populate minimum SATA to meet storage
             maxSata: false,        // Auto-maximize all SATA slots
+            autoFilter: false,     // Auto-filter compatible devices/programs
             autoPrune: false,
             // Program display options
             showProgramOutput: true,   // O/t - output per tick
@@ -1909,6 +1927,7 @@
                     document.getElementById('config-show-tooltip').checked = config.showTooltip;
                     document.getElementById('config-auto-sata').checked = config.autoSata;
                     document.getElementById('config-max-sata').checked = config.maxSata;
+                    document.getElementById('config-auto-filter').checked = config.autoFilter;
                     // config-auto-prune checkbox is disabled, don't update it
                     // Program config options
                     document.getElementById('config-show-program-output').checked = config.showProgramOutput;
@@ -1963,6 +1982,7 @@
             config.showTooltip = document.getElementById('config-show-tooltip').checked;
             config.autoSata = document.getElementById('config-auto-sata').checked;
             config.maxSata = document.getElementById('config-max-sata').checked;
+            config.autoFilter = document.getElementById('config-auto-filter').checked;
             // If maxSata is on, autoSata should be implied
             if (config.maxSata) {
                 config.autoSata = true;
@@ -2239,6 +2259,20 @@
                 const search = deviceSearch.toLowerCase();
                 result = result.filter(d => d.model.toLowerCase().includes(search));
             }
+            // Auto-filter: filter devices that don't have enough resources for selected programs
+            if (config.autoFilter && selectedPrograms.length > 0) {
+                result = result.filter(device => {
+                    // Calculate total requirements from selected programs
+                    const totalCpu = selectedPrograms.reduce((sum, p) => sum + p.cpu, 0);
+                    const totalMemory = selectedPrograms.reduce((sum, p) => sum + p.memory, 0);
+                    const totalStorage = selectedPrograms.reduce((sum, p) => sum + p.storage, 0);
+                    
+                    // Check if device meets requirements
+                    return device.cpu >= totalCpu && 
+                           device.memory >= totalMemory && 
+                           (device.storage + (device.sata_slots || 0) * SATA_DRIVE_STORAGE) >= totalStorage;
+                });
+            }
             // Auto-prune: filter out devices that can't run selected programs
             // NOTE: Currently disabled in config. When enabled, this will check
             // device.compatible_programs array (in tni-store.json) to determine what
@@ -2361,6 +2395,9 @@
                         sataSelected = 0; // Start at 0, user can increment
                     }
                     renderDevices();
+                    if (config.autoFilter) {
+                        renderPrograms();
+                    }
                     updateToggles();
                     calculate();
                 });
@@ -2500,6 +2537,30 @@
                 });
             }
             
+            // Auto-filter: filter programs that don't fit within selected device's remaining resources
+            if (config.autoFilter && selectedDevice) {
+                // Calculate current resource usage from already selected programs
+                const usedCpu = selectedPrograms.reduce((sum, p) => sum + p.cpu, 0);
+                const usedMemory = selectedPrograms.reduce((sum, p) => sum + p.memory, 0);
+                const usedStorage = selectedPrograms.reduce((sum, p) => sum + p.storage, 0);
+                
+                // Calculate available resources (considering SATA if configured)
+                const availableCpu = selectedDevice.cpu - usedCpu;
+                const availableMemory = selectedDevice.memory - usedMemory;
+                const availableStorage = (selectedDevice.storage + (selectedDevice.sata_slots || 0) * SATA_DRIVE_STORAGE) - usedStorage;
+                
+                result = result.filter(program => {
+                    // Always include already selected programs
+                    if (selectedPrograms.some(p => p.name === program.name)) {
+                        return true;
+                    }
+                    // Check if this program would fit in remaining resources
+                    return program.cpu <= availableCpu && 
+                           program.memory <= availableMemory && 
+                           program.storage <= availableStorage;
+                });
+            }
+            
             return result;
         }
 
@@ -2612,6 +2673,9 @@
                     sataManualOverride = false;
 
                     renderPrograms();
+                    if (config.autoFilter) {
+                        renderDevices();
+                    }
                     calculate();
                 });
             });
