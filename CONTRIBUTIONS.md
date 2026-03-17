@@ -4,6 +4,13 @@ Running log of all contributions to the TNI Toolkit. For guidelines on contribut
 
 ---
 
+## 2026-03-17
+
+### Agentd00nut
+- `tools/device-calculator.html` v1.10.0 — Added "Auto-filter compatible" toggle: filters device and program lists by CPU/memory/storage compatibility while keeping selected programs visible.
+
+---
+
 ## 2025-12-15
 
 ### Salvo Praxis
