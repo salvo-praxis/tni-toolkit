@@ -1,6 +1,7 @@
 # IDE / Editor
 .vscode/
 *.code-workspace
+.idea
 
 # OS files
 .DS_Store

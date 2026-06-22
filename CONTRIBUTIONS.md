@@ -4,6 +4,14 @@ Running log of all contributions to the TNI Toolkit. For guidelines on contribut
 
 ---
 
+## 2026-06-22
+
+### Joshua Bissell
+- `tools/device-calculator.html` v1.9.1 - Added Tenabolt scenario servers and programs. Programs are now stackable using left and right click up to their stack limits
+- `data/tni-programs.json` v1.2.0 - Added Tenabolt scenario programs
+
+---
+
 ## 2025-12-15
 
 ### Salvo Praxis

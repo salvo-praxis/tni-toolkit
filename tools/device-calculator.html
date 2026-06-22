@@ -2,8 +2,8 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║  TNI Device Compatibility Calculator                                         ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║  Version: 1.9.0                                                              ║
-║  Updated: 2025-12-16                                                         ║
+║  Version: 1.9.1                                                              ║
+║  Updated: 2026-06-22                                                         ║
 ║  Part of: TNI Toolkit (https://github.com/salvo-praxis/tni-toolkit)          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Description:                                                                ║
@@ -27,14 +27,17 @@
 ║  Contributors:                                                               ║
 ║    - Salvo Praxis (original author, style guide compliance)                  ║
 ║    - Claude (Anthropic)                                                      ║
-║    - AlinaNova (device categories, search, sharecode, file table)          ║
+║    - AlinaNova (device categories, search, sharecode, file table)            ║
 ║    - gamers2000 (warranty display, refurb devices suggestions)               ║
 ║    - Singing Pot Beast (auto-prune/config menu suggestion)                   ║
+║    - Joshua Bissell (Tenabolt scanrio servers + programs, program stacking)  ║
 ║                                                                              ║
 ║  Bug Reports:                                                                ║
 ║    - Блинчик (program search box fix)                                        ║
 ║                                                                              ║
 ║  Changelog:                                                                  ║
+║    1.9.1 - Added Tenabolt scenario servers and programs. Programs are now    ║
+║            stackable using left and right click up to their stack limits.    ║
 ║    1.9.0 - Added "Back to Toolkit" config toggle in General section;         ║
 ║            simplified backlink logic for archive.org compatibility;          ║
 ║            added GitHub SVG icon to footer                                   ║
@@ -1708,6 +1711,7 @@
                 <button class="clear-btn" onclick="clearProgramSelection()">Clear</button>
             </div>
             <div class="list-container programs" id="program-list"></div>
+            <div style="font-size:11px;color:#8b949e;margin-top:6px;">Tip: click to add an instance (up to stack limit). Right-click to remove one.</div>
         </div>
     </div>
     
@@ -1769,6 +1773,11 @@
                 { model: "MacroHard NLB2", vendor: "The Server Shoppe", cpu: 2, memory: 1, storage: 1, sata_slots: 0, price: 437, power_w: 83, ports: 3, warranty_days: 73, traversals_per_tick: 80, cpu_cycle: "1 tick / 2.0s" },
                 { model: "ICC1", vendor: "Interchange Compute", cpu: 1, memory: 2, storage: 2, sata_slots: 1, price: 160, power_w: 19, ports: 1, warranty_days: 8, traversals_per_tick: 6, cpu_cycle: "1 tick / 2.0s" },
                 { model: "Golonys-Cinco", vendor: "Golonys Ltd.", cpu: 1, memory: 1, storage: 1, sata_slots: 5, price: 400, power_w: 13, ports: 1, warranty_days: 17, traversals_per_tick: 6, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Avex Sparrow", vender: "Avex Tech", cpu: 3, memory: 4, storage: 8, sata_slots: 0, price: 1100, power_w: 88, ports: 3, warranty_days: 14, traversals_per_tick: 21, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Avex Starling", vender: "Avex Tech", cpu: 7, memory: 6, storage: 7, sata_slots: 0, price: 1150, power_w: 191, ports: 3, warranty_days: 14, traversals_per_tick: 39, cpu_cycle: "1 tick / 2.0s" },
+                { model: "Avex Swallow", vender: "Avex Tech", cpu: 4, memory: 8, storage: 12, sata_slots: 2, price: 3000, power_w: 200, ports: 3, warranty_days: 14, traversals_per_tick: 38, cpu_cycle: "1 tick / 2.0s"},
+                { model: "Avex Skua", vender: "Avex Tech", cpu: 12, memory: 16, storage: 4, sata_slots: 2, price: 3000, power_w: 723, ports: 3, warranty_days: 14, traversals_per_tick: 90, cpu_cycle: "1 tick / 2.0s"},
+                { model: "Avex Secretary", vender: "Avex Tech", cpu: 23, memory: 13, storage: 10, sata_slots: 2, price: 3150, power_w: 953, ports: 4, warranty_days: 14, traversals_per_tick: 168, cpu_cycle: "1 tick / 2.0s"}
             ],
             network_switches: [
                 { model: "Blade5", vendor: "Blade Networking Inc", cpu: 2, memory: 1, storage: 1, firmware: "bladeos", price: 100, power_w: 22, ports: 5, warranty_days: 7, traversals_per_tick: 25, cpu_cycle: "1 tick / 2.0s" },
@@ -1841,6 +1850,21 @@
             { name: "decentro-wallet", type: "Storage", cpu: 1, memory: 2, storage: 2, output_uses: ["access-p2p-currency"], output_amount: null, input_amount: null, input_uses: null, stack_limit: null, requires: null, capacity_per: { resource: "storage", amount: 10 } },
             { name: "decentro-collector", type: "Converter", cpu: 1, memory: 1, storage: 1, output_uses: ["access-p2p-currency"], output_amount: 1, input_amount: 1, input_uses: "access-p2p-currency", stack_limit: null, requires: null, stack_per: { resource: "memory", amount: 6 } },
             { name: "ubbt", type: "Converter", cpu: 4, memory: 4, storage: 6, output_uses: ["support-bots"], output_amount: 4, input_amount: 4, input_uses: "inspect-user-packets", stack_limit: 4, requires: "inspect-user-packets" },
+            // Tenabolt scenario update
+            { name: "complaint-server2", type: "Converter", cpu: 5, memory: 9, storage: 3, output_uses: ["read-complaint", "post-complaint", "store-complaint"], output_amount: 15, input_amount: 2, input_uses: "read-text + post-text + verify-user", stack_limit: 15, requires: "mailer" },
+            { name: "hypervisor-server", type: "Converter", cpu: 20, memory: 9, storage: 3, output_uses: ["provision-vm"], output_amount: 15, input_amount: 4, input_uses: "store-text", stack_limit: null, requires: "store-text" },
+            { name: "log-server", type: "Converter", cpu: 5, memory: 9, storage: 16, output_uses: ["query-log-entry", "store-log-entry"], output_amount: 15, input_amount: 1, input_uses: "store-text", stack_limit: null, requires: "store-text" },
+            { name: "maintenance-server", type: "Converter", cpu: 3, memory: 5, storage: 7, output_uses: ["post-repair-workorder"], output_amount: 8, input_amount: 3, input_uses: "verify-user + store-geospatial-data + read-geospatial-data", stack_limit: null, requires: "tena-gis-server" },
+            { name: "print-server", type: "Converter", cpu: 2, memory: 1, storage: 4, output_uses: ["print-image", "print-text"], output_amount: 10, input_amount: 10, input_uses: "accept-printer-connection", stack_limit: null, requires: "Connected printer" },
+            { name: "tena-calc-server", type: "Converter", cpu: 15, memory: 8, storage: 4, output_uses: ["verify-user", "run-tenabolt-simulation", "store-tenabolt-model"], output_amount: 10, input_amount: 3, input_uses: "read-operation-data", stack_limit: null, requires: null },
+            { name: "tena-employee-db", type: "Converter", cpu: 3, memory: 7, storage: 8, output_uses: ["read-employee-data", "post-employee-data"], output_amount: 10, input_amount: 1, input_uses: "store-text + store-image", stack_limit: null, requires: "store-text AND store-image" },
+            { name: "tena-gis-server", type: "Converter", cpu: 16, memory: 9, storage: 3, output_uses: ["verify-user", "store-geospatial-data", "read-geospatial-data"], output_amount: 8, input_amount: 3, input_uses: "store-text + store-image", stack_limit: null, requires: "store-text AND store-image" },
+            { name: "tena-meter-db", type: "Converter", cpu: 5, memory: 3, storage: 6, output_uses: ["post-meter-reading"], output_amount: 8, input_amount: 1, input_uses: "store-text + store-image", stack_limit: null, requires: "store-text AND store-image" },
+            { name: "tena-staff-portal", type: "Converter", cpu: 5, memory: 3, storage: 9, output_uses: ["post-news-updates", "read-news-updates", "verify-user"], output_amount: 8, input_amount: 3, input_uses: "store-text + store-image", stack_limit: null, requires: "store-text AND store-image" },
+            { name: "ten-bill-server", type: "Converter", cpu: 3, memory: 9, storage: 3, output_uses: ["post-invoice", "verify-user"], output_amount: 8, input_amount: 3, input_uses: "read-meter-readings", stack_limit: null, requires: "store-text AND store-image" },
+            { name: "ten-public-portal", type: "Converter", cpu: 3, memory: 3, storage: 4, output_uses: ["post-news-updates", "read-news-updates"], output_amount: 2, input_amount: 2, input_uses: "store-text + store-image", stack_limit: null, requires: "store-text AND store-image" },
+            { name: "ten-scada-server", type: "Converter", cpu: 16, memory: 9, storage: 3, output_uses: ["verify-user", "adjust-tenabolt-setpoint"], output_amount: 8, input_amount: 2, input_uses: "store-log-entry", stack_limit: null, requires: "log-server" },
+            { name: "tmp-collabpoint1", type: "Converter", cpu: 5, memory: 7, storage: 5, output_uses: ["download-file", "upload-file"], output_amount: 25, input_amount: 3, input_uses: "store-text + store-image", stack_limit: null, requires: "store-text AND store-image" },
             // Firmware
             { name: "rtkernel", type: "Firmware", cpu: 4, memory: 1, storage: 2, output_uses: [], output_amount: null, input_amount: null, input_uses: null, stack_limit: null, requires: "/etc/routes.conf" },
             { name: "hakernel", type: "Firmware", cpu: 8, memory: 2, storage: 4, output_uses: [], output_amount: null, input_amount: null, input_uses: null, stack_limit: null, requires: "/etc/routes.conf" },
@@ -2176,6 +2200,17 @@
             const code = generateSharecode();
             sharecodeEl.value = code;
             try { history.replaceState(null, '', '#' + code); } catch(e) {}
+        }
+
+        // === FORMAT SELECTED PROGRAMS (grouped with counts) ===
+        function formatSelectedPrograms() {
+            const counts = {};
+            const order = [];
+            selectedPrograms.forEach(p => {
+                if (!(p.name in counts)) { counts[p.name] = 0; order.push(p.name); }
+                counts[p.name]++;
+            });
+            return order.map(n => counts[n] > 1 ? `${n} ×${counts[n]}` : n).join(' + ');
         }
 
         // === CALCULATE PROGRAM NEEDS (for auto-prune) ===
@@ -2531,7 +2566,9 @@
                     }
                 }
 
-                const isSelected = selectedPrograms.some(p => p.name === program.name);
+                const instanceCount = selectedPrograms.filter(p => p.name === program.name).length;
+                const isSelected = instanceCount > 0;
+                const atStackLimit = program.stack_limit !== null && typeof program.stack_limit === 'number' && instanceCount >= program.stack_limit;
                 const typeClass = `type-${program.type.toLowerCase()}`;
                 
                 // Build program throughput stats
@@ -2573,7 +2610,7 @@
                          data-program-idx="${idx}">
                         <div class="item-header">
                             <span class="item-name ${isSelected ? 'program-active' : ''}">
-                                ${isSelected ? '✓ ' : ''}${program.name}
+                                ${isSelected ? `✓ ${program.name}${instanceCount > 1 ? ` <span style="color:#f0c674;">×${instanceCount}</span>` : ''}` : program.name}${atStackLimit ? ' <span style="color:#8b949e;font-size:10px;">(max)</span>' : ''}
                             </span>
                             <div class="program-meta">
                                 <span class="type-badge ${typeClass}">${program.type}</span>
@@ -2596,23 +2633,33 @@
             programListEl.innerHTML = html;
 
             // Add click handlers
+            // Left-click: add an instance (up to stack_limit). Right-click: remove an instance.
             programListEl.querySelectorAll('.list-item').forEach(el => {
+                const idx = parseInt(el.dataset.programIdx);
+                const program = programs[idx];
+
                 el.addEventListener('click', () => {
-                    const idx = parseInt(el.dataset.programIdx);
-                    const program = programs[idx];
-                    const existsIdx = selectedPrograms.findIndex(p => p.name === program.name);
-
-                    if (existsIdx >= 0) {
-                        selectedPrograms.splice(existsIdx, 1);
-                    } else {
-                        selectedPrograms.push(program);
+                    const count = selectedPrograms.filter(p => p.name === program.name).length;
+                    // Enforce stack_limit only when it's a numeric limit; null/non-numeric = unlimited
+                    if (program.stack_limit !== null && typeof program.stack_limit === 'number' && count >= program.stack_limit) {
+                        return;
                     }
-                    
-                    // Reset SATA override so it auto-adjusts to new program requirements
-                    sataManualOverride = false;
+                    selectedPrograms.push(program);
 
+                    sataManualOverride = false;
                     renderPrograms();
                     calculate();
+                });
+
+                el.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    const existsIdx = selectedPrograms.findIndex(p => p.name === program.name);
+                    if (existsIdx >= 0) {
+                        selectedPrograms.splice(existsIdx, 1);
+                        sataManualOverride = false;
+                        renderPrograms();
+                        calculate();
+                    }
                 });
             });
         }
@@ -2768,7 +2815,7 @@
                     
                     programsSummaryEl.classList.remove('hidden');
                     programsSummaryEl.innerHTML = `
-                        <strong>Selected:</strong> ${selectedPrograms.map(p => p.name).join(' + ')}${ioHtml}
+                        <strong>Selected:</strong> ${formatSelectedPrograms()}${ioHtml}
                         <table class="file-table">
                             <thead><tr><th>File</th><th>CPU</th><th>MEM</th><th>HDD</th></tr></thead>
                             <tbody>${rows}</tbody>
@@ -2975,7 +3022,7 @@
 
                 programsSummaryEl.classList.remove('hidden');
                 programsSummaryEl.innerHTML = `
-                    <strong>Selected:</strong> ${selectedPrograms.map(p => p.name).join(' + ')}${ioHtml}
+                    <strong>Selected:</strong> ${formatSelectedPrograms()}${ioHtml}
                     <table class="file-table">
                         <thead><tr><th>File</th><th>CPU</th><th>MEM</th><th>HDD</th></tr></thead>
                         <tbody>${rows}</tbody>

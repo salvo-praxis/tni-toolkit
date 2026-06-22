@@ -2,8 +2,8 @@
   "_meta": {
     "game": "Tower Networking Inc.",
     "dataset": "programs",
-    "version": "1.1.1",
-    "last_updated": "2025-12-08",
+    "version": "1.2.0",
+    "last_updated": "2026-06-20",
     "description": "Complete catalog of installable server programs with resource requirements, outputs, and dependencies.",
     "notes": "Program types: producer (generates uses), converter (transforms inputs to outputs), data storage (persists data), firmware (device operating systems).",
     "sources": [
@@ -22,9 +22,15 @@
       "Chaotic Crumb",
       "gamers2000",
       "Crona",
-      "AlinaNova21"
+      "AlinaNova21",
+      "Joshua Bissell"
     ],
     "corrections": [
+      {
+        "version": "1.2.0",
+        "correction": "Added Tenabolt scenario programs.",
+        "contributor": "Joshua Bissell"
+      },
       {
         "version": "1.1.0",
         "correction": "Added 8 firmware programs (rtkernel, hakernel, bladeos, vlanfirm, firewatcher, wirerat, netpeeker, dnsspam) and 4 new program_categories (router, switch, firewall, debugging)",
@@ -492,6 +498,362 @@
       "requires": null,
       "stack_limit": null,
       "description": "DNS blasting firmware that rapidly sends out udp/53 requests."
+    },
+    {
+      "name": "complaint-server2",
+      "type": "converter",
+      "cpu": 5,
+      "memory": 9,
+      "storage": 3,
+      "input": {
+        "uses": [
+          "read-text",
+          "post-text",
+          "verify-user"
+        ],
+        "amount": 2,
+        "rate": "per tick",
+        "logic": "AND"
+      },
+      "output": {
+        "uses": [
+          "read-complaint",
+          "post-complaint",
+          "store-complaint"
+        ],
+        "amount": 15,
+        "rate": "per tick"
+      },
+      "requires": "A running mail server (mailer)",
+      "stack_limit": 15,
+      "description": "Allows customers to submit complaints and customer service to manage and respond to tickets"
+    },
+    {
+      "name": "hypervisor-server",
+      "type": "converter",
+      "cpu": 20,
+      "memory": 9,
+      "storage": 3,
+      "input": {
+        "uses": [
+          "store-text"
+        ],
+        "amount": 4,
+        "rate": "per tick",
+        "logic": "AND"
+      },
+      "output": {
+        "uses": [
+          "provision-vm"
+        ],
+        "amount": 15,
+        "rate": "per tick"
+      },
+      "requires": "A running text storage server",
+      "description": "Provisions and allocates virtual compute resources for monitoring and scaling."
+    },
+    {
+      "name": "log-server",
+      "type": "converter",
+      "cpu": 5,
+      "memory": 9,
+      "storage": 16,
+      "input": {
+        "uses": [
+          "store-text"
+        ],
+        "amount": 1,
+        "rate": "per tick"
+      },
+      "output": {
+        "uses": [
+          "query-log-entry",
+          "store-log-entry"
+        ],
+        "amount": 15,
+        "rate": "per tick"
+      },
+      "requires": "A running text storage server",
+      "description": "Event log storage. Records and searches system activity."
+    },
+    {
+      "name": "maintenance-server",
+      "type": "converter",
+      "cpu": 3,
+      "memory": 5,
+      "storage": 7,
+      "input": {
+        "uses": [
+          "verify-user",
+          "store-geospatial-data",
+          "read-geospatial-data"
+        ],
+        "amount": 3,
+        "rate": "per tick",
+        "logic": "AND"
+      },
+      "output": {
+        "uses": [
+          "post-repair-workorder"
+        ],
+        "amount": 8,
+        "rate": "per tick"
+      },
+      "requires": "A running Tena GIS server.",
+      "description": "Serves to manage physical asset maintenance and fault history."
+    },
+    {
+      "name": "print-server",
+      "type": "converter",
+      "cpu": 2,
+      "memory": 1,
+      "storage": 4,
+      "input": {
+        "uses": [
+          "accept-printer-connection"
+        ],
+        "amount": 10,
+        "rate": "per tick"
+      },
+      "output": {
+        "uses": [
+          "print-image",
+          "print-text"
+        ],
+        "amount": 10,
+        "rate": "per tick"
+      },
+      "requires": "A connected printer",
+      "description": "Supports printing services"
+    },
+    {
+      "name": "tena-calc-server",
+      "type": "converter",
+      "cpu": 15,
+      "memory": 8,
+      "storage": 4,
+      "input": {
+        "uses": [
+          "read-operation-data"
+        ],
+        "amount": 3,
+        "rate": "per tick"
+      },
+      "output": {
+        "uses": [
+          "verify-user",
+          "run-tenabolt-simulation",
+          "store-tenabolt-model"
+        ],
+        "amount": 10,
+        "rate": "per tick"
+      },
+      "description": "Serves as a nuclear plant calculation application. Engineers run simulations and save models."
+    },
+    {
+      "name": "tena-employee-db",
+      "type": "converter",
+      "cpu": 3,
+      "memory": 7,
+      "storage": 8,
+      "requires": "A running text and image storage server.",
+      "input": {
+        "uses": [
+          "store-text",
+          "store-image"
+        ],
+        "amount": 1,
+        "rate": "per tick",
+        "logic": "AND"
+      },
+      "output": {
+        "uses": [
+          "read-employee-data",
+          "post-employee-data"
+        ],
+        "amount": 10,
+        "rate": "per tick"
+      },
+      "description": "Stores employee data"
+    },
+    {
+      "name": "tena-gis-server",
+      "type": "converter",
+      "cpu": 16,
+      "memory": 9,
+      "storage": 3,
+      "input": {
+        "uses": [
+          "store-text",
+          "store-image"
+        ],
+        "amount": 3,
+        "rate": "per tick",
+        "logic": "AND"
+      },
+      "output": {
+        "uses": [
+          "verify-user",
+          "store-geospatial-data",
+          "read-geospatial-data"
+        ],
+        "amount": 8,
+        "rate": "per tick"
+      },
+      "requires": "A running text and image storage server.",
+      "description": "Serves as Geographic information system. Maps grid infrastructure, customer zones, and candidate sites for expansion."
+    },
+    {
+      "name": "tena-meter-db",
+      "type": "converter",
+      "cpu": 5,
+      "memory": 3,
+      "storage": 6,
+      "input": {
+        "uses": [
+          "store-text",
+          "store-image"
+        ],
+        "amount": 1,
+        "rate": "per tick",
+        "logic": "AND"
+      },
+      "output": {
+        "uses": [
+          "post-meter-reading"
+        ],
+        "amount": 8,
+        "rate": "per tick"
+      },
+      "requires": "A running text and image storage server.",
+      "description": "Allows meter readers to store meter reading data."
+    },
+    {
+      "name": "tena-staff-portal",
+      "type": "converter",
+      "cpu": 5,
+      "memory": 3,
+      "storage": 9,
+      "input": {
+        "uses": [
+          "store-text",
+          "store-image"
+        ],
+        "amount": 3,
+        "rate": "per tick",
+        "logic": "AND"
+      },
+      "output": {
+        "uses": [
+          "post-news-updates",
+          "read-news-updates",
+          "verify-user"
+        ],
+        "amount": 8,
+        "rate": "per tick"
+      },
+      "requires": "A running text and image storage server.",
+      "description": "Serves a landing page fro staff internally for company resources and announcements."
+    },
+    {
+      "name": "ten-bill-server",
+      "type": "converter",
+      "cpu": 3,
+      "memory": 9,
+      "storage": 3,
+      "input": {
+        "uses": [
+          "read-meter-readings"
+        ],
+        "amount": 3,
+        "rate": "per tick"
+      },
+      "output": {
+        "uses": [
+          "post-invoice",
+          "verify-user"
+        ],
+        "amount": 8,
+        "rate": "per tick"
+      },
+      "requires": "A running text and image storage server.",
+      "description": "Enables billing staff to generate and post invoices to residents based on recorded consumption data."
+    },
+    {
+      "name": "ten-public-portal",
+      "type": "converter",
+      "cpu": 3,
+      "memory": 3,
+      "storage": 4,
+      "input": {
+        "uses": [
+          "store-text",
+          "store-image"
+        ],
+        "amount": 2,
+        "rate": "per tick",
+        "logic": "AND"
+      },
+      "output": {
+        "uses": [
+          "post-news-updates",
+          "read-news-updates"
+        ],
+        "amount": 2,
+        "rate": "per tick"
+      },
+      "requires": "A running text and image storage server.",
+      "description": "Publishes outage updates and company news for public viewing"
+    },
+    {
+      "name": "ten-scada-server",
+      "type": "converter",
+      "cpu": 16,
+      "memory": 9,
+      "storage": 3,
+      "input": {
+        "uses": [
+          "store-log-entry"
+        ],
+        "amount": 2,
+        "rate": "per tick"
+      },
+      "output": {
+        "uses": [
+          "verify-user",
+          "adjust-tenabolt-setpoint"
+        ],
+        "amount": 8,
+        "rate": "per tick"
+      },
+      "requires": "A running log data server.",
+      "description": "Serves as a real-time supervisory control and data acquisition system for grid operations."
+    },
+    {
+      "name": "tmp-collabpoint1",
+      "type": "converter",
+      "cpu": 5,
+      "memory": 7,
+      "storage": 5,
+      "input": {
+        "uses": [
+          "store-text",
+          "store-image"
+        ],
+        "amount": 3,
+        "rate": "per tick",
+        "logic": "AND"
+      },
+      "output": {
+        "uses": [
+          "download-file",
+          "upload-file"
+        ],
+        "amount": 25,
+        "rate": "per tick"
+      },
+      "requires": "A running text and image storage server.",
+      "description": "Allows media sharing among staff."
     }
   ],
   "program_categories": {
@@ -539,6 +901,22 @@
       "wirerat",
       "netpeeker",
       "dnsspam"
+    ],
+    "tenabolt": [
+      "complaint-server2",
+      "hypervisor-server",
+      "log-server",
+      "maintenance-server",
+      "print-server",
+      "tena-calc-server",
+      "tena-employee-db",
+      "tena-gis-server",
+      "tena-meter-db",
+      "tena-staff-portal",
+      "ten-bill-server",
+      "ten-public-portal",
+      "ten-scada-server",
+      "tmp-collabpoint1"
     ]
   },
   "use_types": {
@@ -546,7 +924,11 @@
       "store-text",
       "store-image",
       "store-audio",
-      "store-video"
+      "store-video",
+      "store-geospatial-data",
+      "store-complaint",
+      "store-log-entry",
+      "store-tenabolt-model"
     ],
     "dns": [
       "reply-dns-queries"
@@ -558,12 +940,33 @@
       "read-text",
       "post-text",
       "update-software",
-      "verify-user"
+      "verify-user",
+      "read-complaint",
+      "post-complaint",
+      "query-log-entry",
+      "provision-vm",
+      "read-geospatial-data",
+      "post-repair-workorder",
+      "print-image",
+      "print-text",
+      "read-operation-data",
+      "run-tenabolt-simulation",
+      "read-employee-data",
+      "post-employee-data",
+      "read-meter-readings",
+      "post-meter-reading",
+      "post-news-updates",
+      "read-news-updates",
+      "post-invoice",
+      "adjust-tenabolt-setpoint",
+      "download-file",
+      "upload-file"
     ],
     "connections": [
       "accept-voip-phone-connection",
       "accept-cctv-camera-connection",
-      "accept-cctv-monitor-connection"
+      "accept-cctv-monitor-connection",
+      "accept-printer-connection"
     ],
     "decentro": [
       "facilitate-p2p-transaction",
