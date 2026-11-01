@@ -1,5 +1,7 @@
 # TNI Toolkit - Claude Code Context
 
+**Ownership:** personal project of Salvo Praxis; no company association. Nothing from a work repository (code, docs or credits) may be used here, and no credit, citation or lineage note attributes this project's work to another project unless Robert explicitly asks for one.
+
 ## Project Overview
 
 Community-built data files and planning tools for **Tower Networking Inc.** by Pocosia Studios.
